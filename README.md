@@ -1,3 +1,6 @@
+# My haha bullshit test for sample manipulation darg and drop & recording. its horrible, please don't use this
+
+
 <div align="center">
 	<h1>
 	<img src="https://raw.githubusercontent.com/LMMS/artwork/master/Icon%20%26%20Mimetypes/lmms-64x64.svg" alt="LMMS Logo"><br>LMMS
