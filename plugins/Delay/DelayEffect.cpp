@@ -161,6 +161,7 @@ PLUGIN_EXPORT Plugin * lmms_plugin_main( Model* parent, void* data )
 	return new DelayEffect( parent , static_cast<const Plugin::Descriptor::SubPluginFeatures::Key *>( data ) );
 }
 
+nullptr,
 }}
 
 

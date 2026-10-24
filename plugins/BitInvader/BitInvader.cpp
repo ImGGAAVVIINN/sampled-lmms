@@ -65,6 +65,7 @@ Plugin::Descriptor PLUGIN_EXPORT bitinvader_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

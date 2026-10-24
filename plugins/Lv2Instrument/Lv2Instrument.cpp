@@ -58,9 +58,9 @@ Plugin::Descriptor PLUGIN_EXPORT lv2instrument_plugin_descriptor =
 	Plugin::Type::Instrument,
 	new PluginPixmapLoader("logo"),
 	nullptr,
-	new Lv2SubPluginFeatures(Plugin::Type::Instrument)
-};
+        "pluginpresetfile",
 
+nullptr,
 }
 
 

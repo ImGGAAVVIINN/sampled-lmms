@@ -46,6 +46,7 @@ Plugin::Descriptor PLUGIN_EXPORT reverbsc_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 ReverbSCEffect::ReverbSCEffect( Model* parent, const Descriptor::SubPluginFeatures::Key* key ) :

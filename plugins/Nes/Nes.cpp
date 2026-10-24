@@ -56,6 +56,7 @@ Plugin::Descriptor PLUGIN_EXPORT nes_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

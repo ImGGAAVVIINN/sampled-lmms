@@ -66,6 +66,7 @@ Plugin::Descriptor PLUGIN_EXPORT malletsstk_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

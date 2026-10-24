@@ -98,7 +98,7 @@ public:
 		Type type;
 		const PixmapLoader * logo;
 		const char * supportedFileTypes; //!< csv list of extensions
-
+		const char * supportedMimetype; //!< mimetype supported by the plugin. Should be null if no filetypes are supported
 		inline bool supportsFileType( const QString& extension ) const
 		{
 			return QString( supportedFileTypes ).split( QChar( ',' ) ).contains( extension );

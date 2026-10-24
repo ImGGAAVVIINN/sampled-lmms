@@ -41,6 +41,7 @@ namespace lmms {
 
 extern "C" {
 Plugin::Descriptor PLUGIN_EXPORT slicert_plugin_descriptor = {
+Plugin::Descriptor PLUGIN_EXPORT slicert_plugin_descriptor = {
 	LMMS_STRINGIFY(PLUGIN_NAME),
 	"SlicerT",
 	QT_TRANSLATE_NOOP("PluginBrowser", "Basic Slicer"),
@@ -51,7 +52,6 @@ Plugin::Descriptor PLUGIN_EXPORT slicert_plugin_descriptor = {
 	nullptr,
 	nullptr,
 };
-} // end extern
 
 // ################################# SlicerT ####################################
 

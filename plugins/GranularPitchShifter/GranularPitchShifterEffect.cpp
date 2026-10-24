@@ -47,7 +47,6 @@ Plugin::Descriptor PLUGIN_EXPORT granularpitchshifter_plugin_descriptor =
 	nullptr,
 	nullptr,
 } ;
-}
 
 
 GranularPitchShifterEffect::GranularPitchShifterEffect(Model* parent, const Descriptor::SubPluginFeatures::Key* key) :

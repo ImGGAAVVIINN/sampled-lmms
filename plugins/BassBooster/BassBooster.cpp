@@ -47,6 +47,7 @@ Plugin::Descriptor PLUGIN_EXPORT bassbooster_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

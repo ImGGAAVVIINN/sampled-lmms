@@ -58,6 +58,7 @@ Plugin::Descriptor PLUGIN_EXPORT organic_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 float * OrganicInstrument::s_harmonics = nullptr;

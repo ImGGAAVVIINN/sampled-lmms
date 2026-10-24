@@ -51,6 +51,7 @@ Plugin::Descriptor PLUGIN_EXPORT waveshaper_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

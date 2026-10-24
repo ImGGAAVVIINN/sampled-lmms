@@ -58,9 +58,7 @@ Plugin::Descriptor PLUGIN_EXPORT audiofileprocessor_plugin_descriptor =
 	",mp3"
 #endif
 	,
-	nullptr,
-} ;
-
+        "samplefile",
 }
 
 

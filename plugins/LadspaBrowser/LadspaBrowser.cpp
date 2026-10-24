@@ -68,6 +68,7 @@ PLUGIN_EXPORT Plugin * lmms_plugin_main( Model * _parent, void * _data )
 	return new LadspaBrowser;
 }
 
+nullptr,
 }
 
 

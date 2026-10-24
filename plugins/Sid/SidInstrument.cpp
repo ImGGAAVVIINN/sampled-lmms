@@ -88,6 +88,7 @@ Plugin::Descriptor PLUGIN_EXPORT sid_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 VoiceObject::VoiceObject( Model * _parent, int _idx ) :

@@ -53,6 +53,7 @@ Plugin::Descriptor PLUGIN_EXPORT lv2effect_plugin_descriptor =
 	new Lv2SubPluginFeatures(Plugin::Type::Effect)
 };
 
+nullptr,
 }
 
 

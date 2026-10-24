@@ -49,6 +49,7 @@ Plugin::Descriptor PLUGIN_EXPORT stereoenhancer_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

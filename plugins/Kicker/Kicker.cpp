@@ -60,6 +60,7 @@ Plugin::Descriptor PLUGIN_EXPORT kicker_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

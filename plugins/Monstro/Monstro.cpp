@@ -55,6 +55,7 @@ Plugin::Descriptor PLUGIN_EXPORT monstro_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

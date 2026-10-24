@@ -68,6 +68,7 @@ Plugin::Descriptor PLUGIN_EXPORT freeboy_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

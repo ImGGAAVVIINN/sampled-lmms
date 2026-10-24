@@ -50,6 +50,7 @@ Plugin::Descriptor PLUGIN_EXPORT eq_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

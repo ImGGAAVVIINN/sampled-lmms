@@ -49,6 +49,7 @@ Plugin::Descriptor PLUGIN_EXPORT crossovereq_plugin_descriptor =
 	nullptr,
 };
 
+nullptr,
 }
 
 

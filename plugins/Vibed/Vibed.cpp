@@ -61,6 +61,7 @@ Plugin::Descriptor PLUGIN_EXPORT vibedstrings_plugin_descriptor =
 	nullptr
 };
 
+nullptr,
 }
 
 

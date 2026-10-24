@@ -57,6 +57,7 @@ Plugin::Descriptor PLUGIN_EXPORT watsyn_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

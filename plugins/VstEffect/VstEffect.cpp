@@ -55,6 +55,7 @@ Plugin::Descriptor PLUGIN_EXPORT vsteffect_plugin_descriptor =
 	new VstSubPluginFeatures( Plugin::Type::Effect )
 } ;
 
+nullptr,
 }
 
 

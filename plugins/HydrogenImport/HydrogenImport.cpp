@@ -37,6 +37,7 @@ Plugin::Descriptor PLUGIN_EXPORT hydrogenimport_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 QString filename;

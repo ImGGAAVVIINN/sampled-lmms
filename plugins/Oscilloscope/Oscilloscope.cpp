@@ -49,7 +49,6 @@ PLUGIN_EXPORT Plugin* lmms_plugin_main(Model* parent, void* data)
 {
 	return new Oscilloscope(parent, static_cast<const Plugin::Descriptor::SubPluginFeatures::Key*>(data));
 }
-}
 
 
 Oscilloscope::Oscilloscope(Model* parent, const Descriptor::SubPluginFeatures::Key* key) :

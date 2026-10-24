@@ -64,6 +64,7 @@ Plugin::Descriptor PLUGIN_EXPORT tripleoscillator_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

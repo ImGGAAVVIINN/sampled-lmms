@@ -60,8 +60,10 @@ Plugin::Descriptor PLUGIN_EXPORT sfxr_plugin_descriptor =
 	new PluginPixmapLoader( "logo" ),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
+nullptr,
 }
 
 

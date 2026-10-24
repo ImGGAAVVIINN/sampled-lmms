@@ -56,6 +56,7 @@ Plugin::Descriptor PLUGIN_EXPORT midiexport_plugin_descriptor =
 	Plugin::Type::ExportFilter,
 	nullptr,
 	nullptr,
+	"midifile",
 	nullptr,
 };
 
@@ -64,6 +65,7 @@ PLUGIN_EXPORT Plugin* lmms_plugin_main(Model*, void*)
 	return new MidiExport{};
 }
 
+nullptr,
 } // extern "C"
 
 void MidiExport::Clip::write(const QDomNode& root,

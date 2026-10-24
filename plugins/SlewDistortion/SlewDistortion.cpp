@@ -44,7 +44,6 @@ Plugin::Descriptor PLUGIN_EXPORT slewdistortion_plugin_descriptor =
 	nullptr,
 	nullptr,
 };
-}
 
 
 SlewDistortion::SlewDistortion(Model* parent, const Descriptor::SubPluginFeatures::Key* key) :

@@ -72,6 +72,7 @@ Plugin::Descriptor PLUGIN_EXPORT midiimport_plugin_descriptor =
 	Plugin::Type::ImportFilter,
 	nullptr,
 	nullptr,
+	"midifile",
 	nullptr,
 };
 
@@ -80,6 +81,7 @@ PLUGIN_EXPORT Plugin* lmms_plugin_main(Model*, void* data)
 	return new MidiImport(QString::fromUtf8(static_cast<const char*>(data)));
 }
 
+nullptr,
 }
 
 

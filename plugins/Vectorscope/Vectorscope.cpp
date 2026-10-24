@@ -44,6 +44,7 @@ extern "C" {
 		nullptr,
 		nullptr,
 	};
+	nullptr,
 }
 
 

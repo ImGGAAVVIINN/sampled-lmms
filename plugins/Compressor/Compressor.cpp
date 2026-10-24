@@ -51,6 +51,7 @@ Plugin::Descriptor PLUGIN_EXPORT compressor_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

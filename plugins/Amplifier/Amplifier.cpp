@@ -47,6 +47,7 @@ Plugin::Descriptor PLUGIN_EXPORT amplifier_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

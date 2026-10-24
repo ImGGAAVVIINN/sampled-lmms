@@ -55,6 +55,7 @@ Plugin::Descriptor PLUGIN_EXPORT bitcrush_plugin_descriptor =
 	nullptr,
 };
 
+nullptr,
 }
 
 BitcrushEffect::BitcrushEffect( Model * parent, const Descriptor::SubPluginFeatures::Key * key ) :

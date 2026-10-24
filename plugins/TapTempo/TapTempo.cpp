@@ -42,7 +42,6 @@ PLUGIN_EXPORT Plugin* lmms_plugin_main(Model*, void*)
 {
 	return new TapTempo;
 }
-}
 
 TapTempo::TapTempo()
 	: ToolPlugin(&taptempo_plugin_descriptor, nullptr)

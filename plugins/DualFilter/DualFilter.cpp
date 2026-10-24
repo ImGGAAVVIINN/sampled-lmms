@@ -49,6 +49,7 @@ Plugin::Descriptor PLUGIN_EXPORT dualfilter_plugin_descriptor =
 	nullptr,
 } ;
 
+nullptr,
 }
 
 

@@ -48,6 +48,7 @@ Plugin::Descriptor PLUGIN_EXPORT dispersion_plugin_descriptor =
 	nullptr
 };
 
+nullptr,
 }
 
 

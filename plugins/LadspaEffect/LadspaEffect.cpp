@@ -64,6 +64,7 @@ Plugin::Descriptor PLUGIN_EXPORT ladspaeffect_plugin_descriptor =
 	new LadspaSubPluginFeatures( Plugin::Type::Effect )
 } ;
 
+nullptr,
 }
 
 LadspaEffect::LadspaEffect(Model* _parent, const Descriptor::SubPluginFeatures::Key* _key)
