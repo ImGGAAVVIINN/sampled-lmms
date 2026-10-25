@@ -32,8 +32,25 @@
 
 class QMimeData;
 
+namespace lmms::gui
+{
+	class FileItem;
+}
+
 namespace lmms::Clipboard
 {
+
+	void updateExtensionMap();
+
+	bool isType(const QString& ext, const QString& mimetype);
+	bool isAudioFile(const QString& ext);
+	bool isProjectFile(const QString& ext);
+	bool isPluginPresetFile(const QString& ext);
+	bool isTrackPresetFile(const QString& ext);
+	bool isSoundFontFile(const QString& ext);
+	bool isPatchFile(const QString& ext);
+	bool isMidiFile(const QString& ext);
+	bool isVstPluginFile(const QString& ext);
 
 	enum class MimeType
 	{
@@ -53,6 +70,19 @@ namespace lmms::Clipboard
 	void copyStringPair( const QString & key, const QString & value );
 	QString decodeKey( const QMimeData * mimeData );
 	QString decodeValue( const QMimeData * mimeData );
+
+	/**
+	 * @brief Extracts and classifies drag-and-drop data from a QMimeData.
+	 *
+	 * If the mimeData contains URLs, the first URL is used to determine the
+	 * file extension and classify the type (e.g. "samplefile",
+	 * "trackpresetfile", "vstpluginfile"). Falls back to StringPairDrag
+	 * decoding for non-file-based drags.
+	 *
+	 * @return std::pair where first is the type and second is the value.
+	 */
+		LMMS_EXPORT std::pair<QString, QString> decodeMimeData(const QMimeData* mimeData);
+	void startFileDrag(gui::FileItem* file, QObject* qo);
 
 	inline const char * mimeType( MimeType type )
 	{

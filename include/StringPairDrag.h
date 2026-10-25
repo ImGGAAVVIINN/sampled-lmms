@@ -26,6 +26,8 @@
 #ifndef LMMS_GUI_STRING_PAIR_DRAG_H
 #define LMMS_GUI_STRING_PAIR_DRAG_H
 
+#include <initializer_list>
+
 #include <QDrag>
 #include <QDragEnterEvent>
 #include <QDropEvent>
@@ -47,8 +49,10 @@ public:
 	~StringPairDrag() override;
 
 	static bool processDragEnterEvent( QDragEnterEvent * _dee,
-						const QString & _allowed_keys );
+						std::initializer_list<QString> _allowed_keys );
+	//! use QString Clipboard::decodeKey(QMimeData) instead
 	static QString decodeKey( QDropEvent * _de );
+	//! use QString Clipboard::decodeValue(QMimeData) instead
 	static QString decodeValue( QDropEvent * _de );
 } ;
 

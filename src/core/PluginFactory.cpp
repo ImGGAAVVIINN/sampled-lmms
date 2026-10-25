@@ -28,6 +28,8 @@
 #include <QDebug>
 #include <QDir>
 #include <QLibrary>
+
+#include "Clipboard.h"
 #include <QRegularExpression>
 #include <memory>
 #include "lmmsconfig.h"
@@ -95,7 +97,10 @@ void PluginFactory::setupSearchPaths()
 PluginFactory* PluginFactory::instance()
 {
 	if (s_instance == nullptr)
+	{
 		s_instance = std::make_unique<PluginFactory>();
+		Clipboard::updateExtensionMap();
+	}
 
 	return s_instance.get();
 }

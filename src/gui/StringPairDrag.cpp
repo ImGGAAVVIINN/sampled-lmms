@@ -25,6 +25,8 @@
  */
 
 
+#include <ranges>
+
 #include <QMimeData>
 #include <QDragEnterEvent>
 
@@ -81,17 +83,11 @@ StringPairDrag::~StringPairDrag()
 
 
 bool StringPairDrag::processDragEnterEvent( QDragEnterEvent * _dee,
-						const QString & _allowed_keys )
+						std::initializer_list<QString> _allowed_keys )
 {
-	// For mimeType() and MimeType enum class
-	using namespace Clipboard;
+	auto [type, value] = Clipboard::decodeMimeData( _dee->mimeData() );
 
-	if( !_dee->mimeData()->hasFormat( mimeType( MimeType::StringPair ) ) )
-	{
-		return( false );
-	}
-	QString txt = _dee->mimeData()->data( mimeType( MimeType::StringPair ) );
-	if( _allowed_keys.split( ',' ).contains( txt.section( ':', 0, 0 ) ) )
+	if( std::ranges::find( _allowed_keys, type ) != _allowed_keys.end() )
 	{
 		_dee->acceptProposedAction();
 		return( true );
