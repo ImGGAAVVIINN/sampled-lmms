@@ -178,8 +178,9 @@ void TrackView::modelChanged()
 
 void TrackView::dragEnterEvent( QDragEnterEvent * dee )
 {
-	StringPairDrag::processDragEnterEvent( dee, "track_" +
-					QString::number( static_cast<int>(m_track->type()) ) );
+	StringPairDrag::processDragEnterEvent( dee, {
+		QString("track_%1").arg(static_cast<int>(m_track->type()))
+	});
 }
 
 

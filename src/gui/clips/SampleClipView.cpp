@@ -114,7 +114,7 @@ void SampleClipView::constructContextMenu(QMenu* cm)
 void SampleClipView::dragEnterEvent( QDragEnterEvent * _dee )
 {
 	if( StringPairDrag::processDragEnterEvent( _dee,
-					"samplefile,sampledata" ) == false )
+					{"samplefile", "sampledata"} ) == false )
 	{
 		ClipView::dragEnterEvent( _dee );
 	}

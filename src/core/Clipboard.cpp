@@ -31,6 +31,7 @@
 #include <QMap>
 #include <QSet>
 #include <algorithm>
+#include <set>
 
 #include "Clipboard.h"
 #include "FileBrowser.h"

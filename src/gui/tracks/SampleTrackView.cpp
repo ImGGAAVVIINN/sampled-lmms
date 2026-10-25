@@ -187,7 +187,7 @@ void SampleTrackView::modelChanged()
 
 void SampleTrackView::dragEnterEvent(QDragEnterEvent *dee)
 {
-	StringPairDrag::processDragEnterEvent(dee, QString("samplefile"));
+	StringPairDrag::processDragEnterEvent(dee, {"samplefile"});
 }
 
 
