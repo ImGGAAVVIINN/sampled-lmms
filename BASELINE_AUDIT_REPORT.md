@@ -152,3 +152,78 @@ Per user constraint: *"Do not implement my four new features until the baseline 
 ## Conclusion
 
 The baseline is verified and ready for sample-track feature work. PR #7786 recording integration is complete and tested. PR #7849 DnD/mimetype API is re-implemented on master with proper call site migrations. All four deferred features remain untouched per user constraint. The codebase is in a stable state for subsequent feature development.
+
+## 5. Recording Reliability Fixes (Phase 4)
+
+Commit `7c88e0d37` on `feature/sample-tracks-baseline`.
+
+### 5.1 State-transition fixes (`src/core/Song.cpp`)
+
+| Entry point | Before | After |
+|---|---|---|
+| `playSong()` | left `m_recording` unchanged | resets `m_recording = false` |
+| `playAndRecord()` | armed recording unconditionally | refuses to arm when `!captureDeviceAvailable()` |
+| `playPattern()` | did not reset | resets `m_recording = false` |
+| `playMidiClip()` | did not reset | resets `m_recording = false` |
+| `stop()` | **bug:** set `m_recording = true` (blame `c60e7ba8d1`, 2012) | sets `m_recording = false` |
+
+The `stop()` bug meant that after stopping, any subsequent playback would keep recording into whatever record-clip was still armed. Now stopping always ends the take.
+
+### 5.2 Capture-buffer forwarding (`src/core/audio/AudioPortAudio.cpp`)
+
+PortAudio previously discarded the `input` pointer and never advertised capture. The callback now:
+
+1. De-interleaves `float` input into `SampleFrame` (2-channel; mono duplicated to L/R).
+2. Clamps to the staging buffer size.
+3. Calls `audioEngine()->pushInputFrames(...)` **after** `renderNextBuffer(...)`.
+
+`m_supportsCapture` is set **only** when an input stream actually opened; the default input channel count is `DEFAULT_CHANNELS`, and a duplex failure degrades to playback-only instead of failing the whole device.
+
+### 5.3 Other backends audited (A4)
+
+| Backend | Capture support | Evidence |
+|---|---|---|
+| Jack | **Yes, always-on** | `AudioJack.cpp:108` unconditional `m_supportsCapture = true`; input at `:432` |
+| SDL | **Yes, conditional** | `AudioSdl.cpp:108-110` sets `m_supportsCapture` only when `SDL_OpenAudioDevice(..., 1, ...)` returns a non-zero device id; `sdlInputAudioCallback` at `:183-189` calls `pushInputFrames` |
+| PortAudio | **Yes, conditional** (new) | sets `m_supportsCapture` only when an input stream opened |
+| ALSA | **No** | `AudioAlsa.cpp:54` opens `SND_PCM_STREAM_PLAYBACK` only; never sets `m_supportsCapture` |
+| PulseAudio | **No** | ctor never sets `m_supportsCapture`; no input callback |
+| Sndio | **No** | never sets `m_supportsCapture` |
+| OSS / CoreAudio / FileDevice / Dummy | **No** | default `m_supportsCapture = false` (`AudioDevice.cpp:34`) |
+
+Only three callers of `pushInputFrames` exist: SDL, Jack, and PortAudio.
+
+### 5.4 Silent-overwrite guard (A5)
+
+`SongEditor::updateRecordingAvailability()` now calls `setEnabled(captureAvailable)` and re-evaluates on `sampleRateChanged`. The core side (`playAndRecord()`) refuses to arm when no capture device exists, so a record-clip can no longer be overwritten with silence.
+
+### 5.5 Thread-safety (A6)
+
+`~SampleRecordHandle` assembles the take on whichever thread deleted the handle and commits on the clip's thread:
+
+- Direct call when already on the clip's thread.
+- `QMetaObject::invokeMethod(clip, functor, Qt::QueuedConnection)` otherwise, so the functor dies with the pending event if the clip is destroyed first.
+
+`SampleRecordHandle::play()` also early-returns when `inputBuffer()` is null or `inputBufferFrames() <= 0`, preventing a zero-filled take.
+
+### 5.6 Focused test (`tests/src/core/SampleRecordingTest.cpp`)
+
+9/9 pass (775 ms), exit 0. Covers: refusing to arm without a capture device, arming with one, `stop()` ending recording, `playSong`/`playPattern`/`playMidiClip` never recording, input-buffer round-trip (push 64 frames -> readable once -> 0), empty take leaves clip audio alone, and captured frames committed to the clip.
+
+### 5.7 End-to-end verification (B4/B5) — **NOT claimed**
+
+Environment probe results:
+
+- **No `Xvfb`** (`command -v Xvfb` -> not found), so the LMMS GUI cannot be launched headlessly.
+- PipeWire 0.3.48 + pipewire-pulse running; default source `alsa_input.pci-0000_0c_00.6.analog-stereo`, float32le 2ch 48000 Hz.
+- `arecord` on the default source succeeds (exit 0, 8 kHz mu-law, non-silent), but direct ALSA `hw:3,0` is **busy** (exit 1, "Device or resource busy") because PipeWire holds `pcmC3D0p`.
+- `arecord -D pulse` fails ("Unknown PCM pulse").
+- `pw-loopback`, `pw-cat`, `parec` are available; `snd-aloop` would need root.
+
+**Conclusion:** the capture path is verified at the unit level (test) and by code audit (backend survey), but a full GUI record/save/reload round-trip cannot be performed in this environment. This is reported as a limitation, not as end-to-end verification.
+
+### 5.8 Deferred items
+
+- `SampleRecordHandle.cpp:79` `changeLength(len)` take-truncation is still commented out (deferred UI work).
+- Selected-track / new-track recording UI not added.
+- Stretch tool, pitch-preserving stretch, and external DnD not implemented.
