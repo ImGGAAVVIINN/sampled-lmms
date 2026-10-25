@@ -33,6 +33,10 @@
 #include "AudioPortAudio.h"
 #include "ConfigManager.h"
 #include "LcdSpinBox.h"
+#include "SampleFrame.h"
+
+#include <algorithm>
+#include <cmath>
 
 namespace {
 enum class Direction
@@ -107,7 +111,10 @@ AudioPortAudio::AudioPortAudio(bool& successful, AudioEngine* engine)
 	const auto backend = ConfigManager::inst()->value(tag(), backendAttribute());
 	
 	const auto inputDeviceName = ConfigManager::inst()->value(tag(), deviceNameAttribute(Direction::Input));
-	const auto inputDeviceChannels = ConfigManager::inst()->value(tag(), channelsAttribute(Direction::Input)).toInt();
+	auto inputDeviceChannels = ConfigManager::inst()->value(tag(), channelsAttribute(Direction::Input)).toInt();
+	// An unset channel count means the user never touched the setup widget; mirror the
+	// default the widget itself applies instead of opening the stream with 0 channels.
+	if (inputDeviceChannels <= 0) { inputDeviceChannels = DEFAULT_CHANNELS; }
 
 	const auto outputDeviceName = ConfigManager::inst()->value(tag(), deviceNameAttribute(Direction::Output));
 	const auto outputDeviceChannels = ConfigManager::inst()->value(tag(), channelsAttribute(Direction::Output)).toInt();
@@ -150,14 +157,31 @@ AudioPortAudio::AudioPortAudio(bool& successful, AudioEngine* engine)
 	const auto outputParametersPtr = outputDeviceIndex == paNoDevice ? nullptr : &outputParameters;
 	auto err = Pa_IsFormatSupported(inputParametersPtr, outputParametersPtr, sampleRate);
 
-	if (err != paFormatIsSupported)
+	// Opening an input device is not enough: some host APIs report a device but refuse the
+	// combined duplex format. In that case keep playback working by dropping the input
+	// rather than failing to create the device at all.
+	auto captureParameters = inputParametersPtr;
+	if (err != paFormatIsSupported && inputParametersPtr != nullptr)
+	{
+		std::cerr << "PortAudio: input device " << inputDeviceName.toStdString()
+			  << " cannot be used for capture: " << Pa_GetErrorText(err) << '\n';
+		if (Pa_IsFormatSupported(nullptr, outputParametersPtr, sampleRate) != paFormatIsSupported)
+		{
+			std::cerr << "Pa_IsFormatSupported() failed: " << Pa_GetErrorText(err) << '\n';
+			successful = false;
+			return;
+		}
+		captureParameters = nullptr;
+		inputDeviceIndex = paNoDevice;
+	}
+	else if (err != paFormatIsSupported)
 	{
 		std::cerr << "Pa_IsFormatSupported() failed: " << Pa_GetErrorText(err) << '\n';
 		successful = false;
 		return;
 	}
 
-	err = Pa_OpenStream(&m_paStream, inputParametersPtr, outputParametersPtr, sampleRate, framesPerBuffer, paNoFlag,
+	err = Pa_OpenStream(&m_paStream, captureParameters, outputParametersPtr, sampleRate, framesPerBuffer, paNoFlag,
 		&AudioPortAudio::processCallback, this);
 	
 	if (err != paNoError)
@@ -170,6 +194,18 @@ AudioPortAudio::AudioPortAudio(bool& successful, AudioEngine* engine)
 	successful = true;
 	setSampleRate(sampleRate);
 	setChannels(outputDeviceChannels);
+
+	// Only now is capture genuinely available: the stream was opened with a usable input.
+	m_inputChannels = inputDeviceIndex == paNoDevice ? 0 : static_cast<ch_cnt_t>(inputDeviceChannels);
+	m_supportsCapture = m_inputChannels > 0;
+	if (m_supportsCapture)
+	{
+		// PortAudio is free to batch callbacks differently from the requested period, so
+		// stage enough for the engine's largest buffer and clamp rather than allocate later.
+		const auto stagingFrames
+			= std::max(framesPerBuffer, engine->framesPerAudioBuffer());
+		m_inputFrameBuffer.resize(static_cast<size_t>(stagingFrames));
+	}
 }
 
 AudioPortAudio::~AudioPortAudio()
@@ -188,7 +224,27 @@ void AudioPortAudio::stopProcessingImpl()
 	Pa_StopStream(m_paStream);
 }
 
-int AudioPortAudio::processCallback(const void*, void* output, unsigned long frameCount,
+void AudioPortAudio::pushInputFrames(const float* input, const unsigned long frameCount)
+{
+	if (!m_supportsCapture || input == nullptr || m_inputChannels <= 0) { return; }
+
+	const auto frames = std::min<size_t>(frameCount, m_inputFrameBuffer.size());
+	if (frames == 0) { return; }
+
+	const auto interleaved = reinterpret_cast<const sample_t*>(input);
+	for (size_t frame = 0; frame < frames; ++frame)
+	{
+		const auto source = interleaved + frame * m_inputChannels;
+		// Mono devices are duplicated onto both channels, anything wider uses the first two.
+		const auto left = source[0];
+		const auto right = m_inputChannels > 1 ? source[1] : left;
+		m_inputFrameBuffer[frame] = SampleFrame{left, right};
+	}
+
+	audioEngine()->pushInputFrames(m_inputFrameBuffer.data(), static_cast<f_cnt_t>(frames));
+}
+
+int AudioPortAudio::processCallback(const void* input, void* output, unsigned long frameCount,
 	const PaStreamCallbackTimeInfo*, PaStreamCallbackFlags, void* userData)
 {
 	const auto device = static_cast<AudioPortAudio*>(userData);
@@ -202,6 +258,10 @@ int AudioPortAudio::processCallback(const void*, void* output, unsigned long fra
 	}
 
 	device->audioEngine()->renderNextBuffer({outputBuffer, channels, frameCount});
+
+	// Forwarded after rendering so the frames land in the buffer that the next period
+	// reads, matching what the other capture-capable backends do.
+	device->pushInputFrames(static_cast<const float*>(input), frameCount);
 	return paContinue;
 }
 } // namespace lmms

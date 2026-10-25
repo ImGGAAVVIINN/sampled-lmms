@@ -35,8 +35,11 @@
 #include <QWidget>
 #include <portaudio.h>
 
+#include <vector>
+
 #include "AudioDevice.h"
 #include "AudioDeviceSetupWidget.h"
+#include "SampleFrame.h"
 
 namespace lmms {
 
@@ -85,8 +88,17 @@ private:
 	static int processCallback(const void* input, void* output, unsigned long frameCount,
 		const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void* userData);
 
+	//! Convert interleaved PortAudio input to the engine's sample format and hand it over.
+	//! Must not allocate, as it runs on the real-time audio thread.
+	void pushInputFrames(const float* input, unsigned long frameCount);
+
 	detail::PortAudioInitializationGuard m_initGuard;
 	PaStream* m_paStream = nullptr;
+
+	// Channel count of the opened input device, or 0 when there is no usable input.
+	ch_cnt_t m_inputChannels = 0;
+	// Staging buffer for the interleaved input, sized for the largest callback we can get.
+	std::vector<SampleFrame> m_inputFrameBuffer;
 };
 } // namespace lmms
 

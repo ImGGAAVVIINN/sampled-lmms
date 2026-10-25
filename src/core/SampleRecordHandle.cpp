@@ -30,6 +30,9 @@
 #include "SampleBuffer.h"
 #include "SampleClip.h"
 
+#include <QThread>
+#include <utility>
+
 
 namespace lmms
 {
@@ -51,16 +54,40 @@ SampleRecordHandle::SampleRecordHandle(SampleClip* clip, TimePos startRecordTime
 
 SampleRecordHandle::~SampleRecordHandle()
 {
-	if (!m_buffers.empty()) { m_clip->setSampleBuffer(createSampleBuffer()); }
-
-	m_clip->setStartTimeOffset(m_startRecordTimeOffset);
+	// The recorded data is assembled here, on whichever thread deleted the handle, since
+	// that is pure memory work. Committing it to the clip is not: this destructor usually
+	// runs on the real-time audio thread, where AudioEngine::requestChangeInModel() is a
+	// no-op, so mutating the clip's sample, length and models would race with the GUI and
+	// the project journal. Hand the finished take over to the clip's own thread instead.
+	const auto clip = m_clip;
+	const auto startRecordTimeOffset = m_startRecordTimeOffset;
+	const auto hasData = !m_buffers.empty();
+	auto sampleBuffer = hasData ? createSampleBuffer() : std::shared_ptr<const SampleBuffer>{};
 
 	while( !m_buffers.empty() )
 	{
 		delete[] m_buffers.front().first;
 		m_buffers.erase( m_buffers.begin() );
 	}
-	m_clip->setRecord( false );
+
+	// An empty take must never overwrite the clip, not even with silence.
+	auto commit = [clip, startRecordTimeOffset, hasData, buffer = std::move(sampleBuffer)]() mutable
+	{
+		if (hasData) { clip->setSampleBuffer(std::move(buffer)); }
+
+		clip->setStartTimeOffset(startRecordTimeOffset);
+		clip->setRecord(false);
+	};
+
+	if (QThread::currentThread() == clip->thread())
+	{
+		commit();
+		return;
+	}
+
+	// Queued so the lambda is destroyed along with the pending event if the clip is
+	// deleted before it runs; a raw `this`-style capture would dangle there.
+	QMetaObject::invokeMethod(clip, std::move(commit), Qt::QueuedConnection);
 }
 
 
@@ -70,6 +97,9 @@ void SampleRecordHandle::play( SampleFrame* /*_working_buffer*/ )
 {
 	const SampleFrame* recbuf = Engine::audioEngine()->inputBuffer();
 	const f_cnt_t frames = Engine::audioEngine()->inputBufferFrames();
+	// A device may report capture support while still delivering nothing; recording that
+	// would replace the clip with an empty take, so ignore it until real input arrives.
+	if (recbuf == nullptr || frames <= 0) { return; }
 	writeBuffer( recbuf, frames );
 	m_framesRecorded += frames;
 

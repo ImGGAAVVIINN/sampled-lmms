@@ -1029,12 +1029,20 @@ SongEditorWindow::SongEditorWindow(Song* song) :
 	connect(song, SIGNAL(projectLoaded()), this, SLOT(adjustUiAfterProjectLoad()));
 	connect(this, SIGNAL(resized()), m_editor, SLOT(updatePositionLine()));
 
-	// In case our current audio device does not support capture,
-	// disable the record buttons.
-	if (!Engine::audioEngine()->captureDeviceAvailable())
-	{
-		m_recordAccompanyAction->setToolTip(tr("Recording is unavailable: try connecting an input device or switching backend"));
-	}
+	// The audio device may be swapped out from under us, so re-check capture on every
+	// device/sample-rate change rather than only once at startup.
+	connect(Engine::audioEngine(), &AudioEngine::sampleRateChanged,
+		this, &SongEditorWindow::updateRecordingAvailability);
+	updateRecordingAvailability();
+}
+
+void SongEditorWindow::updateRecordingAvailability()
+{
+	const auto captureAvailable = Engine::audioEngine()->captureDeviceAvailable();
+	m_recordAccompanyAction->setEnabled(captureAvailable);
+	m_recordAccompanyAction->setToolTip(captureAvailable
+		? tr("Record samples from Audio-device during playback")
+		: tr("Recording is unavailable: try connecting an input device or switching backend"));
 }
 
 QSize SongEditorWindow::sizeHint() const
@@ -1100,8 +1108,11 @@ void SongEditorWindow::play()
 void SongEditorWindow::recordAccompany()
 {
 	m_editor->m_song->playAndRecord();
-	m_editor->m_timeLine->setRecording(true);
-	m_editor->m_positionLine->setRecording(true);
+	// playAndRecord() refuses to arm recording without a usable capture device, so the
+	// indicators have to follow the resulting state rather than the click.
+	const auto recording = m_editor->m_song->isRecording();
+	m_editor->m_timeLine->setRecording(recording);
+	m_editor->m_positionLine->setRecording(recording);
 }
 
 

@@ -34,6 +34,7 @@
 
 #include "AutomationTrack.h"
 #include "AutomationEditor.h"
+#include "AudioEngine.h"
 #include "ConfigManager.h"
 #include "ControllerRackView.h"
 #include "ControllerConnection.h"
@@ -522,6 +523,13 @@ void Song::playSong()
 
 void Song::playAndRecord()
 {
+	// Arming recording without a capture device would only let a take overwrite
+	// an existing clip with silence, so refuse to enter the recording state.
+	if (!Engine::audioEngine()->captureDeviceAvailable())
+	{
+		return;
+	}
+
 	playSong();
 	m_recording = true;
 }
@@ -531,6 +539,8 @@ void Song::playAndRecord()
 
 void Song::playPattern()
 {
+	m_recording = false;
+
 	if( isStopped() == false )
 	{
 		stop();
@@ -552,6 +562,8 @@ void Song::playPattern()
 
 void Song::playMidiClip( const MidiClip* midiClipToPlay, bool loop )
 {
+	m_recording = false;
+
 	if( isStopped() == false )
 	{
 		stop();
@@ -645,7 +657,9 @@ void Song::stop()
 
 	auto& timeline = getTimeline();
 	m_paused = false;
-	m_recording = true;
+	// Stopping always ends the current take: leaving this set would make later
+	// playback keep recording into whatever record-clip is still in the project.
+	m_recording = false;
 	m_playing = false;
 
 	switch (timeline.stopBehaviour())

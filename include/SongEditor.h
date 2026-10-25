@@ -205,6 +205,10 @@ protected slots:
 
 	void updateSnapLabel();
 
+	//! Enable/disable the recording action based on whether the current
+	//! audio device can actually deliver captured input frames.
+	void updateRecordingAvailability();
+
 signals:
 	void playTriggered();
 	void resized();
