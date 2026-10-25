@@ -48,9 +48,9 @@ Plugin::Descriptor PLUGIN_EXPORT eq_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
-nullptr,
 }
 
 

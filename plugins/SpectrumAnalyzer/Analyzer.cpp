@@ -51,9 +51,9 @@ extern "C" {
 		Plugin::Type::Effect,
 		new PixmapLoader("lmms-plugin-logo"),
 		nullptr,
+	nullptr,
 		nullptr,
 	};
-	nullptr,
 }
 
 

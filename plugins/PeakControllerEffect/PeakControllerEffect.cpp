@@ -52,9 +52,9 @@ Plugin::Descriptor PLUGIN_EXPORT peakcontrollereffect_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
-nullptr,
 }
 
 // We have to keep a list of all the PeakController effects so that we can save

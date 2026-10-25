@@ -77,7 +77,6 @@ Plugin::Descriptor PLUGIN_EXPORT gigplayer_plugin_descriptor =
 	nullptr,
 } ;
 
-nullptr,
 }
 
 GigInstrument::GigInstrument(InstrumentTrack* _instrument_track)

@@ -44,9 +44,9 @@ Plugin::Descriptor PLUGIN_EXPORT reverbsc_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
-nullptr,
 }
 
 ReverbSCEffect::ReverbSCEffect( Model* parent, const Descriptor::SubPluginFeatures::Key* key ) :

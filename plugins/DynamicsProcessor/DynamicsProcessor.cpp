@@ -53,9 +53,9 @@ Plugin::Descriptor PLUGIN_EXPORT dynamicsprocessor_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
-nullptr,
 }
 
 const float DYN_NOISE_FLOOR = 0.00001f; // -100dBFS noise floor

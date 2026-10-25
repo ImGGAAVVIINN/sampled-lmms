@@ -80,7 +80,6 @@ Plugin::Descriptor PLUGIN_EXPORT sf2player_plugin_descriptor =
 	nullptr,
 } ;
 
-nullptr,
 }
 
 /**

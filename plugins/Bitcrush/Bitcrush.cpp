@@ -53,9 +53,9 @@ Plugin::Descriptor PLUGIN_EXPORT bitcrush_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 };
 
-nullptr,
 }
 
 BitcrushEffect::BitcrushEffect( Model * parent, const Descriptor::SubPluginFeatures::Key * key ) :

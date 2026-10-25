@@ -54,9 +54,9 @@ Plugin::Descriptor PLUGIN_EXPORT nes_plugin_descriptor =
 	new PluginPixmapLoader( "logo" ),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
-nullptr,
 }
 
 

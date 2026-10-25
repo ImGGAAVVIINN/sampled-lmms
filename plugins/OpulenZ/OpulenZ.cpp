@@ -76,14 +76,16 @@ Plugin::Descriptor PLUGIN_EXPORT opulenz_plugin_descriptor =
         Plugin::Type::Instrument,
         new PluginPixmapLoader( "logo" ),
         "sbi",
-        nullptr,
 	nullptr,
+        nullptr,
+};
+
+// necessary for getting instance out of shared lib
 PLUGIN_EXPORT Plugin * lmms_plugin_main( Model *m, void * )
 {
 	return( new OpulenzInstrument( static_cast<InstrumentTrack *>( m ) ) );
 }
 
-nullptr,
 }
 
 // I'd much rather do without a mutex, but it looks like

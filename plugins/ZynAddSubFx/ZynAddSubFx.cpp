@@ -74,7 +74,6 @@ Plugin::Descriptor PLUGIN_EXPORT zynaddsubfx_plugin_descriptor =
 	nullptr,
 } ;
 
-nullptr,
 }
 
 

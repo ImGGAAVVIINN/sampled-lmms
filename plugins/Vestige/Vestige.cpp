@@ -81,7 +81,8 @@ Plugin::Descriptor Q_DECL_EXPORT  vestige_plugin_descriptor =
 		"so",
 #	endif
 #endif
-        "vstpluginfile",
+	"vstpluginfile",
+	nullptr,
 } ;
 
 }

@@ -46,6 +46,7 @@ Plugin::Descriptor PLUGIN_EXPORT carlapatchbay_plugin_descriptor =
     Plugin::Type::Instrument,
     new PluginPixmapLoader( "logo" ),
     nullptr,
+	nullptr,
     nullptr,
 } ;
 

@@ -49,9 +49,9 @@ Plugin::Descriptor PLUGIN_EXPORT waveshaper_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
-nullptr,
 }
 
 

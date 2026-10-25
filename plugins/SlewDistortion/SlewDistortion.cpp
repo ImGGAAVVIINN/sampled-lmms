@@ -43,7 +43,9 @@ Plugin::Descriptor PLUGIN_EXPORT slewdistortion_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 };
+}
 
 
 SlewDistortion::SlewDistortion(Model* parent, const Descriptor::SubPluginFeatures::Key* key) :

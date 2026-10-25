@@ -63,9 +63,9 @@ Plugin::Descriptor PLUGIN_EXPORT bitinvader_plugin_descriptor =
 	new PluginPixmapLoader( "logo" ),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
-nullptr,
 }
 
 

@@ -45,9 +45,9 @@ Plugin::Descriptor PLUGIN_EXPORT bassbooster_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
-nullptr,
 }
 
 

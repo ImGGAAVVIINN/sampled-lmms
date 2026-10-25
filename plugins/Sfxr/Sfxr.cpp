@@ -63,7 +63,6 @@ Plugin::Descriptor PLUGIN_EXPORT sfxr_plugin_descriptor =
 	nullptr,
 } ;
 
-nullptr,
 }
 
 

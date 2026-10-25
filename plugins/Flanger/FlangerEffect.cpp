@@ -52,6 +52,7 @@ Plugin::Descriptor PLUGIN_EXPORT flanger_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
 
@@ -160,7 +161,6 @@ PLUGIN_EXPORT Plugin * lmms_plugin_main( Model* parent, void* data )
 	return new FlangerEffect( parent , static_cast<const Plugin::Descriptor::SubPluginFeatures::Key *>( data ) );
 }
 
-nullptr,
 }}
 
 

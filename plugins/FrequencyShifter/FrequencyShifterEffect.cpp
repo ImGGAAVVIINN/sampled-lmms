@@ -46,11 +46,13 @@ Plugin::Descriptor PLUGIN_EXPORT frequencyshifter_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 };
 PLUGIN_EXPORT Plugin* lmms_plugin_main(Model* parent, void* data)
 {
 	return new FrequencyShifterEffect(parent, static_cast<const Plugin::Descriptor::SubPluginFeatures::Key*>(data));
 }
+}// extern "C"
 
 FrequencyShifterEffect::FrequencyShifterEffect(Model* parent, const Descriptor::SubPluginFeatures::Key* key) :
 	Effect(&frequencyshifter_plugin_descriptor, parent, key),

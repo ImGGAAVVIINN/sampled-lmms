@@ -73,6 +73,7 @@ Plugin::Descriptor PLUGIN_EXPORT lb302_plugin_descriptor =
 	new PluginPixmapLoader("logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 };
 
 PLUGIN_EXPORT Plugin* lmms_plugin_main(Model* m, void*)
@@ -80,7 +81,6 @@ PLUGIN_EXPORT Plugin* lmms_plugin_main(Model* m, void*)
 	return new Lb302Synth(static_cast<InstrumentTrack*>(m));
 }
 
-nullptr,
 } // extern "C"
 
 

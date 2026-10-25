@@ -65,7 +65,6 @@ PLUGIN_EXPORT Plugin* lmms_plugin_main(Model*, void*)
 	return new MidiExport{};
 }
 
-nullptr,
 } // extern "C"
 
 void MidiExport::Clip::write(const QDomNode& root,

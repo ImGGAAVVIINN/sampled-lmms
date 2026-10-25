@@ -47,9 +47,9 @@ Plugin::Descriptor PLUGIN_EXPORT crossovereq_plugin_descriptor =
 	new PixmapLoader("lmms-plugin-logo"),
 	nullptr,
 	nullptr,
+	nullptr,
 };
 
-nullptr,
 }
 
 

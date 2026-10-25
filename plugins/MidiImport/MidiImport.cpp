@@ -81,7 +81,6 @@ PLUGIN_EXPORT Plugin* lmms_plugin_main(Model*, void* data)
 	return new MidiImport(QString::fromUtf8(static_cast<const char*>(data)));
 }
 
-nullptr,
 }
 
 

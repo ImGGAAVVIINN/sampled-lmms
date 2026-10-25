@@ -58,9 +58,9 @@ Plugin::Descriptor PLUGIN_EXPORT kicker_plugin_descriptor =
 	new PluginPixmapLoader( "logo" ),
 	nullptr,
 	nullptr,
+	nullptr,
 } ;
 
-nullptr,
 }
 
 

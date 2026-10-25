@@ -61,10 +61,10 @@ Plugin::Descriptor PLUGIN_EXPORT ladspaeffect_plugin_descriptor =
 	Plugin::Type::Effect,
 	new PluginPixmapLoader("logo"),
 	nullptr,
+	nullptr,
 	new LadspaSubPluginFeatures( Plugin::Type::Effect )
 } ;
 
-nullptr,
 }
 
 LadspaEffect::LadspaEffect(Model* _parent, const Descriptor::SubPluginFeatures::Key* _key)
