@@ -209,6 +209,16 @@ protected slots:
 	//! audio device can actually deliver captured input frames.
 	void updateRecordingAvailability();
 
+	//! Start recording into the currently selected Sample Track, creating a
+	//! record clip at the playhead when one does not exist yet.
+	void recordSelectedTrack();
+
+	//! Create a fresh Sample Track and start recording into it.
+	void recordNewTrack();
+
+	//! Highlight the TrackView that belongs to `track` in the editor.
+	void selectTrackInEditor(Track * track);
+
 signals:
 	void playTriggered();
 	void resized();
@@ -218,6 +228,10 @@ private:
 	QAction* m_addSampleTrackAction;
 	QAction* m_addAutomationTrackAction;
 	QAction* m_setProportionalSnapAction;
+
+	//! Record-into-selected-track and record-into-new-track actions.
+	QAction* m_recordSelectedTrackAction;
+	QAction* m_recordNewTrackAction;
 
 	ActionGroup * m_editModeGroup;
 	QAction* m_drawModeAction;

@@ -952,6 +952,25 @@ SongEditorWindow::SongEditorWindow(Song* song) :
 	trackActionsToolBar->addAction( m_addSampleTrackAction );
 	trackActionsToolBar->addAction( m_addAutomationTrackAction );
 
+	// Recording workflow: pick a Sample Track (the selected one, or a brand new
+	// one) and arm a record clip at the playhead before starting playback.
+	m_recordSelectedTrackAction = new QAction(embed::getIconPixmap("record"),
+										 tr("Record into selected track"), this);
+	m_recordSelectedTrackAction->setToolTip(tr("Record samples from the audio device into the selected Sample Track (auto-creates a record clip at the playhead)"));
+	m_recordNewTrackAction = new QAction(embed::getIconPixmap("record"),
+										 tr("Record into new track"), this);
+	m_recordNewTrackAction->setToolTip(tr("Create a new Sample Track and record samples from the audio device into it"));
+
+	connect(m_recordSelectedTrackAction, SIGNAL(triggered()), this, SLOT(recordSelectedTrack()));
+	connect(m_recordNewTrackAction, SIGNAL(triggered()), this, SLOT(recordNewTrack()));
+
+	trackActionsToolBar->addAction( m_recordSelectedTrackAction );
+	trackActionsToolBar->addAction( m_recordNewTrackAction );
+
+	// Keep the editor's track selection in sync with Song::m_selectedTrack so
+	// that recordNewTrack() highlights the track it just created.
+	connect(m_editor->m_song, SIGNAL(selectedTrackChanged(Track *)),
+			this, SLOT(selectTrackInEditor(Track *)));
 
 	// Edit actions
 	DropToolBar *editActionsToolBar = addDropToolBarToTop(tr("Edit actions"));
@@ -1043,6 +1062,45 @@ void SongEditorWindow::updateRecordingAvailability()
 	m_recordAccompanyAction->setToolTip(captureAvailable
 		? tr("Record samples from Audio-device during playback")
 		: tr("Recording is unavailable: try connecting an input device or switching backend"));
+	m_recordSelectedTrackAction->setEnabled(captureAvailable);
+	m_recordSelectedTrackAction->setToolTip(captureAvailable
+		? tr("Record samples from the audio device into the selected Sample Track")
+		: tr("Recording is unavailable: try connecting an input device or switching backend"));
+	m_recordNewTrackAction->setEnabled(captureAvailable);
+	m_recordNewTrackAction->setToolTip(captureAvailable
+		? tr("Create a new Sample Track and record samples from the audio device into it")
+		: tr("Recording is unavailable: try connecting an input device or switching backend"));
+}
+
+void SongEditorWindow::recordSelectedTrack()
+{
+	Engine::getSong()->recordSelectedTrack();
+}
+
+void SongEditorWindow::recordNewTrack()
+{
+	Engine::getSong()->recordNewTrack();
+}
+
+void SongEditorWindow::selectTrackInEditor(Track * track)
+{
+	// Deselect every track view, then highlight the one that belongs to
+	// `track` (if any). The editor owns the visual selection.
+	for (auto * tv : m_editor->trackViews())
+	{
+		tv->setSelected(tv->getTrack() == track);
+	}
+	if (track)
+	{
+		for (auto * tv : m_editor->trackViews())
+		{
+			if (tv->getTrack() == track)
+			{
+				m_editor->scrollToTrackView(tv);
+				break;
+			}
+		}
+	}
 }
 
 QSize SongEditorWindow::sizeHint() const

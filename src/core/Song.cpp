@@ -53,6 +53,8 @@
 #include "PianoRoll.h"
 #include "ProjectJournal.h"
 #include "ProjectNotes.h"
+#include "SampleClip.h"
+#include "SampleTrack.h"
 #include "Scale.h"
 #include "SongEditor.h"
 #include "PeakController.h"
@@ -535,6 +537,108 @@ void Song::playAndRecord()
 }
 
 
+
+SampleClip * Song::ensureRecordClip(SampleTrack * track, const TimePos & start)
+{
+	// Reuse an existing record clip that already covers the playhead instead of
+	// stacking a second one on top of it.
+	for (const auto & clip : track->getClips())
+	{
+		auto sClip = qobject_cast<SampleClip *>(clip);
+		if (sClip && sClip->isRecord() &&
+			sClip->startPosition() <= start && start < sClip->endPosition())
+		{
+			return sClip;
+		}
+	}
+
+	// A fresh take. The clip is drawn from the playhead to the end of the song so
+	// there is always somewhere to record into; the user can shorten it later.
+	// TimePos has no operator< and operator- returns int (ticks) via operator int(),
+	// so convert the song length to ticks explicitly and clamp the result to at
+	// least one tick.
+	auto clipLengthTicks = TimePos(length(), 0).getTicks() - start.getTicks();
+	if (clipLengthTicks < 1)
+	{
+		clipLengthTicks = 1;
+	}
+	auto clipLength = TimePos(clipLengthTicks);
+	auto clip = new SampleClip(track);
+	clip->movePosition(start);
+	clip->changeLength(clipLength);
+	clip->setRecord(true);
+	return clip;
+}
+
+
+
+void Song::recordSelectedTrack()
+{
+	if (!Engine::audioEngine()->captureDeviceAvailable())
+	{
+		return;
+	}
+
+	// The editor owns the selection; if nothing is selected we fall back to the
+	// first sample track so the action is never silently a no-op.
+	auto track = dynamic_cast<SampleTrack *>(selectedTrack());
+	if (!track)
+	{
+		for (auto * t : tracks())
+		{
+			if (auto * st = dynamic_cast<SampleTrack *>(t))
+			{
+				track = st;
+				break;
+			}
+		}
+	}
+	if (!track)
+	{
+		track = static_cast<SampleTrack *>(
+			Track::create(Track::Type::Sample, this));
+	}
+
+	ensureRecordClip(track, getPlayPos());
+	playAndRecord();
+}
+
+
+
+void Song::recordNewTrack()
+{
+	if (!Engine::audioEngine()->captureDeviceAvailable())
+	{
+		return;
+	}
+
+	auto track = static_cast<SampleTrack *>(
+		Track::create(Track::Type::Sample, this));
+	track->setName(tr("Record %1").arg(static_cast<int>(tracks().size()) + 1));
+
+	ensureRecordClip(track, getPlayPos());
+	setSelectedTrack(track);
+	playAndRecord();
+}
+
+
+
+Track * Song::selectedTrack() const
+{
+	return m_selectedTrack;
+}
+
+void Song::setSelectedTrack(Track * track)
+{
+	if (m_selectedTrack == track)
+	{
+		return;
+	}
+	m_selectedTrack = track;
+	// Tell the editor which track view to highlight so the UI stays in sync
+	// with the model (e.g. when recordNewTrack picks a freshly created track).
+	emit selectedTrackChanged(track);
+}
 
 
 void Song::playPattern()

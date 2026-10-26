@@ -106,6 +106,10 @@ public:
 		return m_action == Action::Move;
 	}
 
+	//! @brief Highlight this track View to indicate it is the selected track.
+	void setSelected(bool selected);
+	bool isSelected() const { return m_selected; }
+
 	//! @brief Update this track View and all its content objects.
 	virtual void update();
 
@@ -213,6 +217,7 @@ private:
 	TrackContentWidget m_trackContentWidget;
 
 	Action m_action = Action::None;
+	bool m_selected = false;
 
 	virtual FadeButton * getActivityIndicator()
 	{

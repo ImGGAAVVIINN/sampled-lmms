@@ -48,6 +48,8 @@ namespace lmms
 class AutomationTrack;
 class Keymap;
 class MidiClip;
+class SampleClip;
+class SampleTrack;
 class Scale;
 
 namespace gui
@@ -346,6 +348,24 @@ public slots:
 
 	void addPatternTrack();
 
+	//! @brief Record into the selected (or first) Sample Track.
+	//! Creates a record clip at the playhead if none exists yet.
+	void recordSelectedTrack();
+
+	//! @brief Create a new Sample Track and begin recording into it.
+	//! The new track is selected and a record clip is created at the playhead.
+	void recordNewTrack();
+
+	//! @brief Return the track the user has selected in the editor, or nullptr.
+	Track * selectedTrack() const;
+
+	//! @brief Select a track in the editor.
+	void setSelectedTrack( Track * track );
+
+	//! @brief Make sure `track` has a record clip covering `start`.
+	//! Reuses an existing armed clip when one already covers the playhead.
+	SampleClip * ensureRecordClip( SampleTrack * track, const TimePos & start );
+
 
 private slots:
 	void insertBar();
@@ -460,6 +480,9 @@ private:
 
 	Metronome m_metronome;
 
+	//! Track selected in the Song Editor. nullptr when nothing is selected.
+	Track * m_selectedTrack = nullptr;
+
 	friend class Engine;
 	friend class gui::SongEditor;
 	friend class gui::ControllerRackView;
@@ -467,6 +490,9 @@ private:
 signals:
 	void projectLoaded();
 	void playbackStateChanged();
+
+	//! Emitted whenever the editor's selected track changes.
+	void selectedTrackChanged(Track * track);
 	void playbackPositionJumped();
 	void lengthChanged( int bars );
 	void tempoChanged( lmms::bpm_t newBPM );

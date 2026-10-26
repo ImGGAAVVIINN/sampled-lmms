@@ -330,11 +330,22 @@ void TrackView::wheelEvent(QWheelEvent* we)
 
 
 
+void TrackView::setSelected(bool selected)
+{
+	if (m_selected == selected) { return; }
+	m_selected = selected;
+	update();
+}
+
 void TrackView::paintEvent( QPaintEvent * pe )
 {
 	QStyleOption opt;
 	opt.initFrom( this );
 	QPainter p( this );
+	if (m_selected)
+	{
+		p.fillRect(rect(), QColor(60, 64, 72));
+	}
 	style()->drawPrimitive( QStyle::PE_Widget, &opt, &p, this );
 }
 
