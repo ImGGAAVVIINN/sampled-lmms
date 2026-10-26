@@ -222,8 +222,37 @@ Environment probe results:
 
 **Conclusion:** the capture path is verified at the unit level (test) and by code audit (backend survey), but a full GUI record/save/reload round-trip cannot be performed in this environment. This is reported as a limitation, not as end-to-end verification.
 
-### 5.8 Deferred items
+### 5.8 Selected-track / new-track recording UI — **implemented, compiled, unit-tested**
+
+**Commit:** `711c40200` ("Add recording workflow UI: selected-track and new-track record buttons")
+**Files changed (8):** `include/Song.h`, `include/SongEditor.h`, `include/TrackView.h`, `src/core/Song.cpp`, `src/gui/editors/SongEditor.cpp`, `src/gui/tracks/TrackView.cpp`, `tests/CMakeLists.txt`, `tests/src/core/RecordingWorkflowTest.cpp` (new)
+
+#### Core API (`Song`)
+- `Song::ensureRecordClip(SampleTrack*, TimePos)` — reuses an existing record clip that already covers the playhead (`startPosition() <= start < endPosition()`); otherwise creates a new `SampleClip` from the playhead to the end of the song, with `setRecord(true)`. Length arithmetic uses explicit tick conversion (`TimePos(length(), 0).getTicks() - start.getTicks()`) because `TimePos` has no `operator<` and `operator-` returns `int`.
+- `Song::recordSelectedTrack()` — gated by `captureDeviceAvailable()`. Uses `selectedTrack()` if it is a `SampleTrack`, else falls back to the first `SampleTrack` in the track list, else creates one. Arms a record clip at the playhead, then calls `playAndRecord()`.
+- `Song::recordNewTrack()` — gated by `captureDeviceAvailable()`. Creates a fresh `SampleTrack` named `tr("Record %1").arg(tracks().size() + 1)`, arms a record clip at the playhead, calls `setSelectedTrack(track)` to highlight it, then calls `playAndRecord()`.
+- `Song::selectedTrack()` / `Song::setSelectedTrack(Track*)` + `selectedTrackChanged(Track*)` signal — track selection state lives on the model so the recording entry points and the editor view stay in sync.
+
+#### GUI wiring
+- `TrackView` gains `setSelected(bool)` / `isSelected()` and a `m_selected` member. `paintEvent` fills a slightly lighter band (`QColor(60,64,72)`) when selected so the active track is visually obvious.
+- `SongEditorWindow::selectTrackInEditor(Track*)` iterates `m_editor->trackViews()`, calls `setSelected()` on each, and scrolls to the matching one via `scrollToTrackView()`.
+- Two new `QAction`s added to the "Track actions" toolbar: **Record into selected track** and **Record into new track** (both use the `record` icon). Both are gated by `updateRecordingAvailability()` — disabled with a tooltip explaining how to enable recording when no capture device is available.
+
+#### Tests
+`RecordingWorkflowTest` (5 slots, 10/10 total tests pass, exit 0):
+- (a) `recordSelectedTrackCreatesClipWhenNoneExists` — 0 record clips → 1 record clip on the selected track.
+- (b) `recordSelectedTrackUsesSelectedSampleTrack` — clip lands on the explicitly selected track, not the other one.
+- (c) `recordClipStartsAtPlayhead` — clip starts at tick 384 (bar 2, beat 1) when `setPlayPos(384)`.
+- (d) `existingNonRecordClipIsNotOverwritten` — a pre-existing non-record clip at bar 0 stays non-record; a separate record clip appears at the playhead.
+- (e) `recordNewTrackCreatesAndSelectsSampleTrack` — track count increases by 1, the new track is a `SampleTrack`, `selectedTrack()` returns it, and it has exactly one record clip.
+
+#### Verification tiers
+- **Compiled:** full project (`/tmp/lmms-build-recording-ui`, Ninja, Release) — exit 0.
+- **Unit-tested:** `cd /tmp/lmms-build-recording-ui/tests && ctest --output-on-failure` — 10/10 pass (existing 5 + `SampleRecordingTest` 9/9 + `RecordingWorkflowTest` 5/5).
+- **Code-path-verified:** all five workflow slots exercise the real `Song`/`SampleTrack`/`SampleClip` code paths with a `FakeAudioDevice` that advertises capture.
+- **Actual-microphone-verified:** **NOT verified** — same environment limitation as §5.7 (no `Xvfb`, ALSA `hw:3,0` busy under PipeWire). The GUI buttons cannot be clicked headlessly; only the model-level entry points are exercised by the tests.
+
+### 5.9 Deferred items
 
 - `SampleRecordHandle.cpp:79` `changeLength(len)` take-truncation is still commented out (deferred UI work).
-- Selected-track / new-track recording UI not added.
 - Stretch tool, pitch-preserving stretch, and external DnD not implemented.
