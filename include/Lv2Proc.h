@@ -187,7 +187,7 @@ private:
 	// many things here may be moved into the `Instrument` class
 	constexpr const static std::size_t m_maxMidiInputEvents = 1024;
 	//! spinlock for the MIDI ringbuffer (for MIDI events going to the plugin)
-	std::atomic_flag m_ringLock = ATOMIC_FLAG_INIT;
+	std::atomic<bool> m_ringLock = false;
 
 	//! MIDI ringbuffer (for MIDI events going to the plugin)
 	ringbuffer_t<struct MidiInputEvent> m_midiInputBuf;

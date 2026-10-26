@@ -75,7 +75,7 @@ signals:
 private:
 	void runSearch(Task task);
 	std::future<void> m_task;
-	std::atomic_flag m_stop = ATOMIC_FLAG_INIT;
+	std::atomic<bool> m_stop = false;
 };
 } // namespace lmms::gui
 

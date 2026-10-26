@@ -68,7 +68,7 @@ public:
 
 	void stopProcessing();
 
-	bool isRunning() const { return m_running.test(std::memory_order_acquire); }
+	bool isRunning() const { return m_running.load(std::memory_order_acquire); }
 
 protected:
 	// convert a given audio-buffer to a buffer in signed 16-bit samples
@@ -97,7 +97,7 @@ private:
 	sample_rate_t m_sampleRate;
 	ch_cnt_t m_channels;
 	AudioEngine* m_audioEngine = nullptr;
-	std::atomic_flag m_running = ATOMIC_FLAG_INIT;
+	std::atomic<bool> m_running = false;
 };
 
 } // namespace lmms

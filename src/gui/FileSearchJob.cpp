@@ -39,7 +39,7 @@ FileSearchJob::~FileSearchJob()
 {
 	if (m_task.valid())
 	{
-		m_stop.test_and_set(std::memory_order_acquire);
+		m_stop.store(true, std::memory_order_acquire);
 		m_task.get();
 	}
 }
@@ -48,9 +48,9 @@ void FileSearchJob::search(Task task)
 {
 	if (m_task.valid())
 	{
-		m_stop.test_and_set(std::memory_order_acquire);
+		m_stop.store(true, std::memory_order_acquire);
 		m_task.get();
-		m_stop.clear(std::memory_order_release);
+		m_stop.store(false, std::memory_order_release);
 	}
 
 	const auto fn = [this, task = std::move(task)] { runSearch(std::move(task)); };
@@ -82,7 +82,7 @@ void FileSearchJob::runSearch(Task task)
 		auto dirIt = QDirIterator{path, task.dirFilters,
 			QDirIterator::IteratorFlag::Subdirectories | QDirIterator::IteratorFlag::FollowSymlinks};
 
-		while (dirIt.hasNext() && !m_stop.test(std::memory_order_relaxed))
+		while (dirIt.hasNext() && !m_stop.load(std::memory_order_relaxed))
 		{
 			const auto fileInfo = QFileInfo{dirIt.next()};
 			const auto fileName = fileInfo.fileName();

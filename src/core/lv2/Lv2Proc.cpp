@@ -400,8 +400,8 @@ void Lv2Proc::handleMidiInputEvent(const MidiEvent &event, const TimePos &time, 
 		// (different RT and non-RT!) at the same time
 		// for now, a spinlock looks like the most safe/easy compromise
 
-		// source: https://en.cppreference.com/w/cpp/atomic/atomic_flag
-		while (m_ringLock.test_and_set(std::memory_order_acquire))  // acquire lock
+		// spin until the lock is acquired (exchange returns the previous value)
+		while (m_ringLock.exchange(true, std::memory_order_acquire))  // acquire lock
 			 ; // spin
 
 		MidiInputEvent ev { event, time, offset };
@@ -411,7 +411,7 @@ void Lv2Proc::handleMidiInputEvent(const MidiEvent &event, const TimePos &time, 
 			qWarning("MIDI ringbuffer is too small! Discarding MIDI event.");
 		}
 
-		m_ringLock.clear(std::memory_order_release);
+		m_ringLock.store(false, std::memory_order_release);
 	}
 	else
 	{

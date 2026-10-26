@@ -47,13 +47,13 @@ AudioDevice::~AudioDevice()
 
 void AudioDevice::startProcessing()
 {
-	m_running.test_and_set(std::memory_order_acquire);
+	m_running.store(true, std::memory_order_release);
 	startProcessingImpl();
 }
 
 void AudioDevice::stopProcessing()
 {
-	m_running.clear(std::memory_order_release);
+	m_running.store(false, std::memory_order_release);
 	stopProcessingImpl();
 }
 

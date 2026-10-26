@@ -1651,7 +1651,7 @@ void RemoteVstPlugin::loadPresetFile( const std::string & _file )
 			len = static_cast<unsigned int>(sizeof(float) * bank.numPrograms);
 		}
 
-		chunk = std::make_unique_for_overwrite<char[]>(len);
+		chunk = std::make_unique<char[]>(len);
 		if (fread(chunk.get(), len, 1, stream) != 1)
 		{
 			fprintf( stderr, "Error loading preset file.\n" );
@@ -1693,7 +1693,7 @@ void RemoteVstPlugin::loadPresetFile( const std::string & _file )
 			int currProgram = pluginDispatch( effGetProgram );
 
 			len = static_cast<unsigned int>(sizeof(float) * m_plugin->numParams);
-			chunk = std::make_unique_for_overwrite<char[]>(len);
+			chunk = std::make_unique<char[]>(len);
 			toUIntArray = reinterpret_cast<unsigned int*>(chunk.get());
 
 			for (int i = 0; i < numPrograms; i++)
@@ -1736,7 +1736,7 @@ void RemoteVstPlugin::loadChunkFromFile(const std::string& _file, std::size_t _l
 		return;
 	}
 
-	auto chunk = std::make_unique_for_overwrite<char[]>(_len);
+	auto chunk = std::make_unique<char[]>(_len);
 	if (fread(chunk.get(), 1, _len, fp) != _len)
 	{
 		fprintf( stderr, "Error loading chunk from file.\n" );

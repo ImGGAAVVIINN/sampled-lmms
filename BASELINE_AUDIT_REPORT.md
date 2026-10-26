@@ -256,3 +256,20 @@ Environment probe results:
 
 - `SampleRecordHandle.cpp:79` `changeLength(len)` take-truncation is still commented out (deferred UI work).
 - Stretch tool, pitch-preserving stretch, and external DnD not implemented.
+
+### 5.10 Windows cross-build — **built** (for manual Windows Explorer DnD testing)
+
+- **Toolchain:** MinGW-w64 `x86_64-w64-mingw32-gcc`/`g++` (GCC 10-posix), Qt5 Windows at `/usr/x86_64-w64-mingw32`, Ninja generator.
+- **Toolchain file:** `/tmp/toolchain-windows.cmake` (sets `CMAKE_SYSTEM_NAME Windows`, `WIN32`/`WIN64` so `cmake/modules/DetectMachine.cmake` classifies the build as `LMMS_BUILD_WIN32` instead of falling through to `LMMS_BUILD_LINUX`).
+- **Configure:** `cmake -S /home/ascend/git/sampled-lmms -B /tmp/lmms-build-windows -G Ninja -DCMAKE_TOOLCHAIN_FILE=/tmp/toolchain-windows.cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=/usr/x86_64-w64-mingw32 -DQt5_DIR=/usr/x86_64-w64-mingw32/lib/cmake/Qt5Widgets -DFLTK_DIR=/tmp/fltk-disabled -DPLUGIN_LIST="..."` — exit 0.
+- **Workarounds applied to the tree (not feature changes):**
+  - `FLTK` disabled via a stub `FLTKConfig.cmake` + `CMakeCache.txt` — the installed MinGW FLTK package ships only static archives and its imported target is missing `IMPORTED_IMPLIB`, which broke CMake generation. Disabling FLTK only drops the optional ZynAddSubFX instrument.
+  - `include/AudioDevice.h`, `src/core/audio/AudioDevice.cpp`: `std::atomic_flag` → `std::atomic<bool>` (`test`/`test_and_set`/`clear` → `load`/`store`/`exchange`). GCC 10 MinGW does not implement `std::atomic_flag::test()` (C++20).
+  - `include/FileSearchJob.h`, `src/gui/FileSearchJob.cpp`: same `atomic_flag` → `atomic<bool>` swap.
+  - `include/Lv2Proc.h`, `src/core/lv2/Lv2Proc.cpp`: same swap for the MIDI ringbuffer spinlock.
+  - `plugins/VstBase/RemoteVstPlugin.cpp`: `std::make_unique_for_overwrite<char[]>` → `std::make_unique<char[]>` (C++20, unsupported by GCC 10).
+  - `plugins/MidiExport/MidiFile.h`/`.cpp`: `using enum` + `std::bit_cast` removed (C++20, unsupported by GCC 10). **This plugin is excluded from the Windows build** via `-DPLUGIN_LIST` (it is not in the list).
+- **Build:** `cmake --build /tmp/lmms-build-windows --parallel 6` — exit 0, 0 failures.
+- **Binary:** `/tmp/lmms-build-windows/lmms.exe` — `PE32+ executable (GUI) x86-64, for MS Windows`, 7.1 MB.
+- **Tests:** the Windows `.exe` test binaries are valid native PE binaries (`PE32+ executable (console) x86-64, for MS Windows`), but `ctest` on this Linux host fails with `Cannot open assembly ... File does not contain a valid CIL image` because the host `ctest`/dotnet shim tries to load them as .NET assemblies. **Not verifiable on this host** — the Linux host's `ctest` cannot run MinGW PE binaries. The equivalent Linux build's `ctest` (10/10 pass) is the authoritative test result for the same source tree.
+- **Verification tier:** compiled on the Windows MinGW toolchain / **NOT end-to-end GUI-tested** (no Windows host or Wine available here). The binary is intended for the user to manually drop sample files into the Sample Tracks browser on a real Windows machine to exercise the existing PR #7849 DnD/mimetype machinery.

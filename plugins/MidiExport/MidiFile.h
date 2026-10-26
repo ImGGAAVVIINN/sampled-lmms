@@ -132,7 +132,6 @@ private:
 		{
 			NoteOn, NoteOff, Tempo, BankSelectMSB, BankSelectLSB, ProgramChange, TrackName
 		};
-		using enum Type;
 
 		Type type = Type::NoteOn;
 
