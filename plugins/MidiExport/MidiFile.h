@@ -132,6 +132,11 @@ private:
 		{
 			NoteOn, NoteOff, Tempo, BankSelectMSB, BankSelectLSB, ProgramChange, TrackName
 		};
+		// Note: the C++20 `using enum Type;` that previously brought these
+		// enumerators into scope was removed because GCC 10 MinGW does not
+		// support it. All call sites already use the fully-qualified
+		// `Event::Name` / `MidiFile::Event::Name` form, so nothing else
+		// needs to change.
 
 		Type type = Type::NoteOn;
 

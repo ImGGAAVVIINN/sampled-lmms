@@ -108,13 +108,13 @@ void MidiFile::Section::writeVarLength(std::uint32_t val)
 
 void MidiFile::Section::writeBigEndian4(std::uint32_t val)
 {
-	const auto valBigEndian = std::bit_cast<std::array<std::uint8_t, 4>>(byteswapIfLE(val));
+	const auto valBigEndian = bit_cast<std::array<std::uint8_t, 4>>(byteswapIfLE(val));
 	writeBytes(valBigEndian);
 }
 
 void MidiFile::Section::writeBigEndian2(std::uint16_t val)
 {
-	const auto valBigEndian = std::bit_cast<std::array<std::uint8_t, 2>>(byteswapIfLE(val));
+	const auto valBigEndian = bit_cast<std::array<std::uint8_t, 2>>(byteswapIfLE(val));
 	writeBytes(valBigEndian);
 }
 
@@ -152,33 +152,33 @@ void MidiFile::Track::addNote(std::uint8_t pitch, std::uint8_t volume,
 	// Add start of note
 	auto time = static_cast<tick_t>(realTime * TicksPerBeat);
 	addEvent({
-		.type = Event::NoteOn,
+		.type = Event::Type::NoteOn,
 		.note = {.pitch = pitch, .volume = volume}
 	}, time);
 
 	// Add end of note
 	time = static_cast<tick_t>((realTime + duration) * TicksPerBeat);
 	addEvent({
-		.type = Event::NoteOff,
+		.type = Event::Type::NoteOff,
 		.note = {.pitch = pitch, .volume = volume}
 	}, time);
 }
 
 void MidiFile::Track::addTempo(std::uint32_t tempo, tick_t time)
 {
-	addEvent({.type = Event::Tempo, .tempo = tempo}, time);
+	addEvent({.type = Event::Type::Tempo, .tempo = tempo}, time);
 }
 
 void MidiFile::Track::addPatch(MidiPatch patch, tick_t time)
 {
-	addEvent({.type = Event::BankSelectMSB, .patch = patch}, time);
-	addEvent({.type = Event::BankSelectLSB, .patch = patch}, time);
-	addEvent({.type = Event::ProgramChange, .patch = patch}, time);
+	addEvent({.type = Event::Type::BankSelectMSB, .patch = patch}, time);
+	addEvent({.type = Event::Type::BankSelectLSB, .patch = patch}, time);
+	addEvent({.type = Event::Type::ProgramChange, .patch = patch}, time);
 }
 
 void MidiFile::Track::addName(std::string name, tick_t time)
 {
-	addEvent({.type = Event::TrackName, .trackName = std::move(name)}, time);
+	addEvent({.type = Event::Type::TrackName, .trackName = std::move(name)}, time);
 }
 
 void MidiFile::Track::writeToBuffer()
@@ -195,7 +195,7 @@ void MidiFile::Track::writeToBuffer()
 
 	// Write correct size in placeholder place
 	const auto size = static_cast<std::uint32_t>(m_buffer.size() - idx);
-	const auto sizeBigEndian = std::bit_cast<std::array<std::uint8_t, 4>>(byteswapIfLE(size));
+	const auto sizeBigEndian = bit_cast<std::array<std::uint8_t, 4>>(byteswapIfLE(size));
 	for (std::size_t i = 0; i < 4; ++i)
 	{
 		m_buffer[idx - 4 + i] = sizeBigEndian[i];
@@ -239,21 +239,21 @@ void MidiFile::Track::writeSingleEventToBuffer(Event& event)
 
 	switch (event.type)
 	{
-		case MidiFile::Event::NoteOn:
+		case MidiFile::Event::Type::NoteOn:
 		{
 			// A note starts playing
 			std::uint8_t code = 0x90 | m_channel;
 			writeBytes({code, event.note.pitch, event.note.volume});
 			break;
 		}
-		case MidiFile::Event::NoteOff:
+		case MidiFile::Event::Type::NoteOff:
 		{
 			// A note finishes playing
 			std::uint8_t code = 0x80 | m_channel;
 			writeBytes({code, event.note.pitch, event.note.volume});
 			break;
 		}
-		case MidiFile::Event::Tempo:
+		case MidiFile::Event::Type::Tempo:
 		{
 			// A tempo measure
 			std::uint8_t code = 0xFF;
@@ -261,29 +261,29 @@ void MidiFile::Track::writeSingleEventToBuffer(Event& event)
 
 			// Convert to microseconds before writing
 			const auto usec = static_cast<std::uint32_t>(6e7 / event.tempo);
-			const auto usecBigEndian = std::bit_cast<std::array<std::uint8_t, 4>>(byteswapIfLE(usec));
+			const auto usecBigEndian = bit_cast<std::array<std::uint8_t, 4>>(byteswapIfLE(usec));
 			writeBytes({usecBigEndian[1], usecBigEndian[2], usecBigEndian[3]});
 			break;
 		}
-		case MidiFile::Event::BankSelectMSB:
+		case MidiFile::Event::Type::BankSelectMSB:
 		{
 			// Bank select (MSB)
 			writeBytes({static_cast<std::uint8_t>(0xB0 | m_channel), 0x00, event.patch.bankMSB()});
 			break;
 		}
-		case MidiFile::Event::BankSelectLSB:
+		case MidiFile::Event::Type::BankSelectLSB:
 		{
 			// Bank select (LSB)
 			writeBytes({static_cast<std::uint8_t>(0xB0 | m_channel), 0x20, event.patch.bankLSB()});
 			break;
 		}
-		case MidiFile::Event::ProgramChange:
+		case MidiFile::Event::Type::ProgramChange:
 		{
 			// Program change
 			writeBytes({static_cast<std::uint8_t>(0xC0 | m_channel), event.patch.program});
 			break;
 		}
-		case MidiFile::Event::TrackName:
+		case MidiFile::Event::Type::TrackName:
 		{
 			// Name of current track
 			writeBytes({0xFF, 0x03});

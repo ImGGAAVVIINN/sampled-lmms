@@ -27,6 +27,7 @@
 #define LMMS_ENDIAN_HANDLING_H
 
 #include <bit>
+#include <cstring>
 #include <type_traits>
 
 namespace lmms {
@@ -73,6 +74,18 @@ constexpr Int byteswapIfBE(Int i) noexcept { return byteswapIf<std::endian::big>
 
 template<typename Int>
 constexpr Int byteswapIfLE(Int i) noexcept { return byteswapIf<std::endian::little>(i); }
+
+//! C++17-compatible replacement for the C++20 `std::bit_cast`. GCC 10 MinGW
+//! does not provide `std::bit_cast`, so the MIDI exporter uses this helper
+//! instead of relying on C++20.
+template<typename To, typename From>
+constexpr To bit_cast(const From& from) noexcept
+{
+	static_assert(sizeof(To) == sizeof(From), "bit_cast requires equal sizes");
+	To to;
+	std::memcpy(&to, &from, sizeof(to));
+	return to;
+}
 
 } // namespace lmms
 
