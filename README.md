@@ -1,5 +1,10 @@
 # My haha bullshit test for sample manipulation darg and drop & recording. its horrible, please don't use this
 
+## Todo
+ - Record into sample track | done
+ - Sample drag and drop | Windows done
+ - Stretch sample by mouse | NOT
+ 
 
 <div align="center">
 	<h1>
