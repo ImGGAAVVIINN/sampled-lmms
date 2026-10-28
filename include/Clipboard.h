@@ -42,6 +42,17 @@ namespace lmms::Clipboard
 
 	void updateExtensionMap();
 
+	/**
+	 * @brief Register a single file extension for a mimetype.
+	 *
+	 * This is a low-level building block used by updateExtensionMap() to
+	 * populate the extension map from plugin descriptors. It is also exposed
+	 * so that unit tests can register the extensions they need without
+	 * requiring full plugin discovery (which depends on GUI symbols that the
+	 * test binary does not export).
+	 */
+	void registerExtension(const QString& ext, const QString& mimetype);
+
 	bool isType(const QString& ext, const QString& mimetype);
 	bool isAudioFile(const QString& ext);
 	bool isProjectFile(const QString& ext);

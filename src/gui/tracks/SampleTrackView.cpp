@@ -30,6 +30,7 @@
 #include <QSpacerItem>
 #include <QVBoxLayout>
 
+#include "Clipboard.h"
 #include "ConfigManager.h"
 #include "DeprecationHelper.h"
 #include "MainWindow.h"
@@ -195,8 +196,11 @@ void SampleTrackView::dragEnterEvent(QDragEnterEvent *dee)
 
 void SampleTrackView::dropEvent(QDropEvent *de)
 {
-	QString type  = StringPairDrag::decodeKey(de);
-	QString value = StringPairDrag::decodeValue(de);
+	// Use the same classification the drag-ENTER path uses. Reading only the
+	// internal "application/x-lmms-stringpair" format here silently drops
+	// external file drags (e.g. from Windows Explorer), which never provide
+	// that format - they provide URLs via QMimeData::urls().
+	auto [type, value] = Clipboard::decodeMimeData(de->mimeData());
 
 	if (type == "samplefile")
 	{
@@ -218,6 +222,11 @@ void SampleTrackView::dropEvent(QDropEvent *de)
 
 		auto sClip = static_cast<SampleClip*>(getTrack()->createClip(clipPos));
 		if (sClip) { sClip->setSampleFile(value); }
+		de->accept();
+	}
+	else
+	{
+		de->ignore();
 	}
 }
 

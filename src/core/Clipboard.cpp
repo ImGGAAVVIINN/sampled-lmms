@@ -59,6 +59,16 @@ namespace lmms::Clipboard
 		return ext.isEmpty() ? file.toLower() : ext;
 	}
 
+	/* @brief registers a single extension for a mimetype.
+	 */
+	void registerExtension(const QString& ext, const QString& mimetype)
+	{
+		const QString trimmed = ext.trimmed();
+		if (trimmed.isEmpty()) { return; }
+
+		mimetypes[mimetype.toStdString()].insert(trimmed.toLower().toStdString());
+	}
+
 	/* @brief updates the extension map.
 	 */
 	void updateExtensionMap()
@@ -69,12 +79,10 @@ namespace lmms::Clipboard
 
 			if (mimetype == nullptr || mimetype[0] == '\0') { continue; }
 
-			auto& existingTypes = mimetypes[mimetype]; // creates key if not present
-
 			const auto fileTypes = QString(pluginInfo.descriptor->supportedFileTypes).split(",");
 			for (auto& fileType : fileTypes)
 			{
-				existingTypes.insert(fileType.toStdString());
+				registerExtension(fileType, mimetype);
 			}
 		}
 	}
