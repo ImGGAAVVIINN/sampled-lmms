@@ -2,7 +2,8 @@
 
 ## Todo
  - Record into sample track | done
- - Sample drag and drop | Windows done
+ - notification when recordsing cannot start because there is no source | NOT
+ - Sample drag and drop | done
  - Stretch sample by mouse | NOT
  
 
