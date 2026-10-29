@@ -23,6 +23,7 @@
  */
 
 #include "SongEditor.h"
+#include "SetupDialog.h"
 
 #include <cmath>
 
@@ -36,6 +37,7 @@
 #include <QSlider>
 #include <QTimeLine>
 #include <QToolButton>
+#include <QMessageBox>
 
 #include "ActionGroup.h"
 #include "AudioEngine.h"
@@ -1079,6 +1081,8 @@ SongEditorWindow::SongEditorWindow(Song* song) :
 	// device/sample-rate change rather than only once at startup.
 	connect(Engine::audioEngine(), &AudioEngine::sampleRateChanged,
 		this, &SongEditorWindow::updateRecordingAvailability);
+	connect(m_editor->m_song, &Song::captureUnavailable,
+		this, &SongEditorWindow::warnCaptureUnavailable);
 	updateRecordingAvailability();
 }
 
@@ -1110,6 +1114,28 @@ void SongEditorWindow::updateRecordingAvailability()
 	}
 	// Re-derives the primary action's text and tooltip from the remembered mode.
 	updateRecordModeUi();
+}
+
+void SongEditorWindow::warnCaptureUnavailable()
+{
+	// The user clicked Record expecting a take; there is no input device to
+	// capture from, so point them at the audio settings instead of letting the
+	// click appear to do nothing.  There is no dedicated "Open Settings" button
+	// in Qt 5.15, so add one as a custom button and open the dialog when it is
+	// clicked.
+	QMessageBox msg(this);
+	msg.setWindowTitle(tr("No audio input"));
+	msg.setText(tr("LMMS could not find an audio input device to record from. "
+		"Select one in Settings (Audio), then try recording again."));
+	msg.setIcon(QMessageBox::Warning);
+	msg.setStandardButtons(QMessageBox::Ok);
+	msg.addButton(tr("Settings..."), QMessageBox::AcceptRole);
+	msg.exec();
+	if (msg.clickedButton() && msg.clickedButton()->text() == tr("Settings..."))
+	{
+		SetupDialog sd(SetupDialog::ConfigTab::AudioSettings);
+		sd.exec();
+	}
 }
 
 void SongEditorWindow::record()

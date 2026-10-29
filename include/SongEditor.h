@@ -211,6 +211,11 @@ protected slots:
 	//! audio device can actually deliver captured input frames.
 	void updateRecordingAvailability();
 
+	//! The user clicked Record expecting a take, but there is no capture
+	//! device to record from.  Point them at Settings instead of letting the
+	//! click appear to do nothing.
+	void warnCaptureUnavailable();
+
 	//! Start recording using the behaviour the user last chose, which is what the
 	//! main record button does.
 	void record();

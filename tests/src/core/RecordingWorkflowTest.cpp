@@ -475,6 +475,46 @@ private slots:
 
 
 	// ------------------------------------------------------------------
+	// (n2) Without a capture device, recordSelectedTrack() refuses and emits
+	// captureUnavailable() so the editor can warn the user instead of letting
+	// the click appear to do nothing.
+	// ------------------------------------------------------------------
+	void recordSelectedTrackWithoutCaptureDeviceEmitsWarning()
+	{
+		installCaptureDevice(false);
+		auto* song = Engine::getSong();
+		auto* track = new SampleTrack(song);
+		song->setSelectedTrack(track);
+
+		QSignalSpy spy(song, &Song::captureUnavailable);
+		song->recordSelectedTrack();
+
+		QCOMPARE(spy.count(), 1);
+		QCOMPARE(countRecordClips(track), 0);
+		QVERIFY(!song->isRecording());
+	}
+
+
+	// ------------------------------------------------------------------
+	// (n3) Without a capture device, recordNewTrack() refuses and emits
+	// captureUnavailable() so the editor can warn the user instead of silently
+	// discarding the click.
+	// ------------------------------------------------------------------
+	void recordNewTrackWithoutCaptureDeviceEmitsWarning()
+	{
+		installCaptureDevice(false);
+		auto* song = Engine::getSong();
+
+		QSignalSpy spy(song, &Song::captureUnavailable);
+		song->recordNewTrack();
+
+		QCOMPARE(spy.count(), 1);
+		QCOMPARE(countAllRecordClips(), 0);
+		QVERIFY(!song->isRecording());
+	}
+
+
+	// ------------------------------------------------------------------
 	// (p) The target is announced so the editor can highlight it.
 	// ------------------------------------------------------------------
 	void selectedTrackChangedIsEmitted()

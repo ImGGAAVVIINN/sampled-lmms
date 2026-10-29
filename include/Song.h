@@ -543,6 +543,10 @@ signals:
 	void selectedTrackChanged(Track * track);
 	//! Emitted whenever the remembered recording behaviour changes.
 	void recordModeChanged(RecordMode mode);
+	//! Emitted when a record click cannot be honoured because the audio device
+	//! has no capture input.  The GUI turns it into a warning that points the
+	//! user at Settings instead of letting the click vanish silently.
+	void captureUnavailable();
 	void playbackPositionJumped();
 	void lengthChanged( int bars );
 	void tempoChanged( lmms::bpm_t newBPM );

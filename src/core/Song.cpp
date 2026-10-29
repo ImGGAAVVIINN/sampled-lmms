@@ -527,8 +527,10 @@ void Song::playAndRecord()
 {
 	// Arming recording without a capture device would only let a take overwrite
 	// an existing clip with silence, so refuse to enter the recording state.
+	// The GUI turns this into a warning instead of letting the click vanish.
 	if (!Engine::audioEngine()->captureDeviceAvailable())
 	{
+		emit captureUnavailable();
 		return;
 	}
 
@@ -574,15 +576,16 @@ SampleClip * Song::ensureRecordClip(SampleTrack * track, const TimePos & start)
 
 void Song::recordSelectedTrack()
 {
-	if (!Engine::audioEngine()->captureDeviceAvailable())
-	{
-		return;
-	}
-
 	// The target is whatever Sample Track the user last interacted with. There is
 	// deliberately no fallback here: silently arming some other track, or creating
 	// one, would record a take somewhere the user never asked for, so we refuse
 	// and say why instead.
+	if (!Engine::audioEngine()->captureDeviceAvailable())
+	{
+		emit captureUnavailable();
+		return;
+	}
+
 	auto * track = dynamic_cast<SampleTrack *>(m_selectedTrack);
 	if (track == nullptr)
 	{
@@ -602,8 +605,12 @@ void Song::recordSelectedTrack()
 
 void Song::recordNewTrack()
 {
+	// Arming recording without a capture device would only let a take overwrite
+	// an existing clip with silence, so refuse to enter the recording state.
+	// The GUI turns this into a warning instead of letting the click vanish.
 	if (!Engine::audioEngine()->captureDeviceAvailable())
 	{
+		emit captureUnavailable();
 		return;
 	}
 
