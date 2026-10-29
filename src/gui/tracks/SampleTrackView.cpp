@@ -103,6 +103,11 @@ SampleTrackView::SampleTrackView( SampleTrack * _t, TrackContainerView* tcv ) :
 
 	m_window = new SampleTrackWindow(this);
 	m_window->toggleVisibility(false);
+
+	// The track's effects window lives in the MDI area rather than in this row, so
+	// it is not covered by the row's subtree.  Watching it too means working on
+	// this track's plugins keeps the recording target on this track.
+	interactionFilter().cover(m_window);
 }
 
 

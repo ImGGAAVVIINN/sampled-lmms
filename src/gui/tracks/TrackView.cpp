@@ -44,6 +44,7 @@
 #include "TrackGrip.h"
 #include "TrackContainerView.h"
 #include "ClipView.h"
+#include "Song.h"
 
 
 namespace lmms::gui
@@ -54,6 +55,7 @@ TrackView::TrackView(Track* track, TrackContainerView* tcv)
 	, ModelView(nullptr, this)
 	, m_track(track)
 	, m_trackContainerView(tcv)
+	, m_interactionFilter([this] { notifyInteraction(); })
 	, m_trackOperationsWidget(this)
 	, m_trackSettingsWidget(this)
 	, m_trackContentWidget(this)
@@ -105,6 +107,37 @@ TrackView::TrackView(Track* track, TrackContainerView* tcv)
 	}
 
 	m_trackContainerView->addTrackView( this );
+
+	// The model selects a track as soon as it is created, which happens before
+	// this view exists, so the `selectedTrackChanged` signal for it has already
+	// fired.  Pick the highlight up here rather than leaving the new row blank.
+	if ( auto * song = Engine::getSong(); song != nullptr && m_track->trackContainer() == song )
+	{
+		setSelected( song->selectedTrack() == m_track );
+	}
+
+	// Every widget in this row counts as interacting with this track, so they all
+	// get the filter that reports the interaction to the model.
+	m_interactionFilter.cover( this );
+}
+
+
+
+
+void TrackView::notifyInteraction()
+{
+	// "Record into the selected Sample Track" targets whichever Sample Track the
+	// user last interacted with, so every ordinary interaction with a row reports
+	// itself here.  Only the Song editor owns a track selection; rows belonging
+	// to the Pattern editor's container must not touch it.  `setSelectedTrack`
+	// ignores anything that is not a Sample Track, so clicking a pattern or
+	// automation row leaves the recording target alone.
+	auto * song = Engine::getSong();
+	if ( song == nullptr || m_track == nullptr || m_track->trackContainer() != song )
+	{
+		return;
+	}
+	song->setSelectedTrack( m_track );
 }
 
 

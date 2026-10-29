@@ -14,6 +14,7 @@ set(LMMS_TESTS
 	src/core/SampleRecordingTest.cpp
 	src/core/RecordingWorkflowTest.cpp
 	src/core/TimelineTest.cpp
+	src/gui/TrackRowInteractionFilterTest.cpp
 	src/tracks/AutomationTrackTest.cpp
 )
 

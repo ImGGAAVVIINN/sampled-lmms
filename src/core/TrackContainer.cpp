@@ -192,6 +192,11 @@ void TrackContainer::addTrack( Track * _track )
 
 void TrackContainer::removeTrack( Track * _track )
 {
+	// Let the container react to the track while it is still alive and still
+	// listed, so anything pointing at it can be moved somewhere sensible. This
+	// runs outside the lock because the hook may read tracks().
+	aboutToRemoveTrack( _track );
+
 	// need a read locker to ensure that m_tracks doesn't change after reading index.
 	//   After checking that index != -1, we need to upgrade the lock to a write locker before changing m_tracks.
 	//   But since Qt offers no function to promote a read lock to a write lock, we must start with the write locker.
@@ -226,6 +231,13 @@ void TrackContainer::moveTrack(Track* track, int indexTo)
 
 void TrackContainer::updateAfterTrackAdd()
 {
+}
+
+
+
+void TrackContainer::aboutToRemoveTrack(Track * _track)
+{
+	( void ) _track;
 }
 
 

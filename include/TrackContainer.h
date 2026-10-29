@@ -72,6 +72,13 @@ public:
 
 	virtual void updateAfterTrackAdd();
 
+	//! @brief Called just before `_track` is dropped from this container, while
+	//! the track is still alive and still present in `tracks()`.
+	//!
+	//! Subclasses that keep a pointer to one of their tracks override this so
+	//! they can react before the object is destroyed.
+	virtual void aboutToRemoveTrack(Track * _track);
+
 	void clearAllTracks();
 
 	const TrackList & tracks() const

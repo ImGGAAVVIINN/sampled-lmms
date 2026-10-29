@@ -30,7 +30,9 @@
 #include "TrackContainerView.h"
 
 class QLabel;
+class QMenu;
 class QScrollBar;
+class QToolButton;
 
 namespace lmms
 {
@@ -209,12 +211,17 @@ protected slots:
 	//! audio device can actually deliver captured input frames.
 	void updateRecordingAvailability();
 
-	//! Start recording into the currently selected Sample Track, creating a
-	//! record clip at the playhead when one does not exist yet.
-	void recordSelectedTrack();
+	//! Start recording using the behaviour the user last chose, which is what the
+	//! main record button does.
+	void record();
 
-	//! Create a fresh Sample Track and start recording into it.
-	void recordNewTrack();
+	//! Choose whether the main record button records into a new Sample Track or
+	//! into the selected one.  The choice is remembered across record clicks.
+	void setRecordModeNewTrack();
+	void setRecordModeSelectedTrack();
+
+	//! Refresh the record button so it shows the behaviour it will apply.
+	void updateRecordModeUi();
 
 	//! Highlight the TrackView that belongs to `track` in the editor.
 	void selectTrackInEditor(Track * track);
@@ -229,9 +236,13 @@ private:
 	QAction* m_addAutomationTrackAction;
 	QAction* m_setProportionalSnapAction;
 
-	//! Record-into-selected-track and record-into-new-track actions.
-	QAction* m_recordSelectedTrackAction;
-	QAction* m_recordNewTrackAction;
+	//! The single record control: `m_recordTakeAction` is what the main button
+	//! does, the two mode actions live in the dropdown and decide what it remembers.
+	QAction* m_recordTakeAction;
+	QAction* m_recordNewTrackModeAction;
+	QAction* m_recordSelectedTrackModeAction;
+	QMenu* m_recordModeMenu;
+	QToolButton* m_recordButton;
 
 	ActionGroup * m_editModeGroup;
 	QAction* m_drawModeAction;

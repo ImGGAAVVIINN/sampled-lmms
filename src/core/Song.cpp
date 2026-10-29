@@ -579,24 +579,19 @@ void Song::recordSelectedTrack()
 		return;
 	}
 
-	// The editor owns the selection; if nothing is selected we fall back to the
-	// first sample track so the action is never silently a no-op.
-	auto track = dynamic_cast<SampleTrack *>(selectedTrack());
-	if (!track)
+	// The target is whatever Sample Track the user last interacted with. There is
+	// deliberately no fallback here: silently arming some other track, or creating
+	// one, would record a take somewhere the user never asked for, so we refuse
+	// and say why instead.
+	auto * track = dynamic_cast<SampleTrack *>(m_selectedTrack);
+	if (track == nullptr)
 	{
-		for (auto * t : tracks())
-		{
-			if (auto * st = dynamic_cast<SampleTrack *>(t))
-			{
-				track = st;
-				break;
-			}
-		}
-	}
-	if (!track)
-	{
-		track = static_cast<SampleTrack *>(
-			Track::create(Track::Type::Sample, this));
+		qWarning("Song::recordSelectedTrack: %s, so nothing was recorded. Select "
+			"a Sample Track first, or choose 'Record into new Sample Track'.",
+			m_selectedTrack == nullptr
+				? "no track is selected"
+				: "the selected track is not a Sample Track");
+		return;
 	}
 
 	ensureRecordClip(track, getPlayPos());
@@ -617,8 +612,106 @@ void Song::recordNewTrack()
 	track->setName(tr("Record %1").arg(static_cast<int>(tracks().size()) + 1));
 
 	ensureRecordClip(track, getPlayPos());
+	// Creating the track already made it the last-interacted one; select it
+	// explicitly so the highlight follows even when `track` was already current.
 	setSelectedTrack(track);
 	playAndRecord();
+}
+
+
+
+void Song::setRecordMode(RecordMode mode)
+{
+	if (m_recordMode == mode)
+	{
+		return;
+	}
+	m_recordMode = mode;
+	emit recordModeChanged(mode);
+}
+
+
+
+void Song::record()
+{
+	// The main record button replays whatever behaviour the user last chose; the
+	// mode is deliberately left alone so repeated clicks keep doing the same thing.
+	if (m_recordMode == RecordMode::SelectedTrack)
+	{
+		recordSelectedTrack();
+	}
+	else
+	{
+		recordNewTrack();
+	}
+}
+
+
+
+void Song::updateAfterTrackAdd()
+{
+	// A track the user just added is the one they are working on, so it becomes
+	// the recording target.  This runs after the Track is fully constructed,
+	// unlike the `trackAdded` signal, which the base `Track` constructor emits
+	// before any subclass part exists.  Project loading is skipped so restoring a
+	// file does not leave the last restored track selected.
+	if (isLoadingProject() || tracks().empty())
+	{
+		return;
+	}
+	// Only a Sample Track can be a recording target, so adding a pattern or
+	// automation track must not steal the target from the Sample Track the user
+	// was aiming at.
+	if (auto * sample = dynamic_cast<SampleTrack *>(tracks().back()))
+	{
+		setSelectedTrack(sample);
+	}
+}
+
+
+
+void Song::aboutToRemoveTrack(Track * track)
+{
+	// Called while `track` is still alive and still listed, which is the only
+	// moment we can move the selection somewhere sensible.  Without this the
+	// selection would dangle and `recordSelectedTrack` would dynamic_cast freed
+	// memory.
+	if (track != m_selectedTrack)
+	{
+		return;
+	}
+
+	const auto & allTracks = tracks();
+	const auto isSample = [](Track * t)
+	{
+		return dynamic_cast<SampleTrack *>(t) != nullptr;
+	};
+
+	// Prefer the neighbour that survives in the vacated slot -- that is what the
+	// list looks like once `track` is gone -- then any other surviving Sample
+	// Track, nearest first.  With no Sample Track left the selection goes to
+	// nullptr so recording refuses instead of guessing.
+	const auto it = std::find(allTracks.begin(), allTracks.end(), track);
+	Track * target = nullptr;
+	if (it != allTracks.end())
+	{
+		const auto index = static_cast<int>(std::distance(allTracks.begin(), it));
+		const auto count = static_cast<int>(allTracks.size());
+		for (auto offset = 1; offset < count && target == nullptr; ++offset)
+		{
+			for (const auto neighbour : {index + offset, index - offset})
+			{
+				if (neighbour < 0 || neighbour >= count) { continue; }
+				if (isSample(allTracks[neighbour]))
+				{
+					target = allTracks[neighbour];
+					break;
+				}
+			}
+		}
+	}
+
+	setSelectedTrack(target);
 }
 
 
@@ -630,6 +723,18 @@ Track * Song::selectedTrack() const
 
 void Song::setSelectedTrack(Track * track)
 {
+	// Only a Sample Track can hold a take, so only a Sample Track may become the
+	// recording target.  Interacting with a pattern or automation track therefore
+	// leaves the target where it was rather than moving it to a track that cannot
+	// record -- which is what made the old "selected track" behaviour surprising.
+	// A track from another container (the Pattern editor's store, say) is rejected
+	// for the same reason: it is not something this song can record into.
+	if (track != nullptr
+		&& (dynamic_cast<SampleTrack *>(track) == nullptr
+			|| track->trackContainer() != this))
+	{
+		return;
+	}
 	if (m_selectedTrack == track)
 	{
 		return;
@@ -637,6 +742,9 @@ void Song::setSelectedTrack(Track * track)
 	m_selectedTrack = track;
 	// Tell the editor which track view to highlight so the UI stays in sync
 	// with the model (e.g. when recordNewTrack picks a freshly created track).
+	// This runs even while a project is loading: clearing a project destroys the
+	// selected track, and the selection has to be released then rather than left
+	// pointing at freed memory.
 	emit selectedTrackChanged(track);
 }
 

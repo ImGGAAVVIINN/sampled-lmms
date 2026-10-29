@@ -27,12 +27,15 @@
 #include <cmath>
 
 #include <QAction>
+#include <QActionGroup>
 #include <QKeyEvent>
 #include <QLabel>
 #include <QMdiArea>
+#include <QMenu>
 #include <QScrollBar>
 #include <QSlider>
 #include <QTimeLine>
+#include <QToolButton>
 
 #include "ActionGroup.h"
 #include "AudioEngine.h"
@@ -54,6 +57,7 @@
 #include "TextFloat.h"
 #include "TimeDisplayWidget.h"
 #include "TimeLineWidget.h"
+#include "Song.h"
 #include "TrackView.h"
 
 namespace lmms::gui
@@ -952,20 +956,43 @@ SongEditorWindow::SongEditorWindow(Song* song) :
 	trackActionsToolBar->addAction( m_addSampleTrackAction );
 	trackActionsToolBar->addAction( m_addAutomationTrackAction );
 
-	// Recording workflow: pick a Sample Track (the selected one, or a brand new
-	// one) and arm a record clip at the playhead before starting playback.
-	m_recordSelectedTrackAction = new QAction(embed::getIconPixmap("record"),
-										 tr("Record into selected track"), this);
-	m_recordSelectedTrackAction->setToolTip(tr("Record samples from the audio device into the selected Sample Track (auto-creates a record clip at the playhead)"));
-	m_recordNewTrackAction = new QAction(embed::getIconPixmap("record"),
-										 tr("Record into new track"), this);
-	m_recordNewTrackAction->setToolTip(tr("Create a new Sample Track and record samples from the audio device into it"));
+	// Recording workflow: one record button with a dropdown that chooses what the
+	// button does, in place of the old pair of record buttons.  The main button
+	// repeats the behaviour the user last chose from the dropdown, so arming
+	// several takes in a row is a single click each time.  Same split-button
+	// pattern the Piano Roll uses for its quantize control.
+	m_recordTakeAction = new QAction(embed::getIconPixmap("record"), tr("Record"), this);
+	m_recordNewTrackModeAction = new QAction(tr("Record into new Sample Track"), this);
+	m_recordNewTrackModeAction->setCheckable(true);
+	m_recordSelectedTrackModeAction = new QAction(tr("Record into selected Sample Track"), this);
+	m_recordSelectedTrackModeAction->setCheckable(true);
 
-	connect(m_recordSelectedTrackAction, SIGNAL(triggered()), this, SLOT(recordSelectedTrack()));
-	connect(m_recordNewTrackAction, SIGNAL(triggered()), this, SLOT(recordNewTrack()));
+	auto recordModeGroup = new QActionGroup(this);
+	recordModeGroup->setExclusive(true);
+	recordModeGroup->addAction(m_recordNewTrackModeAction);
+	recordModeGroup->addAction(m_recordSelectedTrackModeAction);
 
-	trackActionsToolBar->addAction( m_recordSelectedTrackAction );
-	trackActionsToolBar->addAction( m_recordNewTrackAction );
+	m_recordModeMenu = new QMenu(this);
+	m_recordModeMenu->addAction(m_recordNewTrackModeAction);
+	m_recordModeMenu->addAction(m_recordSelectedTrackModeAction);
+
+	m_recordButton = new QToolButton(trackActionsToolBar);
+	m_recordButton->setPopupMode(QToolButton::MenuButtonPopup);
+	m_recordButton->setDefaultAction(m_recordTakeAction);
+	m_recordButton->setMenu(m_recordModeMenu);
+	m_recordButton->setToolButtonStyle(Qt::ToolButtonIconOnly);
+
+	connect(m_recordTakeAction, &QAction::triggered, this, &SongEditorWindow::record);
+	connect(m_recordNewTrackModeAction, &QAction::triggered, this, &SongEditorWindow::setRecordModeNewTrack);
+	connect(m_recordSelectedTrackModeAction, &QAction::triggered, this, &SongEditorWindow::setRecordModeSelectedTrack);
+
+	trackActionsToolBar->addWidget( m_recordButton );
+
+	// Reflect a mode change made elsewhere in the model, and pick up the mode the
+	// song already holds, so the button always advertises what it will do.
+	connect(m_editor->m_song, &Song::recordModeChanged,
+			this, &SongEditorWindow::updateRecordModeUi);
+	updateRecordModeUi();
 
 	// Keep the editor's track selection in sync with Song::m_selectedTrack so
 	// that recordNewTrack() highlights the track it just created.
@@ -1062,24 +1089,58 @@ void SongEditorWindow::updateRecordingAvailability()
 	m_recordAccompanyAction->setToolTip(captureAvailable
 		? tr("Record samples from Audio-device during playback")
 		: tr("Recording is unavailable: try connecting an input device or switching backend"));
-	m_recordSelectedTrackAction->setEnabled(captureAvailable);
-	m_recordSelectedTrackAction->setToolTip(captureAvailable
-		? tr("Record samples from the audio device into the selected Sample Track")
-		: tr("Recording is unavailable: try connecting an input device or switching backend"));
-	m_recordNewTrackAction->setEnabled(captureAvailable);
-	m_recordNewTrackAction->setToolTip(captureAvailable
-		? tr("Create a new Sample Track and record samples from the audio device into it")
-		: tr("Recording is unavailable: try connecting an input device or switching backend"));
+	// Disable the whole split button, not just the primary action, so the
+	// dropdown cannot be used to arm a take with no capture device either.
+	if (m_recordButton != nullptr)
+	{
+		m_recordButton->setEnabled(captureAvailable);
+	}
+	m_recordNewTrackModeAction->setEnabled(captureAvailable);
+	m_recordSelectedTrackModeAction->setEnabled(captureAvailable);
+	if (captureAvailable)
+	{
+		m_recordNewTrackModeAction->setToolTip(tr("Create a new Sample Track and record samples from the audio device into it"));
+		m_recordSelectedTrackModeAction->setToolTip(tr("Record samples from the audio device into the selected Sample Track (auto-creates a record clip at the playhead)"));
+	}
+	else
+	{
+		const auto unavailable = tr("Recording is unavailable: try connecting an input device or switching backend");
+		m_recordNewTrackModeAction->setToolTip(unavailable);
+		m_recordSelectedTrackModeAction->setToolTip(unavailable);
+	}
+	// Re-derives the primary action's text and tooltip from the remembered mode.
+	updateRecordModeUi();
 }
 
-void SongEditorWindow::recordSelectedTrack()
+void SongEditorWindow::record()
 {
-	Engine::getSong()->recordSelectedTrack();
+	Engine::getSong()->record();
 }
 
-void SongEditorWindow::recordNewTrack()
+void SongEditorWindow::setRecordModeNewTrack()
 {
-	Engine::getSong()->recordNewTrack();
+	Engine::getSong()->setRecordMode(Song::RecordMode::NewTrack);
+}
+
+void SongEditorWindow::setRecordModeSelectedTrack()
+{
+	Engine::getSong()->setRecordMode(Song::RecordMode::SelectedTrack);
+}
+
+void SongEditorWindow::updateRecordModeUi()
+{
+	// The main button has to advertise the behaviour it will actually apply, so
+	// the user is never surprised by which track a take lands in.
+	const auto mode = Engine::getSong()->recordMode();
+	const auto selectedMode = mode == Song::RecordMode::SelectedTrack;
+	m_recordTakeAction->setText(selectedMode
+		? tr("Record into selected track")
+		: tr("Record into new track"));
+	m_recordTakeAction->setToolTip(selectedMode
+		? tr("Record samples from the audio device into the selected Sample Track (auto-creates a record clip at the playhead)")
+		: tr("Create a new Sample Track and record samples from the audio device into it"));
+	m_recordNewTrackModeAction->setChecked(!selectedMode);
+	m_recordSelectedTrackModeAction->setChecked(selectedMode);
 }
 
 void SongEditorWindow::selectTrackInEditor(Track * track)

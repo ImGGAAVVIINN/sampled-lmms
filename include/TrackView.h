@@ -31,6 +31,7 @@
 #include "ModelView.h"
 #include "TrackContentWidget.h"
 #include "TrackOperationsWidget.h"
+#include "TrackRowInteractionFilter.h"
 
 class QMenu;
 
@@ -113,6 +114,12 @@ public:
 	//! @brief Update this track View and all its content objects.
 	virtual void update();
 
+	//! @brief Tell the model this track is the one the user is working on.
+	//!
+	//! This is what "record into the selected Sample Track" targets, so every
+	//! normal interaction with a track row has to funnel through here.
+	void notifyInteraction();
+
 	//! @brief Create a menu for assigning/creating channels for this track.
 	//!
 	//! Currently instrument track and sample track supports it
@@ -190,6 +197,17 @@ protected:
 
 	void wheelEvent(QWheelEvent* we) override;
 
+	//! @brief The filter that reports interactions with this track's row.
+	//!
+	//! Subclasses use this to cover UI belonging to their track that does not
+	//! live inside the row itself, such as a track's own effects window.  Without
+	//! that, interacting with such UI would leave the recording target pointing at
+	//! whichever track was clicked last instead of the one being worked on.
+	TrackRowInteractionFilter& interactionFilter()
+	{
+		return m_interactionFilter;
+	}
+
 	//! @brief Repaint this track View.
 	//! @param pe The PaintEvent to start.
 	void paintEvent(QPaintEvent* pe) override;
@@ -211,6 +229,11 @@ private:
 
 	Track * m_track;
 	TrackContainerView * m_trackContainerView;
+
+	//! @brief Watches this row so interacting with it selects this track.
+	//!
+	//! Declared before the widgets it watches so they outlive it.
+	TrackRowInteractionFilter m_interactionFilter;
 
 	TrackOperationsWidget m_trackOperationsWidget;
 	QWidget m_trackSettingsWidget;

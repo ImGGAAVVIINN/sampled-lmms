@@ -348,23 +348,68 @@ public slots:
 
 	void addPatternTrack();
 
-	//! @brief Record into the selected (or first) Sample Track.
-	//! Creates a record clip at the playhead if none exists yet.
+	//! @brief Record into the last-interacted Sample Track.
+	//! Creates a record clip at the playhead if none exists yet.  Does nothing
+	//! when no Sample Track is selected -- unlike `recordNewTrack()` this never
+	//! invents a track the user did not ask for.
 	void recordSelectedTrack();
 
 	//! @brief Create a new Sample Track and begin recording into it.
 	//! The new track is selected and a record clip is created at the playhead.
 	void recordNewTrack();
 
-	//! @brief Return the track the user has selected in the editor, or nullptr.
+	//! @brief Run the recording behaviour remembered by the main record button.
+	void record();
+
+public:
+	//! @brief Which of the two recording behaviours the main record button applies.
+	//!
+	//! Declared here rather than in `public slots:` because Qt 5's moc cannot
+	//! parse a nested `enum class` inside a slots section.
+	enum class RecordMode
+	{
+		//! The main record button creates a fresh Sample Track for every take.
+		NewTrack,
+		//! The main record button arms a record clip on the selected Sample Track.
+		SelectedTrack,
+	};
+	Q_ENUM(RecordMode)
+
+	//! @brief Return the recording behaviour remembered by the main record button.
+	RecordMode recordMode() const
+	{
+		return m_recordMode;
+	}
+
+	//! @brief Set the recording behaviour the main record button applies.  The
+	//! next primary record click uses it; it is not reset by recording.
+	void setRecordMode(RecordMode mode);
+
+	//! @brief Return the Sample Track the user last interacted with, or nullptr.
+	//!
+	//! This is what "record into the selected Sample Track" targets, and what the
+	//! Song Editor highlights.  Only Sample Tracks can take part: a pattern or
+	//! automation track cannot hold a take, so it never becomes the target.
 	Track * selectedTrack() const;
 
-	//! @brief Select a track in the editor.
+	//! @brief Make `track` the recording target.
+	//!
+	//! `track` must be a Sample Track (or nullptr to clear the target); anything
+	//! else is ignored so that interacting with an unrelated track cannot silently
+	//! move a take somewhere the user did not ask for.
 	void setSelectedTrack( Track * track );
 
 	//! @brief Make sure `track` has a record clip covering `start`.
 	//! Reuses an existing armed clip when one already covers the playhead.
 	SampleClip * ensureRecordClip( SampleTrack * track, const TimePos & start );
+
+protected:
+	//! @brief Make a freshly added track the last-interacted one, so it becomes
+	//! the recording target.
+	void updateAfterTrackAdd() override;
+
+	//! @brief Keep the selection on a sensible track when one of our tracks goes away.
+	void aboutToRemoveTrack( Track * track ) override;
 
 
 private slots:
@@ -483,6 +528,9 @@ private:
 	//! Track selected in the Song Editor. nullptr when nothing is selected.
 	Track * m_selectedTrack = nullptr;
 
+	//! Recording behaviour remembered by the main record button.
+	RecordMode m_recordMode = RecordMode::NewTrack;
+
 	friend class Engine;
 	friend class gui::SongEditor;
 	friend class gui::ControllerRackView;
@@ -493,6 +541,8 @@ signals:
 
 	//! Emitted whenever the editor's selected track changes.
 	void selectedTrackChanged(Track * track);
+	//! Emitted whenever the remembered recording behaviour changes.
+	void recordModeChanged(RecordMode mode);
 	void playbackPositionJumped();
 	void lengthChanged( int bars );
 	void tempoChanged( lmms::bpm_t newBPM );
