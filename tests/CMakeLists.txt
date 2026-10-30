@@ -13,6 +13,7 @@ set(LMMS_TESTS
 	src/core/RelativePathsTest.cpp
 	src/core/SampleRecordingTest.cpp
 	src/core/RecordingWorkflowTest.cpp
+	src/core/SampleStretchTest.cpp
 	src/core/TimelineTest.cpp
 	src/gui/TrackRowInteractionFilterTest.cpp
 	src/tracks/AutomationTrackTest.cpp

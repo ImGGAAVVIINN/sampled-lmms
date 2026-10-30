@@ -106,6 +106,36 @@ void SampleClipView::constructContextMenu(QMenu* cm)
 		SLOT(setAutomationGhost())
 	);
 
+	// Pitch mode: Resample (traditional speed+pitch change) vs Stretch
+	// (real time-stretch preserving pitch). Mutually exclusive; selecting
+	// the already-active mode is a no-op. The mode switch never changes
+	// the clip's length.
+	const auto pitchMenu = cm->addMenu(tr("Pitch mode"));
+	const auto resampleAction = pitchMenu->addAction(tr("Resample"));
+	resampleAction->setCheckable(true);
+	resampleAction->setChecked(m_clip->pitchMode() == SampleClip::PitchMode::Resample);
+	const auto stretchAction = pitchMenu->addAction(tr("Stretch"));
+	stretchAction->setCheckable(true);
+	stretchAction->setChecked(m_clip->pitchMode() == SampleClip::PitchMode::Stretch);
+	const auto stretchEnabled = m_clip->isStretched();
+	stretchAction->setEnabled(stretchEnabled);
+	stretchAction->setToolTip(stretchEnabled
+		? tr("Real time-stretch preserving pitch")
+		: tr("Stretch is disabled while the clip length equals the sample length"));
+
+	const auto setMode = [this](SampleClip::PitchMode mode)
+	{
+		if (m_clip->pitchMode() == mode) { return; }
+		m_clip->getTrack()->addJournalCheckPoint();
+		m_clip->setJournalling(false);
+		m_clip->setPitchMode(mode);
+		m_clip->setJournalling(true);
+		Engine::getSong()->setModified();
+	};
+
+	connect(resampleAction, &QAction::triggered, this, [this, setMode] { setMode(SampleClip::PitchMode::Resample); });
+	connect(stretchAction, &QAction::triggered, this, [this, setMode] { setMode(SampleClip::PitchMode::Stretch); });
+
 }
 
 

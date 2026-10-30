@@ -459,6 +459,7 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 	if( !fixedClips() && me->button() == Qt::LeftButton )
 	{
 		const bool knifeMode = m_trackView->trackContainerView()->knifeMode();
+		const bool stretchMode = m_trackView->trackContainerView()->stretchMode();
 
 		if (me->modifiers() & KBD_COPY_MODIFIER && !knifeMode)
 		{
@@ -482,9 +483,9 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 				getGUI()->songEditor()->m_editor->selectAllClips( false );
 				m_clip->addJournalCheckPoint();
 
-				// Action::Move, Action::Resize and Action::ResizeLeft
+				// Action::Move, Action::Resize, Action::ResizeLeft and Action::Stretch
 				// Action::Split action doesn't disable Clip journalling
-				if (m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft)
+				if (m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft || m_action == Action::Stretch)
 				{
 					m_clip->setJournalling(false);
 				}
@@ -496,6 +497,14 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 				{	// Always move clips that can't be manually resized
 					m_action = Action::Move;
 					setCursor( Qt::SizeAllCursor );
+				}
+				else if (stretchMode && pos.x() >= width() - resizeGripWidth())
+				{
+					// Stretch mode: dragging the right edge of a sample clip
+					// changes its timeline duration continuously; the source
+					// sample is never modified (see SampleClip::changeLength).
+					m_action = Action::Stretch;
+					setCursor( Qt::SizeHorCursor );
 				}
 				else if (pos.x() >= width() - resizeGripWidth())
 				{
@@ -529,7 +538,7 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 						arg( m_clip->startPosition().getTicks() %
 								TimePos::ticksPerBar() ) );
 				}
-				else if( m_action == Action::Resize || m_action == Action::ResizeLeft )
+				else if( m_action == Action::Resize || m_action == Action::ResizeLeft || m_action == Action::Stretch )
 				{
 					s_textFloat->setTitle( tr( "Current length" ) );
 					s_textFloat->setText( tr( "%1:%2 (%3:%4 to %5:%6)" ).
@@ -560,6 +569,10 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 				hint = dynamic_cast<MidiClipView*>(this)
 					? tr("Press <%1> or <Alt> for unquantized splitting.\nPress <Shift> for destructive splitting.")
 					: tr("Press <%1> or <Alt> for unquantized splitting.");
+			}
+			else if (m_action == Action::Stretch)
+			{
+				hint = tr("Press <%1> or <Alt> for unquantized stretching.");
 			}
 			else
 			{
@@ -696,15 +709,16 @@ void ClipView::mouseMoveEvent( QMouseEvent * me )
 			( *it )->movePosition( newPos + m_initialOffsets[index] );
 		}
 	}
-	else if( m_action == Action::Resize || m_action == Action::ResizeLeft )
+	else if( (m_action == Action::Resize || m_action == Action::ResizeLeft || m_action == Action::Stretch) )
 	{
 		const float snapSize = getGUI()->songEditor()->m_editor->getSnapSize();
 		// Length in ticks of one snap increment
 		const TimePos snapLength = TimePos( (int)(snapSize * TimePos::ticksPerBar()) );
 
-		if( m_action == Action::Resize )
+		if( m_action == Action::Resize || m_action == Action::Stretch )
 		{
-			// The clip's new length
+			// The clip's new length (Stretch: right-edge drag changes the
+			// timeline duration; the source sample is never modified)
 			TimePos l = static_cast<int>(pos.x() * TimePos::ticksPerBar() / ppb);
 
 			// If the user is holding alt, or pressed ctrl after beginning the drag, don't quantize
@@ -838,7 +852,10 @@ void ClipView::mouseReleaseEvent( QMouseEvent * me )
 	else if( m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft )
 	{
 		// TODO: Fix m_clip->setJournalling() consistency
-		m_clip->setJournalling( true );
+		if (m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft || m_action == Action::Stretch)
+		{
+			m_clip->setJournalling( true );
+		}
 	}
 	else if( m_action == Action::Split )
 	{

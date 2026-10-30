@@ -95,6 +95,7 @@ OPTION(WANT_SF2		"Include SoundFont2 player plugin" ON)
 OPTION(WANT_GIG		"Include GIG player plugin" ON)
 option(WANT_SID		"Include Sid instrument" ON)
 OPTION(WANT_STK		"Include Stk (Synthesis Toolkit) support" ON)
+OPTION(WANT_SOUNDTOUCH		"Include SoundTouch (LGPLv2.1) time-stretch support" ON)
 OPTION(WANT_SWH		"Include Steve Harris's LADSPA plugins" ON)
 OPTION(WANT_TAP		"Include Tom's Audio Processing LADSPA plugins" ON)
 OPTION(WANT_VST		"Include VST support" ON)
@@ -466,6 +467,18 @@ IF(WANT_STK)
 	ENDIF(STK_FOUND)
 ENDIF(WANT_STK)
 
+# check for SoundTouch (LGPLv2.1) - used for time-stretching samples
+IF(WANT_SOUNDTOUCH)
+	FIND_PACKAGE(SoundTouch)
+	IF(SoundTouch_FOUND)
+		SET(LMMS_HAVE_SOUNDTOUCH TRUE)
+		SET(STATUS_SOUNDTOUCH "OK")
+	ELSE(SoundTouch_FOUND)
+		SET(STATUS_SOUNDTOUCH "not found, please install libsoundtouch-dev (or similar)"
+					"if you require sample time-stretching")
+	ENDIF(SoundTouch_FOUND)
+ENDIF(WANT_SOUNDTOUCH)
+
 
 # check for PortAudio
 IF(WANT_PORTAUDIO)
@@ -825,6 +838,7 @@ include(CompileCache)
 ADD_SUBDIRECTORY(cmake)
 ADD_SUBDIRECTORY(src)
 ADD_SUBDIRECTORY(plugins)
+enable_testing()
 ADD_SUBDIRECTORY(tests)
 ADD_SUBDIRECTORY(data)
 
@@ -920,6 +934,7 @@ MESSAGE(
 "* SoundFont2 player           : ${STATUS_FLUIDSYNTH}\n"
 "* Sid instrument              : ${STATUS_SID}\n"
 "* Stk Mallets                 : ${STATUS_STK}\n"
+	"* SoundTouch time-stretch     : ${STATUS_SOUNDTOUCH}\n"
 "* VST plugin host             : ${STATUS_VST}\n"
 "  * 32-bit Windows host       : ${STATUS_VST_32}\n"
 "  * 64-bit Windows host       : ${STATUS_VST_64}\n"

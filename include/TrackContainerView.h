@@ -103,6 +103,7 @@ public:
 
 	virtual bool allowRubberband() const;
 	virtual bool knifeMode() const;
+	virtual bool stretchMode() const { return false; };
 
 	inline bool rubberBandActive() const
 	{

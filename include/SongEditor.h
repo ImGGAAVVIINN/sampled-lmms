@@ -63,7 +63,8 @@ public:
 	{
 		Draw,
 		Knife,
-		Select
+		Select,
+		Stretch
 	};
 
 	SongEditor( Song * song );
@@ -92,6 +93,7 @@ public slots:
 	void setEditModeDraw();
 	void setEditModeKnife();
 	void setEditModeSelect();
+	void setEditModeStretch();
 	void toggleProportionalSnap();
 
 	void updatePosition();
@@ -124,6 +126,7 @@ private:
 
 	bool allowRubberband() const override;
 	bool knifeMode() const override;
+	bool stretchMode() const override;
 
 	//! @brief Convert zoom slider's value to bar width in pixels
 	int calculatePixelsPerBar() const;
@@ -253,6 +256,7 @@ private:
 	QAction* m_drawModeAction;
 	QAction* m_knifeModeAction;
 	QAction* m_selectModeAction;
+	QAction* m_stretchModeAction;
 	QAction* m_crtlAction;
 
 	AutomatableSlider * m_zoomingSlider;

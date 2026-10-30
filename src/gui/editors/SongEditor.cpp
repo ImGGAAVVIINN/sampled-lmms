@@ -457,6 +457,16 @@ void SongEditor::setEditModeSelect()
 	setEditMode(EditMode::Select);
 }
 
+void SongEditor::setEditModeStretch()
+{
+	setEditMode(EditMode::Stretch);
+}
+
+bool SongEditor::stretchMode() const
+{
+	return m_mode == EditMode::Stretch;
+}
+
 void SongEditor::toggleProportionalSnap()
 {
 	m_proportionalSnap = !m_proportionalSnap;
@@ -1008,15 +1018,18 @@ SongEditorWindow::SongEditorWindow(Song* song) :
 	m_drawModeAction = m_editModeGroup->addAction(embed::getIconPixmap("edit_draw"), tr("Draw mode"));
 	m_knifeModeAction = m_editModeGroup->addAction(embed::getIconPixmap("edit_knife"), tr("Knife mode (split clips)"));
 	m_selectModeAction = m_editModeGroup->addAction(embed::getIconPixmap("edit_select"), tr("Edit mode (select and move)"));
+	m_stretchModeAction = m_editModeGroup->addAction(embed::getIconPixmap("edit_stretch"), tr("Stretch mode (resize sample clips)"));
 	m_drawModeAction->setChecked(true);
 
 	connect(m_drawModeAction, SIGNAL(triggered()), m_editor, SLOT(setEditModeDraw()));
 	connect(m_knifeModeAction, SIGNAL(triggered()), m_editor, SLOT(setEditModeKnife()));
 	connect(m_selectModeAction, SIGNAL(triggered()), m_editor, SLOT(setEditModeSelect()));
+	connect(m_stretchModeAction, SIGNAL(triggered()), m_editor, SLOT(setEditModeStretch()));
 
 	editActionsToolBar->addAction( m_drawModeAction );
 	editActionsToolBar->addAction( m_knifeModeAction );
 	editActionsToolBar->addAction( m_selectModeAction );
+	editActionsToolBar->addAction( m_stretchModeAction );
 
 	DropToolBar *timeLineToolBar = addDropToolBarToTop(tr("Timeline controls"));
 	m_editor->m_timeLine->addToolButtons(timeLineToolBar);
