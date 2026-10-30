@@ -28,6 +28,8 @@
 #include <QMenu>
 #include <QPainter>
 
+#include "lmmsconfig.h"
+
 #include "AudioEngine.h"
 #include "FileDialog.h"
 #include "GuiApplication.h"
@@ -117,11 +119,18 @@ void SampleClipView::constructContextMenu(QMenu* cm)
 	const auto stretchAction = pitchMenu->addAction(tr("Stretch"));
 	stretchAction->setCheckable(true);
 	stretchAction->setChecked(m_clip->pitchMode() == SampleClip::PitchMode::Stretch);
+#ifdef LMMS_HAVE_SOUNDTOUCH
 	const auto stretchEnabled = m_clip->isStretched();
 	stretchAction->setEnabled(stretchEnabled);
 	stretchAction->setToolTip(stretchEnabled
 		? tr("Real time-stretch preserving pitch")
 		: tr("Stretch is disabled while the clip length equals the sample length"));
+#else
+	// Built without SoundTouch, so there is no pitch-preserving algorithm to
+	// offer; a clip saved in Stretch mode still plays, just resampled.
+	stretchAction->setEnabled(false);
+	stretchAction->setToolTip(tr("Stretch requires LMMS to be built with SoundTouch"));
+#endif
 
 	const auto setMode = [this](SampleClip::PitchMode mode)
 	{
