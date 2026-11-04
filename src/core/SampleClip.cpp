@@ -603,11 +603,29 @@ SampleClip::PlaybackPlan SampleClip::computePlaybackPlan(double startOutputFrame
 			return plan;
 		}
 
-		// No stretched buffer yet: fall through to the Resample path so the
-		// audio fills the clip's duration at the shifted pitch. This is the
-		// correct degraded behavior -- the user hears the right duration
-		// immediately, and when the async stretch buffer lands, the branch
-		// above will play it at ratio 1.0 with pitch preserved.
+		// No stretched buffer yet: the async stretch is still being computed
+		// off-thread. Playing the source at the shifted ratio would change the
+		// pitch, which is the opposite of what Stretch mode is for, so instead
+		// play the source at its natural speed (ratio 1.0) -- pitch is
+		// preserved, and the audio runs for its natural duration rather than
+		// filling the whole clip. When the async buffer lands the branch above
+		// switches to the pitch-preserving buffer at the full stretched
+		// duration. This is the degraded-but-correct transition state.
+		const auto naturalScale = outputFramesPerSourceFrame() / ratio; // ratio == 1
+		const auto toSrc = [this, naturalScale](double outputFrame) {
+			return naturalScale > 0.0
+				? static_cast<double>(sourceStartFrame()) + outputFrame / naturalScale
+				: static_cast<double>(sourceStartFrame());
+		};
+		const auto first = std::clamp(toSrc(start), srcStart, srcEnd);
+		const auto last = std::clamp(toSrc(clipEndOutput), first, srcEnd);
+		plan.stretchedSource = nullptr;
+		plan.startFrame = static_cast<int>(std::lround(first));
+		plan.endFrame = static_cast<int>(std::lround(last));
+		plan.resampleRatio = 1.0;
+		plan.totalOutputFrames = std::max(0.0,
+			static_cast<double>(plan.endFrame - plan.startFrame) * naturalScale);
+		return plan;
 	}
 
 	// Resample path: the original sample is consumed at `ratio` times its

@@ -863,13 +863,15 @@ private slots:
 	// Regression tests: async stretch buffer not yet ready
 	// ------------------------------------------------------------------
 
-	void stretchModeWithoutBufferYetUsesResamplePath()
+	void stretchModeWithoutBufferYetPreservesPitch()
 	{
-		// Bug A contract (FIXED): a clip in Stretch mode without a buffer yet
-		// now falls through to the Resample path so the audio fills the clip's
-		// duration at the shifted pitch. This is the correct degraded behavior:
-		// the user hears the right duration immediately, and when the async
-		// stretch buffer lands, the plan switches to ratio 1.0 with pitch preserved.
+		// Bug 1 contract (FIXED): a clip in Stretch mode whose pitch-preserving
+		// buffer has not landed yet must NOT resample -- resampling shifts the
+		// pitch, which is the exact opposite of what Stretch mode is for.
+		// Instead the source plays at its natural speed: pitch preserved, and
+		// the audio runs for its natural duration rather than filling the whole
+		// clip. When the async buffer lands the plan switches to the
+		// pitch-preserving buffer at the full stretched duration.
 		auto setup = createClip(makeSineBuffer(44100));
 		setup.clip->setPitchMode(SampleClip::PitchMode::Stretch);
 		setup.clip->stretchToLength(lengthForRatio(setup.clip, 2.0));
@@ -877,17 +879,20 @@ private slots:
 
 		const auto plan = setup.clip->computePlaybackPlan(0.0);
 		QVERIFY(plan.stretchedSource == nullptr);
-		QVERIFY(std::abs(plan.resampleRatio - 2.0) < 0.0001); // Resample path with ratio 2.0
-		// Two seconds of resampled audio: the clip's duration is filled correctly.
-		const auto expectedFrames = static_cast<size_t>(2.0 * engineRate());
+		QVERIFY(std::abs(plan.resampleRatio - 1.0) < 0.0001); // never resample in Stretch mode
+		// One second of natural-speed audio: the source is 1 s, so that is all
+		// that is audible until the stretched buffer arrives.
+		const auto expectedFrames = static_cast<size_t>(1.0 * engineRate());
 		QVERIFY(std::abs(plan.totalOutputFrames - expectedFrames) < 0.05 * expectedFrames);
 
-		// The rendered audio is at the resampled pitch (220 Hz left channel)
-		// until the stretched buffer arrives.
+		// The rendered audio is at the *original* pitch (440 Hz left channel),
+		// not the resampled one, while the stretch is in flight.
 		const auto rendered = renderAt(setup.clip, 0.0);
 		QVERIFY(rendered.size() > engineRate() / 2);
 		const auto freqL = dominantFrequency(rendered.data(), rendered.size(), engineRate(), 0);
-		QVERIFY(std::abs(freqL - 220.0) < 20.0);
+		QVERIFY2(std::abs(freqL - 440.0) < 20.0,
+			qPrintable(QStringLiteral("Stretch mode must preserve pitch while the "
+				"buffer is in flight: expected ~440 Hz, got %1").arg(freqL)));
 
 		// Once the stretched buffer arrives, the plan switches to the
 		// pitch-preserving buffer and now fills the clip's duration at 440 Hz.
@@ -1757,14 +1762,15 @@ private slots:
 		setup.clip->stretchToLength(lengthForRatio(setup.clip, 2.0));
 
 		// 1. BEFORE buffer lands: create a handle that uses the degraded
-		//    source path -- Resample path with ratio 2.0 (correct duration,
-		//    shifted pitch). This is the FIXED behavior: the audio fills
-		//    the clip's duration immediately, even before the async stretch
-		//    buffer lands. The pitch is temporarily shifted (220 Hz for 2x
-		//    stretch of 440 Hz), but the duration is correct.
+		//    source path -- the original source at its natural speed. Bug 1
+		//    contract: Stretch mode must never resample, because resampling
+		//    shifts the pitch, which is the opposite of what Stretch mode is
+		//    for. So while the pitch-preserving buffer is in flight the clip
+		//    plays the source at ratio 1.0: pitch preserved, natural duration
+		//    (8 s) rather than the full stretched duration (16 s).
 		const auto planBefore = setup.clip->computePlaybackPlan(0.0);
 		QVERIFY(planBefore.stretchedSource == nullptr);
-		QVERIFY(std::abs(planBefore.resampleRatio - 2.0) < 0.0001); // Resample path with ratio 2.0
+		QVERIFY(std::abs(planBefore.resampleRatio - 1.0) < 0.0001); // never resample in Stretch mode
 
 		SamplePlayHandle handleBefore(setup.clip, planBefore);
 		const auto totalFramesBefore = handleBefore.totalFrames();
@@ -1823,30 +1829,30 @@ private slots:
 		std::vector<SampleFrame> renderedAfter = renderHandle(handleAfter);
 
 		// 8. Verify the pitch:
-		//    - Old handle (started before buffer): Resample path, pitch shifted (220 Hz for 2x stretch)
-		//    - New handle (started after buffer): Stretch path, pitch preserved (440 Hz)
-		//    Both handles have the CORRECT duration (16s). The old handle's
-		//    pitch is temporarily shifted until the user restarts playback.
+		//    - Old handle (started before the buffer landed): the source at
+		//      its natural speed, so pitch preserved (440 Hz) but only the
+		//      natural 8 s of audio -- the clip's 16 s duration is not filled.
+		//    - New handle (started after the buffer landed): the
+		//      pitch-preserving stretched buffer, 16 s at 440 Hz.
 		const auto freqBefore = dominantFrequency(renderedBefore.data(), renderedBefore.size(), rate, 0);
 		const auto freqAfter = dominantFrequency(renderedAfter.data(), renderedAfter.size(), rate, 0);
 
 		qDebug() << "\n=== Async transition during active playback ===";
 		qDebug() << "  Old handle (started before buffer):";
-		qDebug() << "    totalFrames:" << totalFramesBefore << "(degraded Resample path, ratio 2.0)";
-		qDebug() << "    rendered pitch:" << freqBefore << "Hz (expect ~220 = resample 2x down)";
+		qDebug() << "    totalFrames:" << totalFramesBefore << "(source path, ratio 1.0)";
+		qDebug() << "    rendered pitch:" << freqBefore << "Hz (expect ~440 = pitch preserved)";
 		qDebug() << "  New handle (started after buffer):";
 		qDebug() << "    totalFrames:" << totalFramesAfter << "(stretch path, ratio 1.0)";
 		qDebug() << "    rendered pitch:" << freqAfter << "Hz (expect ~440 = pitch preserved)";
-		qDebug() << "  Old handle has correct duration:" << (std::abs(static_cast<double>(totalFramesBefore) / rate - 16.0) < 0.5);
+		qDebug() << "  Old handle plays the natural 8 s:" << (std::abs(static_cast<double>(totalFramesBefore) / rate - 8.0) < 0.5);
 		qDebug() << "  New handle has correct duration:" << (std::abs(static_cast<double>(totalFramesAfter) / rate - 16.0) < 0.5);
 
-		// Fixed behavior: both handles have correct duration (16s).
-		// Old handle has shifted pitch (220 Hz) until user restarts playback.
-		// New handle has preserved pitch (440 Hz).
-		QVERIFY(std::abs(freqBefore - 220.0) < 40.0); // degraded path: resample pitch (shifted)
+		// Bug 1 contract: Stretch mode preserves pitch at every point, both
+		// while the pitch-preserving buffer is in flight and after it lands.
+		QVERIFY(std::abs(freqBefore - 440.0) < 40.0); // source path: pitch preserved
 		QVERIFY(std::abs(freqAfter - 440.0) < 40.0); // stretched path: pitch preserved
-		QVERIFY(std::abs(static_cast<double>(totalFramesBefore) / rate - 16.0) < 0.5); // correct duration
-		QVERIFY(std::abs(static_cast<double>(totalFramesAfter) / rate - 16.0) < 0.5); // correct duration
+		QVERIFY(std::abs(static_cast<double>(totalFramesBefore) / rate - 8.0) < 0.5); // natural duration
+		QVERIFY(std::abs(static_cast<double>(totalFramesAfter) / rate - 16.0) < 0.5); // full stretched duration
 
 		// Document the behavior: this is INTENDED. The handle is a
 		// self-contained playback unit. Mid-playback buffer swaps would

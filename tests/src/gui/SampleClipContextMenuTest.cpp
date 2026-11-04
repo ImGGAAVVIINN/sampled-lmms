@@ -450,7 +450,7 @@ private slots:
 		// all, which is what makes this guard the single place the decision is
 		// made.
 		const auto platform = QGuiApplication::platformName();
-		if (platform != QLatin1String("xcb") && platform != QLatin1String("wayland"))
+		if (platform != QStringLiteral("xcb") && platform != QStringLiteral("wayland"))
 		{
 			const auto why = QStringLiteral("needs a real display (xcb or wayland); this "
 				"run is on \"%1\" because no DISPLAY/WAYLAND_DISPLAY is set").arg(platform);
@@ -630,7 +630,10 @@ private slots:
 	 * decides pitch.
 	 */
 	void resampleTo16sShiftsPitch()
-	{
+	{		// The drag must stretch the audio to fill the new length; without the
+		// toolbar Stretch edit mode on, an ordinary resize would trim the
+		// source instead (speed preserved, pitch unchanged).
+		getGUI()->songEditor()->m_editor->setEditModeStretch();
 		dragRightEdgeTo(ticksForSeconds(16.0));
 
 		QVERIFY2(std::abs(m_clip->length() - ticksForSeconds(16.0)) <= ticksForSeconds(0.1),
@@ -676,10 +679,16 @@ private slots:
 	}
 
 	/**
-	 * @brief CONTRACT: Resample, drag to 4 s: 4 s at 880 Hz.
+	 * @brief CONTRACT: Resample, enable toolbar Stretch mode, drag to 4 s:
+	 * 4 s at 880 Hz.
 	 */
 	void resampleTo4sShiftsPitch()
 	{
+		// The drag must stretch the audio to fill the new length; without the
+		// toolbar Stretch edit mode on, an ordinary resize would trim the
+		// source instead (speed preserved, pitch unchanged).
+		getGUI()->songEditor()->m_editor->setEditModeStretch();
+
 		dragRightEdgeTo(ticksForSeconds(4.0));
 
 		const auto rendered = renderClip(m_clip);
@@ -693,8 +702,74 @@ private slots:
 				"~880 Hz, got %1").arg(hz)));
 	}
 
+	/**	 * @brief REGRESSION (Bug 2): ordinary resize with the toolbar Stretch
+	 * button OFF must retain its original non-stretch behaviour. Dragging
+	 * the right edge from 8 s to 16 s with the default edit mode (Draw)
+	 * trims the clip to 16 s -- but the retained audio is the first 8 s of
+	 * the source, played at its original speed and pitch. The clip's
+	 * duration grows because the clip now spans 16 s of the timeline, but
+	 * the audible audio is still only the first 8 s at 440 Hz.
+	 */
+	void ordinaryResizeWithToolbarStretchOffTrimsNotStretches()
+	{
+		// Default edit mode: Draw. The toolbar Stretch button is off.
+		getGUI()->songEditor()->m_editor->setEditModeDraw();
+
+		dragRightEdgeTo(ticksForSeconds(16.0));
+
+		// The clip's length grew to 16 s, but the source range was trimmed
+		// (not stretched): the stretch ratio stays at 1.0 and the audible
+		// audio is still the first 8 s at 440 Hz.
+		QVERIFY2(std::abs(m_clip->length() - ticksForSeconds(16.0)) <= ticksForSeconds(0.1),
+			qPrintable(QStringLiteral("clip length %1 ticks, expected ~%2")
+				.arg(int(m_clip->length())).arg(int(ticksForSeconds(16.0)))));
+		QVERIFY2(std::abs(m_clip->stretchRatio() - 1.0) < 0.01,
+			qPrintable(QStringLiteral("stretch ratio %1, expected ~1.0 for an "
+				"ordinary resize").arg(m_clip->stretchRatio())));
+
+		const auto rendered = renderClip(m_clip);
+		const auto seconds = double(rendered.size()) / engineRate();
+		const auto hz = dominantFrequency(rendered, engineRate(), 0);
+		qInfo() << "  ordinary resize -> 16 s:" << seconds << "s @" << hz << "Hz";
+		QVERIFY2(std::abs(seconds - 8.0) < 0.4,
+			qPrintable(QStringLiteral("expected ~8 s of audible audio, got %1").arg(seconds)));
+		QVERIFY2(std::abs(hz - 440.0) < 20.0,
+			qPrintable(QStringLiteral("ordinary resize must preserve pitch: "
+				"expected ~440 Hz, got %1").arg(hz)));
+	}
+
 	/**
-	 * @brief The full user story in one timeline: stretch to 16 s while the
+	 * @brief REGRESSION (Bug 2): shortening an ordinary resize with the
+	 * toolbar Stretch button OFF trims the source range without changing
+	 * the playback speed. Dragging from 8 s to 4 s keeps the first 4 s of
+	 * the source at 440 Hz.
+	 */
+	void ordinaryResizeShorteningTrimsNotStretches()
+	{
+		// Default edit mode: Draw. The toolbar Stretch button is off.
+		getGUI()->songEditor()->m_editor->setEditModeDraw();
+
+		dragRightEdgeTo(ticksForSeconds(4.0));
+
+		QVERIFY2(std::abs(m_clip->length() - ticksForSeconds(4.0)) <= ticksForSeconds(0.1),
+			qPrintable(QStringLiteral("clip length %1 ticks, expected ~%2")
+				.arg(int(m_clip->length())).arg(int(ticksForSeconds(4.0)))));
+		QVERIFY2(std::abs(m_clip->stretchRatio() - 1.0) < 0.01,
+			qPrintable(QStringLiteral("stretch ratio %1, expected ~1.0 for an "
+				"ordinary resize").arg(m_clip->stretchRatio())));
+
+		const auto rendered = renderClip(m_clip);
+		const auto seconds = double(rendered.size()) / engineRate();
+		const auto hz = dominantFrequency(rendered, engineRate(), 0);
+		qInfo() << "  ordinary resize -> 4 s:" << seconds << "s @" << hz << "Hz";
+		QVERIFY2(std::abs(seconds - 4.0) < 0.2,
+			qPrintable(QStringLiteral("expected ~4 s, got %1").arg(seconds)));
+		QVERIFY2(std::abs(hz - 440.0) < 20.0,
+			qPrintable(QStringLiteral("ordinary resize must preserve pitch: "
+				"expected ~440 Hz, got %1").arg(hz)));
+	}
+
+	/**	 * @brief The full user story in one timeline: stretch to 16 s while the
 	 * mode is still Resample (220 Hz), then select Stretch from the menu
 	 * *without touching the length* -- and the very next playback is 440 Hz.
 	 *
@@ -703,7 +778,12 @@ private slots:
 	 */
 	void selectingStretchFromMenuChangesWhatIsHeard()
 	{
-		// 1. Drag to 16 s while still in Resample mode.
+		// 1. Enable toolbar Stretch edit mode and drag to 16 s while still in
+		// Resample mode. The toolbar Stretch mode is what makes the drag
+		// stretch the audio (rather than trim it); the Resample pitch mode
+		// is what shifts the pitch to 220 Hz.
+		getGUI()->songEditor()->m_editor->setEditModeStretch();
+
 		dragRightEdgeTo(ticksForSeconds(16.0));
 		QCOMPARE(m_clip->pitchMode(), SampleClip::PitchMode::Resample);
 
