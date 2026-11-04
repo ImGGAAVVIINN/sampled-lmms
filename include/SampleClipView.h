@@ -32,6 +32,7 @@
 namespace lmms
 {
 
+class Sample;
 class SampleClip;
 
 namespace gui
@@ -51,6 +52,44 @@ public slots:
 	void reverseSample();
 	void setAutomationGhost();
 
+public:
+	//! @brief Which sample data to draw and where to draw it.
+	//!
+	//! Two independent controls feed into this:
+	//!   * the toolbar's Stretch edit-mode toggle decides the *geometry* --
+	//!     with it off the waveform keeps its natural (un-stretched) width,
+	//!     with it on the waveform spans the clip's full resized width;
+	//!   * the clip's pitch mode decides *which buffer* is played, and
+	//!     therefore which buffer is honest to display when the waveform is
+	//!     shown stretched.
+	//! `paintEvent` and `updateSample` both go through here so the cached
+	//! thumbnail and the drawn geometry can never disagree.
+	struct WaveformPlan
+	{
+		const Sample* buffer = nullptr;
+		float sampleStart = 0.0f;
+		float sampleEnd = 1.0f;
+		float x = 0.0f;
+		float width = 0.0f;
+	};
+
+	/**
+	 * @brief The waveform geometry @a paintEvent is about to draw, as a pure
+	 * function of the clip, the buffer being drawn, the zoom and the toolbar's
+	 * Stretch edit mode.
+	 *
+	 * Exposed (rather than inlined into `waveformPlan`) so the invariant the
+	 * user can actually see -- "with the toolbar toggle off, resizing the clip
+	 * must never rescale the waveform" -- can be checked against the real
+	 * drawing geometry instead of against a screenshot proxy.
+	 *
+	 * @param pxPerTick horizontal zoom, pixels per timeline tick.
+	 * @param stretchMode the toolbar's Stretch edit-mode toggle.
+	 * @param xOffset horizontal scroll offset subtracted from the drawing position.
+	 */
+	static WaveformPlan waveformGeometry(const SampleClip& clip, const Sample& buffer,
+		double pxPerTick, bool stretchMode, double xOffset);
+
 
 
 protected:
@@ -65,6 +104,14 @@ protected:
 	bool recordingCapabilitiesAvailable() const;
 
 private:
+	//! @brief The buffer whose samples the waveform should be drawn from.
+	//!
+	//! Deliberately independent of widget geometry so it can be consulted
+	//! while the view is still being constructed.
+	const Sample* waveformBuffer() const;
+
+	WaveformPlan waveformPlan();
+
 	SampleClip * m_clip;
 	SampleThumbnail m_sampleThumbnail;
 	QPixmap m_paintPixmap;

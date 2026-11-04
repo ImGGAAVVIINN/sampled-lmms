@@ -439,7 +439,15 @@ void SongEditor::updateRubberband()
 
 void SongEditor::setEditMode( EditMode mode )
 {
+	if ( m_mode == mode )
+	{
+		return;
+	}
 	m_mode = mode;
+	// The edit mode is view state only -- no model changes -- so this is the
+	// only way sample-clip views learn that the toolbar's Stretch toggle
+	// moved and that their waveform has to be redrawn accordingly.
+	emit editModeChanged();
 }
 
 void SongEditor::setEditModeDraw()
@@ -1024,7 +1032,7 @@ SongEditorWindow::SongEditorWindow(Song* song) :
 	connect(m_drawModeAction, SIGNAL(triggered()), m_editor, SLOT(setEditModeDraw()));
 	connect(m_knifeModeAction, SIGNAL(triggered()), m_editor, SLOT(setEditModeKnife()));
 	connect(m_selectModeAction, SIGNAL(triggered()), m_editor, SLOT(setEditModeSelect()));
-	connect(m_stretchModeAction, SIGNAL(triggered()), m_editor, SLOT(setEditModeStretch()));
+	connect(m_stretchModeAction, SIGNAL(triggered()), this, SLOT(toggleStretchMode()));
 
 	editActionsToolBar->addAction( m_drawModeAction );
 	editActionsToolBar->addAction( m_knifeModeAction );
@@ -1224,8 +1232,51 @@ void SongEditorWindow::updateSnapLabel(){
 
 
 
-void SongEditorWindow::syncEditMode(){
-	m_editModeGroup->checkedAction()->trigger();
+void SongEditorWindow::syncEditMode()
+{
+	// The edit mode group is exclusive; the checked action always matches
+	// m_editor->m_mode because clicking an action both checks it and calls
+	// setEditMode(). Re-triggering the checked action on every mouse release
+	// (which is where this is called from) would re-run the mode slot and
+	// break toggle behaviour (e.g. Stretch would flip back to Draw).
+	// Just ensure the UI stays in sync without re-emitting triggered().
+	if (auto* checked = m_editModeGroup->checkedAction())
+	{
+		// If the checked action doesn't match the current mode (e.g. after a
+		// project load), check the correct one. Otherwise do nothing.
+		SongEditor::EditMode checkedMode = SongEditor::EditMode::Draw;
+		if (checked == m_drawModeAction) checkedMode = SongEditor::EditMode::Draw;
+		else if (checked == m_knifeModeAction) checkedMode = SongEditor::EditMode::Knife;
+		else if (checked == m_selectModeAction) checkedMode = SongEditor::EditMode::Select;
+		else if (checked == m_stretchModeAction) checkedMode = SongEditor::EditMode::Stretch;
+
+		if (checkedMode != m_editor->m_mode)
+		{
+			switch (m_editor->m_mode)
+			{
+				case SongEditor::EditMode::Draw: m_drawModeAction->setChecked(true); break;
+				case SongEditor::EditMode::Knife: m_knifeModeAction->setChecked(true); break;
+				case SongEditor::EditMode::Select: m_selectModeAction->setChecked(true); break;
+				case SongEditor::EditMode::Stretch: m_stretchModeAction->setChecked(true); break;
+			}
+		}
+	}
+}
+
+
+void SongEditorWindow::toggleStretchMode()
+{
+	// Toggle Stretch mode: if already in Stretch mode, return to Draw mode.
+	if (m_editor->m_mode == SongEditor::EditMode::Stretch)
+	{
+		m_editor->setEditMode(SongEditor::EditMode::Draw);
+		m_drawModeAction->setChecked(true);
+	}
+	else
+	{
+		m_editor->setEditMode(SongEditor::EditMode::Stretch);
+		m_stretchModeAction->setChecked(true);
+	}
 }
 
 

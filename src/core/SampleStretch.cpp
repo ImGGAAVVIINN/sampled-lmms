@@ -207,16 +207,25 @@ namespace
 
 struct QueuedJob
 {
-	QObject* owner = nullptr;
+	/// Owning object's delivery point, or null once it has gone away. Only
+	/// ever read or written with the manager's mutex held, which is also what
+	/// ~SampleStretchResult() takes to cancel, so a receiver is never used
+	/// after it was destroyed.
+	lmms::SampleStretchResult* receiver = nullptr;
 	uint64_t generation = 0;
 	uint64_t key = 0;
-	std::shared_ptr<const SampleBuffer> buffer;
+	std::shared_ptr<const lmms::SampleBuffer> buffer;
 	int startFrame = 0;
 	int endFrame = 0;
-	sample_rate_t sourceRate = 0;
-	sample_rate_t engineRate = 0;
+	lmms::sample_rate_t sourceRate = 0;
+	lmms::sample_rate_t engineRate = 0;
 	double ratio = 1.0;
 };
+
+/// The one and only manager, or null before it is first needed. Kept as a
+/// plain pointer so that a receiver destroyed without ever having requested
+/// work does not start the worker thread just to cancel nothing.
+SampleStretchManager* s_manager = nullptr;
 
 } // namespace
 
@@ -224,14 +233,20 @@ struct SampleStretchManager::Impl
 {
 	QMutex mutex;
 	QWaitCondition waitCondition;
+	/// Jobs waiting to be computed, oldest first. At most one per receiver.
 	std::vector<QueuedJob> queue;
+	/// The job the worker is inside SampleStretch::stretch() with, while there
+	/// is one; `cancelled` is set if its receiver went away in the meantime.
+	QueuedJob active;
+	bool computing = false;
 	bool quit = false;
 	int jobsCompleted = 0;
 	std::unique_ptr<SampleStretchManager::Worker> worker;
 };
 
 /// Worker thread draining the manager's job queue. Runs entirely off the GUI
-/// and audio threads; results are emitted back via queued signal connections.
+/// and audio threads; results are handed back through a queued invocation on
+/// the requesting object's own thread.
 class SampleStretchManager::Worker : public QThread
 {
 public:
@@ -261,34 +276,69 @@ void SampleStretchManager::Worker::run()
 			if (m_impl->quit) { return; }
 			job = std::move(m_impl->queue.front());
 			m_impl->queue.erase(m_impl->queue.begin());
+			m_impl->active = job;
+			m_impl->computing = true;
 		}
-		m_manager->processJob(job.owner, job.generation, job.key, job.buffer,
-			job.startFrame, job.endFrame, job.sourceRate, job.engineRate, job.ratio);
+
+		// The expensive part, with no lock held: neither the GUI thread nor
+		// the audio thread is involved here.
+		auto stretched = SampleStretch::stretch(job.buffer, job.startFrame,
+			job.endFrame, job.sourceRate, job.engineRate, job.ratio);
+
+		const auto locker = QMutexLocker{&m_impl->mutex};
+		m_impl->computing = false;
+		++m_impl->jobsCompleted;
+		// Null if ~SampleStretchResult() ran while this was being computed.
+		auto* receiver = m_impl->active.receiver;
+		m_impl->active = QueuedJob{};
+		if (receiver != nullptr)
+		{
+			// Queued, and posted with the manager's mutex held so that
+			// ~SampleStretchResult() cannot run between the check above and this
+			// call. The slot runs on the receiver's thread; if the receiver is
+			// destroyed before then, Qt discards the pending event.
+			//
+			// Posting happens *before* the idle broadcast below on purpose: a
+			// thread waiting in waitUntilIdle() is told the manager is done, and
+			// by then the result is guaranteed to be sitting in the receiver's
+			// event queue rather than still in flight. waitForPendingResults()
+			// relies on that ordering to know that an idle manager has nothing
+			// left to deliver.
+			QMetaObject::invokeMethod(receiver, "deliver", Qt::QueuedConnection,
+				Q_ARG(uint64_t, job.generation),
+				Q_ARG(uint64_t, job.key),
+				Q_ARG(std::shared_ptr<Sample>, stretched));
+		}
+		m_impl->waitCondition.wakeAll();
 	}
 }
 
 SampleStretchManager::SampleStretchManager()
 	: m_impl(std::make_unique<Impl>())
 {
-	// Both argument types must be registered so that resultReady() can be
-	// delivered across threads through a queued connection. Note that
-	// uint64_t is not the same C++ type as quint64 on LP64 platforms, so
-	// Qt's built-in QMetaType::ULongLong does not cover it.
+	// Both argument types must be registered so that a result can be delivered
+	// across threads through a queued invocation. Note that uint64_t is not
+	// the same C++ type as quint64 on LP64 platforms, so Qt's built-in
+	// QMetaType::ULongLong does not cover it.
 	qRegisterMetaType<uint64_t>("uint64_t");
 	qRegisterMetaType<std::shared_ptr<Sample>>("std::shared_ptr<Sample>");
 	// The manager lives on the GUI thread; the worker thread only computes.
+	// Published before the worker starts so that a receiver destroyed at any
+	// point after this finds a manager to cancel with.
+	s_manager = this;
 	m_impl->worker = std::make_unique<Worker>(this, m_impl.get());
 	m_impl->worker->start();
 }
 
 SampleStretchManager::~SampleStretchManager()
 {
+	s_manager = nullptr;
 	{
 		const auto locker = QMutexLocker{&m_impl->mutex};
 		m_impl->quit = true;
 		m_impl->queue.clear();
+		m_impl->waitCondition.wakeAll();
 	}
-	m_impl->waitCondition.wakeAll();
 	m_impl->worker->wait();
 }
 
@@ -301,7 +351,7 @@ SampleStretchManager& SampleStretchManager::instance()
 }
 
 void SampleStretchManager::request(
-	QObject* owner,
+	SampleStretchResult* receiver,
 	uint64_t generation,
 	uint64_t key,
 	std::shared_ptr<const SampleBuffer> buffer,
@@ -311,8 +361,7 @@ void SampleStretchManager::request(
 	double ratio)
 {
 	auto job = QueuedJob{};
-	job.owner = owner;
-	job.generation = generation;
+	job.receiver = receiver;	job.generation = generation;
 	job.key = key;
 	job.buffer = std::move(buffer);
 	job.startFrame = startFrame;
@@ -323,9 +372,50 @@ void SampleStretchManager::request(
 
 	{
 		const auto locker = QMutexLocker{&m_impl->mutex};
+		// One pending job per receiver, always the newest: a request supersedes
+		// whatever the same receiver asked for but that has not started yet.
+		std::erase_if(m_impl->queue,
+			[&](const QueuedJob& queued) { return queued.receiver == receiver; });
 		m_impl->queue.push_back(std::move(job));
 	}
-	m_impl->waitCondition.wakeOne();
+	// The worker and any waitUntilIdle() caller block on the same condition,
+	// so wake everything: a wakeOne() could otherwise be consumed by an
+	// idle-waiter and leave the new job sitting in the queue.
+	m_impl->waitCondition.wakeAll();
+}
+
+void SampleStretchManager::waitUntilIdle()
+{
+	// Qt 5's wait(QMutex*, predicate) is not available, so loop: the worker
+	// wakes on every state change and the destructor wakes on shutdown.
+	{
+		const auto locker = QMutexLocker{&m_impl->mutex};
+		while (!m_impl->queue.empty() || m_impl->computing)
+		{
+			m_impl->waitCondition.wait(&m_impl->mutex);
+		}
+	}
+}
+
+void SampleStretchManager::waitForPendingResults()
+{
+	// The worker posts each result to this thread's event queue before it
+	// announces that it went idle, so once the queue is empty every result
+	// this thread is owed is either already applied or already queued here.
+	// Draining the event loop dispatches those deliveries; a delivery can in
+	// principle make a clip ask for more work, so re-check afterwards and only
+	// stop when a whole pass leaves the manager idle with nothing new computed.
+	// The pass limit keeps an unrelated event storm (the export progress timer
+	// fires every 200 ms, so `processEvents` alone can never look idle) from
+	// turning this into an endless loop.
+	for (auto pass = 0; pass < 8; ++pass)
+	{
+		waitUntilIdle();
+		const auto completed = jobsCompleted();
+		QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
+		waitUntilIdle();
+		if (jobsCompleted() == completed) { return; }
+	}
 }
 
 auto SampleStretchManager::jobsCompleted() const -> int
@@ -334,28 +424,33 @@ auto SampleStretchManager::jobsCompleted() const -> int
 	return m_impl->jobsCompleted;
 }
 
-void SampleStretchManager::processJob(
-	QObject* owner,
-	uint64_t generation,
-	uint64_t key,
-	const std::shared_ptr<const SampleBuffer>& buffer,
-	int startFrame, int endFrame,
-	sample_rate_t sourceRate,
-	sample_rate_t engineRate,
-	double ratio)
+void SampleStretchManager::cancelPending(SampleStretchResult* receiver)
 {
-	auto stretched = SampleStretch::stretch(buffer, startFrame, endFrame, sourceRate, engineRate, ratio);
-
+	auto* manager = ifExists();
+	if (manager == nullptr) { return; }
+	const auto locker = QMutexLocker{&manager->m_impl->mutex};
+	std::erase_if(manager->m_impl->queue,
+		[&](const QueuedJob& queued) { return queued.receiver == receiver; });
+	if (manager->m_impl->computing && manager->m_impl->active.receiver == receiver)
 	{
-		const auto locker = QMutexLocker{&m_impl->mutex};
-		++m_impl->jobsCompleted;
+		// Computation is already under way; the worker will drop the result.
+		manager->m_impl->active.receiver = nullptr;
 	}
+}
 
-	// Emitted from the worker thread; delivered on the owner's thread via a
-	// queued connection (the owner is used as the connection context). If the
-	// owner was destroyed, nothing is delivered and the result is dropped.
-	Q_UNUSED(owner)
-	emit resultReady(generation, key, std::move(stretched));
+SampleStretchManager* SampleStretchManager::ifExists() { return s_manager; }
+
+SampleStretchResult::~SampleStretchResult()
+{
+	// Stop the worker from delivering into this object as it disappears. Either
+	// this runs first, in which case the worker finds the receiver nulled out
+	// and posts nothing, or the worker wins the mutex and its queued invocation
+	// is already posted -- which is still safe, because ~QObject() discards
+	// events posted to an object that is going away.
+	if (auto* manager = SampleStretchManager::ifExists())
+	{
+		manager->cancelPending(this);
+	}
 }
 
 } // namespace lmms

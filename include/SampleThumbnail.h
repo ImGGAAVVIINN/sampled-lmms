@@ -124,16 +124,29 @@ private:
 	{
 		QString filePath;
 		QDateTime lastModified;
+		//! Identity of the in-memory buffer, when the sample has no file. A
+		//! sample with a file keeps this null so the file path alone keys it.
+		const void* bufferIdentity = nullptr;
+		qint64 bufferSize = 0;
 
 		friend bool operator==(const SampleThumbnailEntry& first, const SampleThumbnailEntry& second)
 		{
-			return first.filePath == second.filePath && first.lastModified == second.lastModified;
+			return first.filePath == second.filePath
+				&& first.lastModified == second.lastModified
+				&& first.bufferIdentity == second.bufferIdentity
+				&& first.bufferSize == second.bufferSize;
 		}
 	};
 
 	struct Hash
 	{
-		std::size_t operator()(const SampleThumbnailEntry& entry) const noexcept { return qHash(entry.filePath); }
+		std::size_t operator()(const SampleThumbnailEntry& entry) const noexcept
+		{
+			auto h = qHash(entry.filePath);
+			h = h * 31 + reinterpret_cast<std::size_t>(entry.bufferIdentity);
+			h = h * 31 + static_cast<std::size_t>(entry.bufferSize);
+			return h;
+		}
 	};
 
 	using ThumbnailCache = std::vector<Thumbnail>;

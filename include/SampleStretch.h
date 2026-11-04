@@ -92,16 +92,52 @@ private:
 };
 
 /**
+ * @class SampleStretchResult
+ * @brief Delivery point for one clip's asynchronous stretch results.
+ *
+ * Owned (as a child) by the object that requested the work, so it is
+ * destroyed together with that object. The worker thread reaches it only
+ * through a queued invocation, which Qt drops if the receiver is gone; a
+ * result that arrives after its clip was destroyed is therefore discarded
+ * rather than written into freed memory.
+ */
+class SampleStretchResult : public QObject
+{
+	Q_OBJECT
+public:
+	explicit SampleStretchResult(QObject* owner)
+		: QObject(owner)
+	{
+	}
+
+	~SampleStretchResult() override;
+
+public slots:
+	/// Invoked on the owner's thread with the result computed for it.
+	void deliver(uint64_t generation, uint64_t key, std::shared_ptr<Sample> stretched)
+	{
+		emit ready(generation, key, std::move(stretched));
+	}
+
+signals:
+	void ready(
+		uint64_t generation,
+		uint64_t key,
+		std::shared_ptr<Sample> stretched);
+};
+
+/**
  * @class SampleStretchManager
  * @brief Asynchronous job manager for sample-clip time-stretch processing.
  *
  * Owns a single worker thread. Clips request jobs through request(); the
- * worker computes the stretched sample off-thread and emits resultReady(),
- * which is delivered on the requesting clip's thread (the GUI thread) thanks
- * to Qt's queued connections. If the clip is destroyed before the result
- * arrives, the connection is torn down automatically and the result is
- * dropped. Callers must still verify the generation id before committing so
- * that stale results (superseded by a newer request) are never applied.
+ * worker computes the stretched sample off-thread and hands the result to the
+ * request's receiver on that receiver's own thread. Nothing about a request
+ * ever blocks the calling thread, so the GUI stays responsive while a stretch
+ * is computed and the real-time audio thread is never involved at all.
+ *
+ * A caller still has to verify the generation id it passed in before applying
+ * a result, so that a result superseded by a newer request is never committed.
  */
 class SampleStretchManager : public QObject
 {
@@ -112,12 +148,14 @@ public:
 	/**
 	 * @brief Request an asynchronous stretch job.
 	 *
-	 * @param owner Context object that receives resultReady() on its own thread.
-	 * @param generation Caller-chosen id echoed back with the result.
-	 * @param key Cache key of the requested result, echoed back with the result.
+	 * Returns as soon as the job is queued. At most one job per receiver is
+	 * kept waiting: requesting again before the previous job started replaces
+	 * it, so dragging a clip edge -- which produces a request per mouse-move,
+	 * far faster than any one of them can be computed -- costs one computation
+	 * for the latest parameters instead of one per event.
 	 */
 	void request(
-		QObject* owner,
+		SampleStretchResult* receiver,
 		uint64_t generation,
 		uint64_t key,
 		std::shared_ptr<const SampleBuffer> buffer,
@@ -126,28 +164,50 @@ public:
 		sample_rate_t engineRate,
 		double ratio);
 
+	/**
+	 * @brief Block until no job is queued or running.
+	 *
+	 * A result travels back through a queued invocation, so this only
+	 * guarantees that the computation finished -- the receiver's slot still has
+	 * to be dispatched by its thread's event loop. For tests and shutdown only;
+	 * editing code must never wait on it.
+	 */
+	void waitUntilIdle();
+
+	/**
+	 * @brief Block until every outstanding result has reached its receiver.
+	 *
+	 * Like @ref waitUntilIdle, but also runs the calling thread's event loop so
+	 * that the queued deliveries are actually dispatched and the callers see
+	 * their stretched buffers. Use this wherever work must not begin before the
+	 * pitch-preserving audio exists -- exporting a project is the case that
+	 * matters: the renderer resolves every clip's playback plan once, at the
+	 * start of the export, and a clip whose stretch has not landed yet would be
+	 * rendered through the resampling fallback, changing its pitch.
+	 *
+	 * Must be called from a thread with an event loop, and never from the real
+	 * time audio thread or a worker thread.
+	 */
+	void waitForPendingResults();
+
 	/// Number of jobs computed so far (for tests/diagnostics).
 	auto jobsCompleted() const -> int;
 
-	/// Compute one job and emit resultReady(). Internal: called by the
-	/// manager's worker thread only.
-	void processJob(
-		QObject* owner,
-		uint64_t generation,
-		uint64_t key,
-		const std::shared_ptr<const SampleBuffer>& buffer,
-		int startFrame, int endFrame,
-		sample_rate_t sourceRate,
-		sample_rate_t engineRate,
-		double ratio);
+	/**
+	 * @brief Forget any work still outstanding for @a receiver.
+	 *
+	 * Called from ~SampleStretchResult(). Queued jobs are dropped outright; a
+	 * job already being computed is marked cancelled so that the worker skips
+	 * delivery instead of posting to a dead object.
+	 */
+	void cancelPending(SampleStretchResult* receiver);
+
+	/// The running manager, or nullptr if none was ever created. Lets
+	/// cancelPending() stay cheap and safe for a receiver whose clip never
+	/// requested any work.
+	static SampleStretchManager* ifExists();
 
 	~SampleStretchManager() override;
-
-signals:
-	void resultReady(
-		uint64_t generation,
-		uint64_t key,
-		std::shared_ptr<Sample> stretched);
 
 private:
 	SampleStretchManager();
@@ -157,6 +217,8 @@ private:
 	struct Impl;
 	class Worker;
 	std::unique_ptr<Impl> m_impl;
+
+	friend class Worker;
 };
 
 } // namespace lmms

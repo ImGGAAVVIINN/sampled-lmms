@@ -44,6 +44,7 @@
 #include "MidiClipView.h"
 #include "PatternClip.h"
 #include "PatternStore.h"
+#include "SampleClip.h"
 #include "Song.h"
 #include "SongEditor.h"
 #include "StringPairDrag.h"
@@ -483,9 +484,10 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 				getGUI()->songEditor()->m_editor->selectAllClips( false );
 				m_clip->addJournalCheckPoint();
 
-				// Action::Move, Action::Resize, Action::ResizeLeft and Action::Stretch
-				// Action::Split action doesn't disable Clip journalling
-				if (m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft || m_action == Action::Stretch)
+				// Action::Move, Action::Resize, Action::ResizeLeft, Action::Stretch
+				// and Action::StretchLeft don't disable Clip journalling
+				if (m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft
+					|| m_action == Action::Stretch || m_action == Action::StretchLeft)
 				{
 					m_clip->setJournalling(false);
 				}
@@ -501,9 +503,20 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 				else if (stretchMode && pos.x() >= width() - resizeGripWidth())
 				{
 					// Stretch mode: dragging the right edge of a sample clip
-					// changes its timeline duration continuously; the source
-					// sample is never modified (see SampleClip::changeLength).
+					// time-stretches it (pitch preserved) -- the edit goes
+					// through SampleClip::stretchToLength, never plain
+					// changeLength. Outside stretch mode the same drag is an
+					// ordinary speed-preserving trim (Action::Resize).
 					m_action = Action::Stretch;
+					setCursor( Qt::SizeHorCursor );
+				}
+				else if (stretchMode && pos.x() < resizeGripWidth())
+				{
+					// Stretch mode: dragging the left edge re-stretches the whole
+					// sample with the right edge anchored
+					// (SampleClip::stretchFromStart), instead of the ordinary
+					// left trim of Action::ResizeLeft.
+					m_action = Action::StretchLeft;
 					setCursor( Qt::SizeHorCursor );
 				}
 				else if (pos.x() >= width() - resizeGripWidth())
@@ -538,7 +551,8 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 						arg( m_clip->startPosition().getTicks() %
 								TimePos::ticksPerBar() ) );
 				}
-				else if( m_action == Action::Resize || m_action == Action::ResizeLeft || m_action == Action::Stretch )
+				else if( m_action == Action::Resize || m_action == Action::ResizeLeft
+						|| m_action == Action::Stretch || m_action == Action::StretchLeft )
 				{
 					s_textFloat->setTitle( tr( "Current length" ) );
 					s_textFloat->setText( tr( "%1:%2 (%3:%4 to %5:%6)" ).
@@ -570,7 +584,7 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 					? tr("Press <%1> or <Alt> for unquantized splitting.\nPress <Shift> for destructive splitting.")
 					: tr("Press <%1> or <Alt> for unquantized splitting.");
 			}
-			else if (m_action == Action::Stretch)
+			else if (m_action == Action::Stretch || m_action == Action::StretchLeft)
 			{
 				hint = tr("Press <%1> or <Alt> for unquantized stretching.");
 			}
@@ -709,26 +723,27 @@ void ClipView::mouseMoveEvent( QMouseEvent * me )
 			( *it )->movePosition( newPos + m_initialOffsets[index] );
 		}
 	}
-	else if( (m_action == Action::Resize || m_action == Action::ResizeLeft || m_action == Action::Stretch) )
+	else if( (m_action == Action::Resize || m_action == Action::ResizeLeft
+			  || m_action == Action::Stretch || m_action == Action::StretchLeft) )
 	{
 		const float snapSize = getGUI()->songEditor()->m_editor->getSnapSize();
 		// Length in ticks of one snap increment
 		const TimePos snapLength = TimePos( (int)(snapSize * TimePos::ticksPerBar()) );
+		auto* const sClip = dynamic_cast<SampleClip*>(m_clip);
 
 		if( m_action == Action::Resize || m_action == Action::Stretch )
 		{
-			// The clip's new length (Stretch: right-edge drag changes the
-			// timeline duration; the source sample is never modified)
+			// The clip's new length from the right-edge drag
 			TimePos l = static_cast<int>(pos.x() * TimePos::ticksPerBar() / ppb);
 
-			// If the user is holding alt, or pressed ctrl after beginning the drag, don't quantize
+			// Quantize the *target length* only; how that length is
+			// applied depends on the editing mode below.
 			if ( unquantizedModHeld(me) )
 			{	// We want to preserve this adjusted offset,
 				// even if the user switches to snapping later
 				setInitialPos( m_initialMousePos );
 				// Don't resize to less than 1 tick
-				m_clip->changeLength( qMax<int>( 1, l ) );
-				m_clip->setAutoResize(false);
+				l = qMax<int>( 1, l );
 			}
 			else if ( me->modifiers() & Qt::ShiftModifier )
 			{	// If shift is held, quantize clip's end position
@@ -736,8 +751,7 @@ void ClipView::mouseMoveEvent( QMouseEvent * me )
 				// The end position has to be after the clip's start
 				TimePos min = m_initialClipPos.quantize( snapSize );
 				if ( min <= m_initialClipPos ) min += snapLength;
-				m_clip->changeLength( qMax<int>(min - m_initialClipPos, end - m_initialClipPos) );
-				m_clip->setAutoResize(false);
+				l = qMax<int>(min - m_initialClipPos, end - m_initialClipPos);
 			}
 			else
 			{	// Otherwise, resize in fixed increments
@@ -746,7 +760,23 @@ void ClipView::mouseMoveEvent( QMouseEvent * me )
 				// Don't resize to less than 1 tick
 				auto min = TimePos(initialLength % snapLength);
 				if (min < 1) min += snapLength;
-				m_clip->changeLength( qMax<int>( min, initialLength + offset) );
+				l = qMax<int>( min, initialLength + offset);
+			}
+
+			// The mode decides the *semantics* of the drag:
+			//   Sample clip  -> time-stretch the audio to fill the new
+			//     length (pitch preserved, stretch ratio changes). The
+			//     pitch method (Resample vs Stretch) selected from the
+			//     context menu decides how the stretched ratio is rendered.
+			//   Otherwise     -> ordinary trim/extend: the playback speed
+			//     never changes.
+			if (sClip != nullptr)
+			{
+				sClip->stretchToLength(l);
+			}
+			else
+			{
+				m_clip->changeLength(l);
 				m_clip->setAutoResize(false);
 			}
 		}
@@ -789,28 +819,45 @@ void ClipView::mouseMoveEvent( QMouseEvent * me )
 				t = qMin<int>( m_initialClipEnd - minLength, m_initialClipPos + offset );
 			}
 
-			TimePos positionOffset = m_clip->startPosition() - t;
-			if (m_clip->length() + positionOffset >= 1)
+			// The mode decides the *semantics* of the left-edge drag:
+			//   Stretch mode -> the right edge stays anchored and the
+			//     whole sample is re-stretched to fill the new length
+			//     (no audio is discarded as a side effect of trimming).
+			//   Otherwise    -> ordinary trim: the retained audio keeps
+			//     its original playback speed.
+			if (m_action == Action::StretchLeft && sClip != nullptr)
 			{
-				m_clip->movePosition(t);
-				m_clip->changeLength(m_clip->length() + positionOffset);
-				if (pClip)
+				sClip->stretchFromStart(t);
+			}
+			else if (sClip != nullptr)
+			{
+				sClip->trimFromStart(t);
+			}
+			else
+			{
+				TimePos positionOffset = m_clip->startPosition() - t;
+				if (m_clip->length() + positionOffset >= 1)
 				{
-					// Modulus the start time offset as we need it only for offsets
-					// inside the pattern length. This is done to prevent a value overflow.
-					// The start time offset may still become larger than the pattern length
-					// whenever the pattern length decreases without a clip resize following.
-					// To deal safely with it, always modulus before use.
-					tick_t patternLength = Engine::patternStore()->lengthOfPattern(pClip->patternIndex())
-							* TimePos::ticksPerBar();
-					TimePos position = (pClip->startTimeOffset() + positionOffset) % patternLength;
-					pClip->setStartTimeOffset(position);
+					m_clip->movePosition(t);
+					m_clip->changeLength(m_clip->length() + positionOffset);
+					if (pClip)
+					{
+						// Modulus the start time offset as we need it only for offsets
+						// inside the pattern length. This is done to prevent a value overflow.
+						// The start time offset may still become larger than the pattern length
+						// whenever the pattern length decreases without a clip resize following.
+						// To deal safely with it, always modulus before use.
+						tick_t patternLength = Engine::patternStore()->lengthOfPattern(pClip->patternIndex())
+								* TimePos::ticksPerBar();
+						TimePos position = (pClip->startTimeOffset() + positionOffset) % patternLength;
+						pClip->setStartTimeOffset(position);
+					}
+					else
+					{
+						m_clip->setStartTimeOffset(m_clip->startTimeOffset() + positionOffset);
+					}
+					m_clip->setAutoResize(false);
 				}
-				else
-				{
-					m_clip->setStartTimeOffset(m_clip->startTimeOffset() + positionOffset);
-				}
-				m_clip->setAutoResize(false);
 			}
 		}
 		s_textFloat->setText( tr( "%1:%2 (%3:%4 to %5:%6)" ).
@@ -849,10 +896,12 @@ void ClipView::mouseReleaseEvent( QMouseEvent * me )
 	{
 		setSelected( !isSelected() );
 	}
-	else if( m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft )
+	else if( m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft
+			 || m_action == Action::Stretch || m_action == Action::StretchLeft )
 	{
 		// TODO: Fix m_clip->setJournalling() consistency
-		if (m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft || m_action == Action::Stretch)
+		if (m_action == Action::Move || m_action == Action::Resize || m_action == Action::ResizeLeft
+			|| m_action == Action::Stretch || m_action == Action::StretchLeft)
 		{
 			m_clip->setJournalling( true );
 		}
@@ -1260,7 +1309,22 @@ bool ClipView::splitClip(const TimePos pos)
 
 	auto rightClip = m_clip->clone();
 
-	m_clip->changeLength(splitPos - m_initialClipPos);
+	// The left half keeps the clip's start and start-time offset, so its
+	// audible range runs from the clip's left edge to the split point. Use
+	// trimToLength() rather than changeLength(): changeLength() deliberately
+	// leaves the source range untouched, so the left half would still claim
+	// the WHOLE sample and stretching it would then fit the entire original
+	// audio into the shortened clip -- the reported cut-then-stretch bug.
+	// trimToLength() narrows m_sourceEndFrame to the frame the new right edge
+	// lands on, using the same timeline-to-source mapping playback uses.
+	if (auto* sClip = dynamic_cast<SampleClip*>(m_clip))
+	{
+		sClip->trimToLength(splitPos - m_initialClipPos);
+	}
+	else
+	{
+		m_clip->changeLength(splitPos - m_initialClipPos);
+	}
 	m_clip->setAutoResize(false);
 
 	rightClip->movePosition(splitPos);

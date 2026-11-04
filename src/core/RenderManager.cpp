@@ -28,6 +28,7 @@
 #include "RenderManager.h"
 
 #include "PatternStore.h"
+#include "SampleStretch.h"
 #include "Song.h"
 
 
@@ -134,6 +135,15 @@ void RenderManager::renderProject()
 
 void RenderManager::render(QString outputPath)
 {
+	// A clip in Stretch mode keeps its pitch-preserving audio in a buffer that
+	// is computed off-thread, and the export below resolves every clip's
+	// playback plan exactly once -- at the start of the render. If a stretch is
+	// still being computed at that moment (a freshly opened project, or one
+	// whose ratio was changed moments ago), the clip would be rendered through
+	// the resampling fallback and come out at the wrong pitch. Give the
+	// outstanding stretches a chance to land first.
+	SampleStretchManager::instance().waitForPendingResults();
+
 	m_activeRenderer = std::make_unique<ProjectRenderer>(m_outputSettings, m_format, outputPath);
 
 	if( m_activeRenderer->isReady() )

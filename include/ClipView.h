@@ -283,6 +283,7 @@ private:
 		Resize,
 		ResizeLeft,
 		Stretch,
+		StretchLeft,
 		Split,
 		CopySelection,
 		ToggleSelected

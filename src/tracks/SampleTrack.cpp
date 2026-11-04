@@ -25,6 +25,8 @@
 
 #include "SampleTrack.h"
 
+#include <map>
+
 #include <QDomElement>
 
 #include "EffectChain.h"
@@ -77,6 +79,11 @@ bool SampleTrack::play( const TimePos & _start, const f_cnt_t _frames,
 
 
 	clipVector clips;
+	// One playback plan per clip, produced by SampleClip::computePlaybackPlan
+	// and handed to the play handle. The plan is the only place that turns a
+	// timeline position into a source range, a buffer and a resample ratio, so
+	// the handle can never disagree with the decision made here.
+	std::map<SampleClip*, SampleClip::PlaybackPlan> plans;
 	class PatternTrack * pattern_track = nullptr;
 	if( _clip_num >= 0 )
 	{
@@ -90,13 +97,14 @@ bool SampleTrack::play( const TimePos & _start, const f_cnt_t _frames,
 		{
 			return false;
 		}
-		clips.push_back(sClip);
+		// Pattern preview: `_start` is an offset inside the pattern rather than an
+		// absolute timeline position, so it is measured from the clip's start.
+		plans[sClip] = sClip->computePlaybackPlan(
+			sClip->outputFramesFor(_start - sClip->startPosition()));
+		clips.push_back( sClip );
 		if (trackContainer() == Engine::patternStore())
 		{
-			auto bufferFramesPerTick = Engine::framesPerTick(sClip->sample().sampleRate());
-			f_cnt_t sampleStart = bufferFramesPerTick * _start;
 			pattern_track = PatternTrack::findPatternTrack(_clip_num);
-			sClip->setSampleStartFrame(sampleStart);
 			sClip->setIsPlaying(true);
 			setPlaying(true);
 		}
@@ -114,26 +122,28 @@ bool SampleTrack::play( const TimePos & _start, const f_cnt_t _frames,
 				if (!sClip->isPlaying() && (_start >= (sClip->startPosition() + sClip->startTimeOffset())
 											|| sClip->isRecord()))
 				{
-					auto bufferFramesPerTick = Engine::framesPerTick(sClip->sample().sampleRate());
-					f_cnt_t sampleStart = bufferFramesPerTick * ( _start - sClip->startPosition() - sClip->startTimeOffset() );
-					f_cnt_t clipFrameLength = bufferFramesPerTick * ( sClip->endPosition() - sClip->startPosition() - sClip->startTimeOffset() );
-					f_cnt_t sampleBufferLength = sClip->sample().sampleSize();
-					//if the Clip smaller than the sample length we play only until Clip end
-					//else we play the sample to the end but nothing more
-					f_cnt_t samplePlayLength = clipFrameLength > sampleBufferLength ? sampleBufferLength : clipFrameLength;
+					// Where playback begins, in output frames measured from the clip's
+					// audible start. SampleClip::computePlaybackPlan turns that into
+					// the source range, the buffer to read and the total length, and
+					// uses the very same mapping that advances playback frame by frame.
+					// Starting at a timeline position is therefore identical to having
+					// played to it, which is what makes seeking consistent.
+					// Where playback begins, in output frames measured from the clip's
+					// audible start. SampleClip::computePlaybackPlan turns that into
+					// the source range, the buffer to read and the total length, and
+					// uses the very same mapping that advances playback frame by frame.
+					// Starting at a timeline position is therefore identical to having
+					// played to it, which is what makes seeking consistent.
+					const auto clipPlan = sClip->computePlaybackPlan(
+						sClip->outputFramesFor(_start));
 
-					// In case we are recoding, "play" the whole TCO.
-					if (sClip->isRecord())
+					// Only start while the clip still has audio left to play. With
+					// stretching the source is consumed more slowly (or more quickly)
+					// than the timeline advances, so this has to be decided from the
+					// plan rather than by comparing timeline and sample lengths 1:1.
+					if (clipPlan.totalOutputFrames > 0.0 || sClip->isRecord())
 					{
-						samplePlayLength = clipFrameLength;
-					}
-
-					//we only play within the sampleBuffer limits
-					//Ignore that in case of recoding.
-					if (sampleStart < sampleBufferLength || sClip->isRecord())
-					{
-						sClip->setSampleStartFrame( sampleStart );
-						sClip->setSamplePlayLength( samplePlayLength );
+						plans[sClip] = clipPlan;
 						clips.push_back( sClip );
 						sClip->setIsPlaying( true );
 						nowPlaying = true;
@@ -166,7 +176,7 @@ bool SampleTrack::play( const TimePos & _start, const f_cnt_t _frames,
 			}
 			else
 			{
-				auto smpHandle = new SamplePlayHandle(st);
+					auto smpHandle = new SamplePlayHandle(st, plans[st]);
 				smpHandle->setPatternTrack(pattern_track);
 				handle = smpHandle;
 			}

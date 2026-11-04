@@ -74,29 +74,39 @@ SampleThumbnail::Thumbnail SampleThumbnail::Thumbnail::zoomOut(float factor) con
 SampleThumbnail::SampleThumbnail(const Sample& sample)
 	: m_buffer(sample.buffer())
 {
-	auto entry = SampleThumbnailEntry{sample.sampleFile(), QFileInfo{sample.sampleFile()}.lastModified()};
+	const auto identity = m_buffer->data()->data();
+	auto entry = SampleThumbnailEntry{
+		sample.sampleFile(),
+		QFileInfo{sample.sampleFile()}.lastModified(),
+		identity,
+		static_cast<qint64>(m_buffer->size())
+	};
 	if (!entry.filePath.isEmpty())
 	{
-		const auto it = s_sampleThumbnailCacheMap.find(entry);
-		if (it != s_sampleThumbnailCacheMap.end())
-		{
-			m_thumbnailCache = it->second;
-			return;
-		}
-
-		if (s_sampleThumbnailCacheMap.size() == MaxSampleThumbnailCacheSize)
-		{
-			const auto leastUsed = std::min_element(s_sampleThumbnailCacheMap.begin(), s_sampleThumbnailCacheMap.end(),
-				[](const auto& a, const auto& b) { return a.second.use_count() < b.second.use_count(); });
-			s_sampleThumbnailCacheMap.erase(leastUsed->first);
-		}
-
-		s_sampleThumbnailCacheMap[std::move(entry)] = m_thumbnailCache;
+		// File-backed samples are keyed by path alone; the identity fields are
+		// left null so an in-memory sample sharing a path is not mistaken for
+		// the file's buffer.
+		entry.bufferIdentity = nullptr;
+		entry.bufferSize = 0;
 	}
+	if (const auto it = s_sampleThumbnailCacheMap.find(entry); it != s_sampleThumbnailCacheMap.end())
+	{
+		m_thumbnailCache = it->second;
+		return;
+	}
+
+	if (s_sampleThumbnailCacheMap.size() == MaxSampleThumbnailCacheSize)
+	{
+		const auto leastUsed = std::min_element(s_sampleThumbnailCacheMap.begin(), s_sampleThumbnailCacheMap.end(),
+			[](const auto& a, const auto& b) { return a.second.use_count() < b.second.use_count(); });
+		s_sampleThumbnailCacheMap.erase(leastUsed->first);
+	}
+
+	s_sampleThumbnailCacheMap[std::move(entry)] = m_thumbnailCache;
 
 	const auto flatBuffer = m_buffer->data()->data();
 	const auto flatBufferSize = m_buffer->size() * DEFAULT_CHANNELS;
-	m_thumbnailCache->emplace_back(flatBuffer, flatBufferSize, flatBufferSize / AggregationPerZoomStep);
+	m_thumbnailCache->emplace_back(flatBuffer, flatBufferSize, static_cast<size_t>(flatBufferSize / AggregationPerZoomStep));
 
 	while (m_thumbnailCache->back().width() >= AggregationPerZoomStep)
 	{

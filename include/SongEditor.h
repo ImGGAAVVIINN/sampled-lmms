@@ -180,6 +180,13 @@ private:
 signals:
 	void pixelsPerBarChanged(float);
 	void proportionalSnapChanged();
+	//! @brief Emitted whenever the edit mode actually changes.
+	//!
+	//! Sample-clip views render their waveform differently depending on
+	//! whether the toolbar's Stretch edit mode is active, so they have to be
+	//! told to repaint when the user toggles it. Nothing else in the model
+	//! changes at that moment, so no other signal would reach them.
+	void editModeChanged();
 } ;
 
 
@@ -233,6 +240,9 @@ protected slots:
 
 	//! Highlight the TrackView that belongs to `track` in the editor.
 	void selectTrackInEditor(Track * track);
+
+	//! Toggle Stretch mode: if already in Stretch mode, return to Draw mode.
+	void toggleStretchMode();
 
 signals:
 	void playTriggered();

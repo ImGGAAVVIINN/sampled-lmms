@@ -28,6 +28,8 @@
 
 #include <memory>
 
+#include "SampleClip.h"
+
 #include "Sample.h"
 #include "PlayHandle.h"
 
@@ -45,7 +47,18 @@ class LMMS_EXPORT SamplePlayHandle : public PlayHandle
 public:
 	SamplePlayHandle(Sample* sample, bool ownAudioBusHandle = true);
 	SamplePlayHandle( const QString& sampleFile );
-	SamplePlayHandle( SampleClip* clip );
+
+	/**
+	 * @brief Play a sample clip according to a pre-computed playback plan.
+	 *
+	 * The plan comes from @c SampleClip::computePlaybackPlan, which SampleTrack
+	 * resolves from the timeline position playback started at. This handle
+	 * therefore never derives a position, a length or a rate on its own: it
+	 * plays exactly the buffer, frame range, rate and duration it was handed, so
+	 * a fresh start at a timeline position produces the same audio as
+	 * uninterrupted playback reaching that position.
+	 */
+	SamplePlayHandle( SampleClip* clip, const SampleClip::PlaybackPlan& plan );
 	~SamplePlayHandle() override;
 
 	// The clip this handle plays, if any. Used to read the live stretch ratio
@@ -83,16 +96,20 @@ private:
 	f_cnt_t m_frame = 0;
 	Sample* m_sample = nullptr;
 	SampleClip* m_clip = nullptr;
-	// Snapshot of the clip's time-stretched sample taken when this handle was
-	// created (Stretch mode only). Owning a shared_ptr here keeps the buffer
-	// alive for the whole life of the handle and lets the real-time play()
-	// callback run without touching the clip or taking any lock.
-	std::shared_ptr<Sample> m_stretchedSample;
-	// Playback ratio applied to the original sample (Resample mode); 1.0 when
+	// The buffer this handle actually reads: a private copy of either the clip's
+	// stretched sample (Stretch mode) or the clip's original sample, with the
+	// plan's frame range applied. Owning it keeps the buffer alive for the whole
+	// life of the handle, lets the real-time play() callback run without touching
+	// the clip or taking a lock, and keeps this handle's frame positions private
+	// so two handles -- or two clips sharing one source file -- can never
+	// disturb each other's playback position.
+	std::shared_ptr<Sample> m_source;
+	// Playback ratio applied on top of the sample-rate conversion; 1.0 when
 	// playing a pre-stretched buffer or when no clip is attached.
 	double m_playbackRatio = 1.0;
-	// Total engine frames this handle renders, computed once at construction
-	// so isFinished() stays consistent with play().
+	// Total engine frames this handle renders, taken from the plan so
+	// isFinished() stays consistent with play() even if the clip is resized
+	// mid-playback (the next clip trigger creates a new handle with a new plan).
 	f_cnt_t m_totalFrames = 0;
 	Track* m_track = nullptr;
 	PatternTrack* m_patternTrack = nullptr;

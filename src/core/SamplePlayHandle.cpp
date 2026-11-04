@@ -59,59 +59,39 @@ SamplePlayHandle::SamplePlayHandle( const QString& sampleFile ) :
 
 
 
-SamplePlayHandle::SamplePlayHandle( SampleClip* clip ) :
+SamplePlayHandle::SamplePlayHandle( SampleClip* clip, const SampleClip::PlaybackPlan& plan ) :
 	SamplePlayHandle(&clip->sample(), false)
 {
 	m_clip = clip;
 	m_track = clip->getTrack();
 	setAudioBusHandle(((SampleTrack *)clip->getTrack())->audioBusHandle());
 
-	// Decide the playback strategy once, when this handle is created (GUI /
-	// rendering thread), so the real-time play() callback below never has to
-	// query the clip, take a lock, or allocate.
+	// Everything that decides *what* is played -- which buffer, which frames of
+	// it, at which rate and for how long -- was resolved by
+	// SampleClip::computePlaybackPlan from the timeline position playback started
+	// at. This constructor only applies that decision, so the mapping exists in
+	// exactly one place and a fresh start here lands on the same audio that
+	// uninterrupted playback would have reached.
 	//
-	// - Stretch mode with a ready stretched buffer: play the pre-stretched
-	// buffer at ratio 1.0 (pitch preserved, duration follows the clip).
-	// - Otherwise (Resample mode, or Stretch mode while the stretched buffer
-	// is still being computed or unavailable): play the original sample with
-	// a playback ratio so its duration matches the clip's duration. This is
-	// the traditional resampling behaviour where speed and pitch change
-	// together.
-	if (clip->pitchMode() == SampleClip::PitchMode::Stretch)
-	{
-		if (const auto stretched = clip->stretchedSample(); stretched != nullptr)
-		{
-			// Take our own copy of the (cheap, buffer-sharing) Sample wrapper
-			// so the frame positions below are private to this handle and can
-			// never interfere with another handle playing the same clip.
-			m_stretchedSample = std::make_shared<Sample>(*stretched);
+	// The buffers are copied into `m_source` (a cheap, buffer-sharing Sample
+	// wrapper) so the frame range below belongs to this handle alone: two
+	// handles, or two clips sharing one source file, can never move each other's
+	// playback position, and the real-time play() callback below reads no clip
+	// state and takes no lock.
+	const auto* source = plan.stretchedSource ? plan.stretchedSource.get() : &clip->sample();
+	m_source = std::make_shared<Sample>(*source);
+	m_source->setStartFrame(plan.startFrame);
+	m_source->setEndFrame(plan.endFrame);
+	// Sample::play() reads its position from the playback state, not from the
+	// sample, so the seek has to be seeded there.
+	m_state.setFrameIndex(plan.startFrame);
+	m_state.setBackwards(false);
 
-			// SampleTrack::play() positioned the original sample within its
-			// buffer before creating this handle (this maps a mid-clip seek or
-			// a left-edge trim to a source offset). The stretched buffer holds
-			// the same source subrange stretched by the ratio, so map the
-			// source offset into stretched-buffer coordinates.
-			const auto ratio = clip->stretchRatio();
-			const auto stretchedStart = static_cast<int>(
-				std::lround(m_sample->startFrame() * ratio));
-			const auto stretchedSize = static_cast<int>(m_stretchedSample->sampleSize());
-			m_stretchedSample->setStartFrame(std::clamp(stretchedStart, 0, std::max(stretchedSize - 1, 0)));
-			m_stretchedSample->setEndFrame(stretchedSize);
-		}
-	}
-
-	if (!m_stretchedSample)
-	{
-		const auto ratio = clip->stretchRatio();
-		// A clip longer than the sample plays it back slower (ratio < 1);
-		// a shorter clip plays it back faster (ratio > 1).
-		m_playbackRatio = ratio > 0.0 ? 1.0 / ratio : 1.0;
-	}
-
-	const auto* source = m_stretchedSample ? m_stretchedSample.get() : m_sample;
-	const auto frames = (source->endFrame() - source->startFrame())
-		* (static_cast<double>(Engine::audioEngine()->outputSampleRate()) / source->sampleRate());
-	m_totalFrames = static_cast<f_cnt_t>(frames / m_playbackRatio);
+	// 1.0 when a pre-stretched buffer is played (it is already at the engine
+	// rate and already has the clip's duration); the clip's ratio otherwise,
+	// which is what makes the source last exactly as long as the clip does.
+	m_playbackRatio = plan.resampleRatio;
+	m_totalFrames = static_cast<f_cnt_t>(std::lround(plan.totalOutputFrames));
 }
 
 
@@ -153,11 +133,12 @@ void SamplePlayHandle::play( SampleFrame* buffer )
 	if( !( m_track && m_track->isMuted() )
 				&& !(m_patternTrack && m_patternTrack->isMuted()))
 	{
-		// In Stretch mode we play the pre-computed stretched buffer at its
-		// original rate (pitch preserved); otherwise we play the original
-		// sample with the clip's playback ratio (Resample mode), which is
-		// 1.0 for previews, SampleTracks previews and the metronome.
-		const auto* source = m_stretchedSample ? m_stretchedSample.get() : m_sample;
+		// Clip-backed handles play `m_source`, the buffer and frame range the
+		// playback plan selected: a pre-stretched buffer at its own rate (Stretch
+		// mode) or the original sample resampled by the clip's ratio (Resample
+		// mode). Preview and metronome handles have no plan and play `m_sample`
+		// unmodified.
+		const auto* source = m_source ? m_source.get() : m_sample;
 		if (!source->play(workingBuffer, &m_state, frames, Sample::Loop::Off, m_playbackRatio))
 		{
 			zeroSampleFrames(workingBuffer, frames);

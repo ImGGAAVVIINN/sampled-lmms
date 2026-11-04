@@ -40,6 +40,7 @@
 #include "SampleClip.h"
 #include "SampleThumbnail.h"
 #include "Song.h"
+#include "SongEditor.h"
 #include "StringPairDrag.h"
 #include "TrackContainerView.h"
 #include "TrackView.h"
@@ -62,6 +63,16 @@ SampleClipView::SampleClipView( SampleClip * _clip, TrackView * _tv ) :
 
 	connect(m_clip, SIGNAL(wasReversed()), this, SLOT(update()));
 
+	// The waveform geometry depends on the toolbar's Stretch edit mode, which
+	// is pure view state: toggling it changes no model, so no model signal
+	// would ever reach this view. Listen for the edit-mode change directly so
+	// the waveform is rebuilt and repainted the moment the button is toggled.
+	if (auto* songEditor = getGUI() ? getGUI()->songEditor() : nullptr)
+	{
+		connect(songEditor->m_editor, &SongEditor::editModeChanged,
+			this, &SampleClipView::updateSample);
+	}
+
 	setStyle( QApplication::style() );
 }
 
@@ -69,7 +80,11 @@ void SampleClipView::updateSample()
 {
 	update();
 
-	m_sampleThumbnail = SampleThumbnail{m_clip->m_sample};
+	// The thumbnail caches peaks taken from one particular buffer, so it has
+	// to be rebuilt from exactly the buffer that `paintEvent` is about to
+	// draw -- the stretched buffer when the waveform is shown stretched, the
+	// original otherwise. Sharing `waveformBuffer()` keeps the two in step.
+	m_sampleThumbnail = SampleThumbnail{*waveformBuffer()};
 
 	// set tooltip to filename so that user can see what sample this
 	// sample-clip contains
@@ -81,6 +96,117 @@ void SampleClipView::updateSample()
 }
 
 
+const Sample* SampleClipView::waveformBuffer() const
+{
+	const TrackContainerView* tcv =
+		m_trackView ? m_trackView->trackContainerView() : nullptr;
+	if (tcv && tcv->stretchMode())
+	{
+		// The waveform is being shown stretched, so show the buffer that is
+		// actually played. `stretchedSample()` only returns a buffer while it
+		// still matches the clip's current parameters.
+		if (const auto stretched = m_clip->stretchedSample())
+		{
+			return stretched.get();
+		}
+	}
+	return &m_clip->m_sample;
+}
+
+
+SampleClipView::WaveformPlan SampleClipView::waveformGeometry(const SampleClip& clip,
+	const Sample& buffer, double pxPerTick, bool stretchMode, double xOffset)
+{
+	WaveformPlan plan;
+	plan.buffer = &buffer;
+
+	const double size = buffer.sampleSize();
+	if (size <= 0.0)
+	{
+		return plan;
+	}
+
+	// Width of the *whole* source in pixels at the source's natural speed.
+	// Every pixel of that width is worth the same amount of source audio no
+	// matter how long the clip is, which is what "the waveform keeps its
+	// natural scale" means.
+	const double naturalWidth = static_cast<double>(clip.sampleLength()) * pxPerTick;
+
+	// Where source frame 0 sits: upstream draws the sample offset by the
+	// clip's start-time offset, so a positive offset (leading silence) shifts
+	// the waveform right and a left trim shifts it left.
+	const double frameZeroX = static_cast<double>(clip.startTimeOffset()) * pxPerTick - xOffset;
+
+	if (!stretchMode)
+	{
+		// Toolbar off: pure source-space drawing. The buffer being played is
+		// the original source, drawn at its natural scale, so resizing the
+		// clip -- longer *or* shorter -- can never change how many pixels one
+		// cycle of the waveform occupies. Only the retained source range is
+		// drawn, so a trim visibly removes audio instead of compressing it.
+		// The clip's length and stretch ratio are deliberately not consulted:
+		// deriving the drawn range from them is what made a shortened clip
+		// draw a fraction of the source across the full natural width, i.e.
+		// a waveform that visibly slowed down as the clip was dragged
+		// shorter.
+		const double first = std::clamp(static_cast<double>(clip.sourceStartFrame()), 0.0, size);
+		const double last = std::clamp(static_cast<double>(clip.sourceEndFrame()), first, size);
+		const double range = last - first;
+		if (range <= 0.0)
+		{
+			plan.width = 0;
+			return plan;
+		}
+
+		plan.sampleStart = static_cast<float>(first / size);
+		plan.sampleEnd = static_cast<float>(last / size);
+		plan.width = static_cast<float>(naturalWidth * (range / size));
+		plan.x = static_cast<float>(frameZeroX + naturalWidth * (first / size));
+		return plan;
+	}
+
+	// Toolbar on: every pixel of the clip is audible output, so the buffer
+	// being played is drawn from edge to edge of the clip.
+	plan.x = static_cast<float>(-xOffset);
+	plan.width = static_cast<float>(static_cast<double>(clip.length()) * pxPerTick);
+
+	// Whether the pitch-preserving buffer has landed yet or not, the clip's own
+	// mapping reports the source range that is audible inside this clip, which
+	// is exactly what the listener hears from left edge to right edge.
+	const auto mapping = clip.waveformMapping(buffer);
+	plan.sampleStart = mapping.sampleStart;
+	plan.sampleEnd = mapping.sampleEnd;
+
+	return plan;
+}
+
+
+SampleClipView::WaveformPlan SampleClipView::waveformPlan()
+{
+	const auto& original = m_clip->m_sample;
+	if (original.sampleSize() <= 0)
+	{
+		WaveformPlan plan;
+		plan.buffer = waveformBuffer();
+		return plan;
+	}
+
+	const float ppb = fixedClips()
+		? (parentWidget()->width() - 2 * BORDER_WIDTH) / (float) m_clip->length().getBar()
+		: pixelsPerBar();
+	const float nom = Engine::getSong()->getTimeSigModel().getNumerator();
+	const float den = Engine::getSong()->getTimeSigModel().getDenominator();
+	const float ticksPerBar = DefaultTicksPerBar * nom / den;
+
+	// Bug B: the toolbar's Stretch edit-mode toggle -- not the context-menu
+	// pitch method -- decides whether the waveform is drawn stretched across
+	// the clip's full resized width.
+	const TrackContainerView* tcv =
+		m_trackView ? m_trackView->trackContainerView() : nullptr;
+
+	return waveformGeometry(*m_clip, *waveformBuffer(), ppb / ticksPerBar,
+		tcv && tcv->stretchMode(), m_paintPixmapXPosition);
+}
 
 
 void SampleClipView::constructContextMenu(QMenu* cm)
@@ -111,7 +237,9 @@ void SampleClipView::constructContextMenu(QMenu* cm)
 	// Pitch mode: Resample (traditional speed+pitch change) vs Stretch
 	// (real time-stretch preserving pitch). Mutually exclusive; selecting
 	// the already-active mode is a no-op. The mode switch never changes
-	// the clip's length.
+	// the clip's length. Stretch is always offered when the build has a
+	// pitch-preserving algorithm -- the user switches into the mode and
+	// then drags an edge to actually stretch.
 	const auto pitchMenu = cm->addMenu(tr("Pitch mode"));
 	const auto resampleAction = pitchMenu->addAction(tr("Resample"));
 	resampleAction->setCheckable(true);
@@ -119,19 +247,6 @@ void SampleClipView::constructContextMenu(QMenu* cm)
 	const auto stretchAction = pitchMenu->addAction(tr("Stretch"));
 	stretchAction->setCheckable(true);
 	stretchAction->setChecked(m_clip->pitchMode() == SampleClip::PitchMode::Stretch);
-#ifdef LMMS_HAVE_SOUNDTOUCH
-	const auto stretchEnabled = m_clip->isStretched();
-	stretchAction->setEnabled(stretchEnabled);
-	stretchAction->setToolTip(stretchEnabled
-		? tr("Real time-stretch preserving pitch")
-		: tr("Stretch is disabled while the clip length equals the sample length"));
-#else
-	// Built without SoundTouch, so there is no pitch-preserving algorithm to
-	// offer; a clip saved in Stretch mode still plays, just resampled.
-	stretchAction->setEnabled(false);
-	stretchAction->setToolTip(tr("Stretch requires LMMS to be built with SoundTouch"));
-#endif
-
 	const auto setMode = [this](SampleClip::PitchMode mode)
 	{
 		if (m_clip->pitchMode() == mode) { return; }
@@ -144,6 +259,16 @@ void SampleClipView::constructContextMenu(QMenu* cm)
 
 	connect(resampleAction, &QAction::triggered, this, [this, setMode] { setMode(SampleClip::PitchMode::Resample); });
 	connect(stretchAction, &QAction::triggered, this, [this, setMode] { setMode(SampleClip::PitchMode::Stretch); });
+
+#ifdef LMMS_HAVE_SOUNDTOUCH
+	stretchAction->setEnabled(true);
+	stretchAction->setToolTip(tr("Real time-stretch preserving pitch"));
+#else
+	// Built without SoundTouch, so there is no pitch-preserving algorithm to
+	// offer; a clip saved in Stretch mode still plays, just resampled.
+	stretchAction->setEnabled(false);
+	stretchAction->setToolTip(tr("Stretch requires LMMS to be built with SoundTouch"));
+#endif
 
 }
 
@@ -314,29 +439,19 @@ void SampleClipView::paintEvent( QPaintEvent * pe )
 		p.setPen(p.pen().brush().color().darker(150));
 	}
 
-	const int spacing = BORDER_WIDTH + 1;
-	const float ppb = fixedClips() ?
-			( parentWidget()->width() - 2 * BORDER_WIDTH )
-					/ (float) m_clip->length().getBar() :
-								pixelsPerBar();
+	const float spacing = BORDER_WIDTH + 1;
 
-	float nom = Engine::getSong()->getTimeSigModel().getNumerator();
-	float den = Engine::getSong()->getTimeSigModel().getDenominator();
-	float ticksPerBar = DefaultTicksPerBar * nom / den;
-	float offsetStart = m_clip->startTimeOffset() / ticksPerBar * pixelsPerBar();
-	float sampleLength = m_clip->sampleLength() * ppb / ticksPerBar;
+	const WaveformPlan plan = waveformPlan();
 
-	const auto& sample = m_clip->m_sample;
-
-	const auto sampleRextX = static_cast<int>(offsetStart) - m_paintPixmapXPosition;
-
-	if (sample.sampleSize() > 0)
+	if (plan.buffer->sampleSize() > 0)
 	{
 		const auto param = SampleThumbnail::VisualizeParameters{
-			.sampleRect = QRect(sampleRextX, spacing, sampleLength, height() - spacing),
+			.sampleRect = QRect(static_cast<int>(plan.x), spacing, static_cast<int>(plan.width), height() - spacing),
 			.viewportRect = viewPortRect,
-			.amplification = sample.amplification(),
-			.reversed = sample.reversed()
+			.amplification = plan.buffer->amplification(),
+			.sampleStart = plan.sampleStart,
+			.sampleEnd = plan.sampleEnd,
+			.reversed = plan.buffer->reversed()
 		};
 
 		m_sampleThumbnail.visualize(param, p);
