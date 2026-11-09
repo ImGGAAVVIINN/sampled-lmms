@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/flanger">
+		<file alias="artwork.svg">/home/ascend/git/sampled-lmms/plugins/Flanger/artwork.svg</file>
+	</qresource>
+</RCC>

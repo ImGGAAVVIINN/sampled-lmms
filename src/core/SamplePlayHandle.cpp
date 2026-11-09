@@ -23,6 +23,7 @@
  */
 
 #include "SamplePlayHandle.h"
+#include "StretchDebug.h"
 
 #include <algorithm>
 #include <cmath>
@@ -92,6 +93,26 @@ SamplePlayHandle::SamplePlayHandle( SampleClip* clip, const SampleClip::Playback
 	// which is what makes the source last exactly as long as the clip does.
 	m_playbackRatio = plan.resampleRatio;
 	m_totalFrames = static_cast<f_cnt_t>(std::lround(plan.totalOutputFrames));
+
+	// Log play handle creation
+	if (m_clip)
+	{
+		const auto clipId = makeClipId(m_clip);
+		StretchDebug::Event logEvent;
+		logEvent.sampleRate = Engine::audioEngine()->outputSampleRate();
+		logEvent.originalFrames = m_source ? static_cast<int>(m_source->sampleSize()) : 0;
+		logEvent.clipLength = m_clip->length();
+		logEvent.sourceStartFrame = plan.startFrame;
+		logEvent.sourceEndFrame = plan.endFrame;
+		logEvent.stretchRatio = m_clip->stretchRatio();
+		logEvent.pitchMode = static_cast<int>(m_clip->pitchMode());
+		logEvent.planStartFrame = plan.startFrame;
+		logEvent.planEndFrame = plan.endFrame;
+		logEvent.planResampleRatio = plan.resampleRatio;
+		logEvent.planTotalOutputFrames = plan.totalOutputFrames;
+		logEvent.planHasStretchedSource = plan.stretchedSource != nullptr;
+		StretchDebug::instance().logPlayHandleCreated(clipId, logEvent);
+	}
 }
 
 
@@ -143,6 +164,18 @@ void SamplePlayHandle::play( SampleFrame* buffer )
 		{
 			zeroSampleFrames(workingBuffer, frames);
 		}
+	}
+
+	// Log playback progress (throttled to avoid log spam - log every 100 frames)
+	if (m_clip && (m_frame % 100 == 0 || framesDone() + frames >= totalFrames()))
+	{
+		const auto clipId = makeClipId(m_clip);
+		StretchDebug::instance().logPlayHandlePlay(
+			clipId,
+			static_cast<int>(framesDone()),
+			static_cast<int>(totalFrames()),
+			m_playbackRatio,
+			static_cast<int>(frames));
 	}
 
 	m_frame += frames;

@@ -1,0 +1,34 @@
+<RCC>
+	<qresource prefix="artwork/tripleoscillator">
+		<file alias="am_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/am_active.png</file>
+		<file alias="am_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/am_inactive.png</file>
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/artwork.png</file>
+		<file alias="exp_shape_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/exp_shape_active.png</file>
+		<file alias="exp_shape_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/exp_shape_inactive.png</file>
+		<file alias="fm_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/fm_active.png</file>
+		<file alias="fm_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/fm_inactive.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/logo.png</file>
+		<file alias="mix_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/mix_active.png</file>
+		<file alias="mix_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/mix_inactive.png</file>
+		<file alias="moog_saw_shape_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/moog_saw_shape_active.png</file>
+		<file alias="moog_saw_shape_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/moog_saw_shape_inactive.png</file>
+		<file alias="pm_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/pm_active.png</file>
+		<file alias="pm_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/pm_inactive.png</file>
+		<file alias="saw_shape_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/saw_shape_active.png</file>
+		<file alias="saw_shape_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/saw_shape_inactive.png</file>
+		<file alias="sin_shape_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/sin_shape_active.png</file>
+		<file alias="sin_shape_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/sin_shape_inactive.png</file>
+		<file alias="square_shape_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/square_shape_active.png</file>
+		<file alias="square_shape_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/square_shape_inactive.png</file>
+		<file alias="sync_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/sync_active.png</file>
+		<file alias="sync_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/sync_inactive.png</file>
+		<file alias="triangle_shape_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/triangle_shape_active.png</file>
+		<file alias="triangle_shape_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/triangle_shape_inactive.png</file>
+		<file alias="usr_shape_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/usr_shape_active.png</file>
+		<file alias="usr_shape_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/usr_shape_inactive.png</file>
+		<file alias="wavetable_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/wavetable_active.png</file>
+		<file alias="wavetable_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/wavetable_inactive.png</file>
+		<file alias="white_noise_shape_active.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/white_noise_shape_active.png</file>
+		<file alias="white_noise_shape_inactive.png">/home/ascend/git/sampled-lmms/plugins/TripleOscillator/white_noise_shape_inactive.png</file>
+	</qresource>
+</RCC>

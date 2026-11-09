@@ -1,0 +1,13 @@
+<RCC>
+	<qresource prefix="artwork/nes">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Nes/artwork.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Nes/logo.png</file>
+		<file alias="nesdc1_on.png">/home/ascend/git/sampled-lmms/plugins/Nes/nesdc1_on.png</file>
+		<file alias="nesdc2_on.png">/home/ascend/git/sampled-lmms/plugins/Nes/nesdc2_on.png</file>
+		<file alias="nesdc3_on.png">/home/ascend/git/sampled-lmms/plugins/Nes/nesdc3_on.png</file>
+		<file alias="nesdc4_on.png">/home/ascend/git/sampled-lmms/plugins/Nes/nesdc4_on.png</file>
+		<file alias="nesdc_off.png">/home/ascend/git/sampled-lmms/plugins/Nes/nesdc_off.png</file>
+		<file alias="nesled_off.png">/home/ascend/git/sampled-lmms/plugins/Nes/nesled_off.png</file>
+		<file alias="nesled_on.png">/home/ascend/git/sampled-lmms/plugins/Nes/nesled_on.png</file>
+	</qresource>
+</RCC>

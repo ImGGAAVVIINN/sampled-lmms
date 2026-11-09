@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/peakcontrollereffect">
+		<file alias="artwork.svg">/home/ascend/git/sampled-lmms/plugins/PeakControllerEffect/artwork.svg</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,37 @@
+<RCC>
+	<qresource prefix="artwork/compressor">
+		<file alias="audition_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/audition_sel.png</file>
+		<file alias="audition_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/audition_unsel.png</file>
+		<file alias="autogain_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/autogain_sel.png</file>
+		<file alias="autogain_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/autogain_unsel.png</file>
+		<file alias="average_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/average_sel.png</file>
+		<file alias="average_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/average_unsel.png</file>
+		<file alias="blend_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/blend_sel.png</file>
+		<file alias="blend_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/blend_unsel.png</file>
+		<file alias="compressor_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/compressor_sel.png</file>
+		<file alias="compressor_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/compressor_unsel.png</file>
+		<file alias="controlsBox.png">/home/ascend/git/sampled-lmms/plugins/Compressor/controlsBox.png</file>
+		<file alias="feedback_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/feedback_sel.png</file>
+		<file alias="feedback_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/feedback_unsel.png</file>
+		<file alias="knob_enabled.png">/home/ascend/git/sampled-lmms/plugins/Compressor/knob_enabled.png</file>
+		<file alias="knob_enabled_large.png">/home/ascend/git/sampled-lmms/plugins/Compressor/knob_enabled_large.png</file>
+		<file alias="leftright_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/leftright_sel.png</file>
+		<file alias="leftright_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/leftright_unsel.png</file>
+		<file alias="limiter_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/limiter_sel.png</file>
+		<file alias="limiter_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/limiter_unsel.png</file>
+		<file alias="lookahead_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/lookahead_sel.png</file>
+		<file alias="lookahead_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/lookahead_unsel.png</file>
+		<file alias="maximum_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/maximum_sel.png</file>
+		<file alias="maximum_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/maximum_unsel.png</file>
+		<file alias="midside_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/midside_sel.png</file>
+		<file alias="midside_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/midside_unsel.png</file>
+		<file alias="minimum_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/minimum_sel.png</file>
+		<file alias="minimum_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/minimum_unsel.png</file>
+		<file alias="peak_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/peak_sel.png</file>
+		<file alias="peak_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/peak_unsel.png</file>
+		<file alias="rms_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/rms_sel.png</file>
+		<file alias="rms_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/rms_unsel.png</file>
+		<file alias="unlinked_sel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/unlinked_sel.png</file>
+		<file alias="unlinked_unsel.png">/home/ascend/git/sampled-lmms/plugins/Compressor/unlinked_unsel.png</file>
+	</qresource>
+</RCC>

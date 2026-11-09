@@ -1,0 +1,7 @@
+<RCC>
+	<qresource prefix="artwork/vsteffect">
+		<file alias="controls.svg">/home/ascend/git/sampled-lmms/plugins/VstEffect/controls.svg</file>
+		<file alias="controls_active.svg">/home/ascend/git/sampled-lmms/plugins/VstEffect/controls_active.svg</file>
+		<file alias="logo.svg">/home/ascend/git/sampled-lmms/plugins/VstEffect/logo.svg</file>
+	</qresource>
+</RCC>

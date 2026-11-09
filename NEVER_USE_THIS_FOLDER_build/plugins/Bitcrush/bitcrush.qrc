@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/bitcrush">
+		<file alias="artwork.svg">/home/ascend/git/sampled-lmms/plugins/Bitcrush/artwork.svg</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/bassbooster">
+		<file alias="artwork.svg">/home/ascend/git/sampled-lmms/plugins/BassBooster/artwork.svg</file>
+	</qresource>
+</RCC>

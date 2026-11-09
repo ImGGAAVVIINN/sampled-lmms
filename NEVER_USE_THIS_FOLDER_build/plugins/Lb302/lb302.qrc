@@ -1,0 +1,6 @@
+<RCC>
+	<qresource prefix="artwork/lb302">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Lb302/artwork.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Lb302/logo.png</file>
+	</qresource>
+</RCC>

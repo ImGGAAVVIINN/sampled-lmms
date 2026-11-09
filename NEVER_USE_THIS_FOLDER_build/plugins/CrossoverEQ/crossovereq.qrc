@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/crossovereq">
+		<file alias="artwork.svg">/home/ascend/git/sampled-lmms/plugins/CrossoverEQ/artwork.svg</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,7 @@
+<RCC>
+	<qresource prefix="/">
+		<file alias="AUTHORS">/home/ascend/git/sampled-lmms/doc/AUTHORS</file>
+		<file alias="LICENSE.txt">/home/ascend/git/sampled-lmms/LICENSE.txt</file>
+		<file alias="CONTRIBUTORS">/home/ascend/git/sampled-lmms/build/CONTRIBUTORS</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,8 @@
+lmms_autogen/timestamp: \
+	/home/ascend/git/sampled-lmms/cmake/modules/GenQrc.cmake \
+	/home/ascend/git/sampled-lmms/src/CMakeLists.txt \
+	/home/ascend/git/sampled-lmms/src/core/main.cpp \
+	/home/ascend/git/sampled-lmms/src/lmmsconfig.h.in \
+	/home/ascend/git/sampled-lmms/src/lmmsversion.h.in \
+	/usr/share/cmake-3.28/Modules/exportheader.cmake.in \
+	/usr/bin/cmake

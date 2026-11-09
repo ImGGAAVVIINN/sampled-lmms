@@ -1,0 +1,6 @@
+<RCC>
+	<qresource prefix="artwork/zynaddsubfx">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/artwork.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/logo.png</file>
+	</qresource>
+</RCC>

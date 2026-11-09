@@ -23,6 +23,7 @@
  */
  
 #include "SampleClip.h"
+#include "StretchDebug.h"
 
 #include <QDomElement>
 #include <QFileInfo>
@@ -402,16 +403,27 @@ void SampleClip::setupStretchDelivery()
 }
 void SampleClip::refreshStretchBuffer()
 {
+	const auto clipId = makeClipId(this);
+	const auto buffer = m_sample.buffer();
+
+	StretchDebug::instance().logRefreshStretchBuffer(
+		clipId,
+		static_cast<int>(m_pitchMode),
+		m_stretchRatio,
+		sourceStartFrame(),
+		sourceEndFrame(),
+		buffer && !buffer->empty());
 
 	// Never compute here: see the header. This decides *what* the current
 	// parameters call for, then either drops a stale cached buffer
 	// synchronously or hands the work to the manager's worker thread.
-	const auto clearStretched = [this]()
+	const auto clearStretched = [this, clipId]()
 	{
 		const auto guard = Engine::audioEngine()->requestChangesGuard();
 		const auto locker = QMutexLocker{&m_stretchMutex};
 		m_stretchedSample.reset();
 		m_stretchCacheKey = 0;
+		StretchDebug::instance().logBufferStateChange(clipId, "cleared stretched buffer");
 	};
 
 	if (m_pitchMode != PitchMode::Stretch || !isStretched() || m_sample.reversed())
@@ -421,14 +433,17 @@ void SampleClip::refreshStretchBuffer()
 		// Invalidate any in-flight request too, so a result that is already
 		// being computed cannot land after this point and be committed.
 		++m_stretchGeneration;
+		StretchDebug::instance().logEarlyReturn(clipId, "refreshStretchBuffer",
+			"pitchMode != Stretch || !isStretched() || reversed");
 		clearStretched();
 		return;
 	}
 
-	const auto buffer = m_sample.buffer();
 	if (!buffer || buffer->empty())
 	{
 		++m_stretchGeneration;
+		StretchDebug::instance().logEarlyReturn(clipId, "refreshStretchBuffer",
+			"no buffer or empty buffer");
 		clearStretched();
 		return;
 	}
@@ -440,6 +455,8 @@ void SampleClip::refreshStretchBuffer()
 		const auto locker = QMutexLocker{&m_stretchMutex};
 		if (key == m_stretchCacheKey && m_stretchedSample)
 		{
+			StretchDebug::instance().logEarlyReturn(clipId, "refreshStretchBuffer",
+				"cache hit - key matches and stretched sample exists");
 			return; // cached result still matches the current parameters
 		}
 	}
@@ -451,6 +468,15 @@ void SampleClip::refreshStretchBuffer()
 	// earlier request are stale by the time they arrive, or already superseded
 	// in the manager's queue.
 	++m_stretchGeneration;
+	StretchDebug::instance().logStretchRequestQueued(
+		clipId,
+		m_stretchGeneration,
+		key,
+		sourceStartFrame(),
+		sourceEndFrame(),
+		buffer->sampleRate(),
+		engineRate,
+		m_stretchRatio);
 	SampleStretchManager::instance().request(
 		m_stretchResult,
 		m_stretchGeneration,
@@ -466,20 +492,33 @@ void SampleClip::refreshStretchBuffer()
 void SampleClip::applyStretchResult(uint64_t generation, uint64_t key,
 	std::shared_ptr<Sample> stretched)
 {
+	const auto clipId = makeClipId(this);
+
 	// Runs on the GUI thread via the receiver. A result from any but the
 	// newest request is stale -- typically an earlier position of a drag whose
 	// computation happened to finish later -- and must never replace what the
 	// clip is waiting for.
-	if (generation != m_stretchGeneration) { return; }
+	if (generation != m_stretchGeneration)
+	{
+		StretchDebug::instance().logStretchJobDiscarded(clipId, generation, key,
+			"generation mismatch (expected " + std::to_string(m_stretchGeneration) + ")");
+		return;
+	}
 	// The clip's parameters may also have moved on in ways the generation
 	// counter alone does not cover (a trim during the computation changes the
 	// key without a new request having been made yet).
-	if (key != currentStretchKey()) { return; }
+	if (key != currentStretchKey())
+	{
+		StretchDebug::instance().logStretchJobDiscarded(clipId, generation, key,
+			"key mismatch (current key: " + std::to_string(currentStretchKey()) + ")");
+		return;
+	}
 	if (!stretched)
 	{
 		// The processor could not stretch these inputs (no SoundTouch, or a
 		// degenerate range). Stay on the degraded source path; stretch mode
 		// never silently resamples.
+		StretchDebug::instance().logApplyStretchResult(clipId, generation, key, 0, false);
 		const auto guard = Engine::audioEngine()->requestChangesGuard();
 		const auto locker = QMutexLocker{&m_stretchMutex};
 		m_stretchedSample.reset();
@@ -496,6 +535,8 @@ void SampleClip::applyStretchResult(uint64_t generation, uint64_t key,
 		m_stretchedSample = std::move(stretched);
 		m_stretchCacheKey = key;
 	}
+	StretchDebug::instance().logApplyStretchResult(clipId, generation, key,
+		static_cast<int>(m_stretchedSample->sampleSize()), true);
 	emit sampleChanged();
 }
 
@@ -519,6 +560,8 @@ bool SampleClip::hasStretchedSample() const
 void SampleClip::setPitchMode(PitchMode mode)
 {
 	if (m_pitchMode == mode) { return; } // selecting the active mode does nothing
+	const auto clipId = makeClipId(this);
+	StretchDebug::instance().logPitchModeChanged(clipId, static_cast<int>(m_pitchMode), static_cast<int>(mode));
 	m_pitchMode = mode;
 	// The mode switch never changes the clip's length or the source range; it
 	// only changes how the selected audio is rendered for the current ratio.
@@ -572,6 +615,7 @@ SampleClip::PlaybackPlan SampleClip::computePlaybackPlan(double startOutputFrame
 	// starting at it are the same thing.
 	PlaybackPlan plan;
 
+	const auto clipId = makeClipId(this);
 	const auto ratio = m_stretchRatio > 0.0 ? m_stretchRatio : 1.0;
 	const auto oft = outputFramesPerTick();
 	// The clip's right edge, in output frames measured from the audible start.
@@ -581,7 +625,12 @@ SampleClip::PlaybackPlan SampleClip::computePlaybackPlan(double startOutputFrame
 	const auto srcStart = static_cast<double>(sourceStartFrame());
 	const auto srcEnd = static_cast<double>(std::max(sourceStartFrame(), sourceEndFrame()));
 
-	if (start >= clipEndOutput) { return plan; } // nothing left to play
+	if (start >= clipEndOutput)
+	{
+		StretchDebug::instance().logEarlyReturn(clipId, "computePlaybackPlan",
+			"start >= clipEndOutput (nothing to play)");
+		return plan; // nothing left to play
+	}
 
 	if (pitchMode() == PitchMode::Stretch)
 	{
@@ -600,6 +649,22 @@ SampleClip::PlaybackPlan SampleClip::computePlaybackPlan(double startOutputFrame
 			plan.endFrame = static_cast<int>(std::lround(last));
 			plan.resampleRatio = 1.0;
 			plan.totalOutputFrames = std::max(0.0, static_cast<double>(plan.endFrame - plan.startFrame));
+
+			StretchDebug::Event logEvent;
+			logEvent.sampleRate = Engine::audioEngine()->outputSampleRate();
+			logEvent.originalFrames = static_cast<int>(stretchedSize);
+			logEvent.clipLength = length();
+			logEvent.sourceStartFrame = sourceStartFrame();
+			logEvent.sourceEndFrame = sourceEndFrame();
+			logEvent.stretchRatio = m_stretchRatio;
+			logEvent.pitchMode = static_cast<int>(m_pitchMode);
+			logEvent.planStartFrame = plan.startFrame;
+			logEvent.planEndFrame = plan.endFrame;
+			logEvent.planResampleRatio = plan.resampleRatio;
+			logEvent.planTotalOutputFrames = plan.totalOutputFrames;
+			logEvent.planHasStretchedSource = true;
+			StretchDebug::instance().logComputePlaybackPlan(clipId, logEvent);
+
 			return plan;
 		}
 
@@ -625,6 +690,22 @@ SampleClip::PlaybackPlan SampleClip::computePlaybackPlan(double startOutputFrame
 		plan.resampleRatio = 1.0;
 		plan.totalOutputFrames = std::max(0.0,
 			static_cast<double>(plan.endFrame - plan.startFrame) * naturalScale);
+
+		StretchDebug::Event logEvent;
+		logEvent.sampleRate = Engine::audioEngine()->outputSampleRate();
+		logEvent.originalFrames = m_sample.sampleSize();
+		logEvent.clipLength = length();
+		logEvent.sourceStartFrame = sourceStartFrame();
+		logEvent.sourceEndFrame = sourceEndFrame();
+		logEvent.stretchRatio = m_stretchRatio;
+		logEvent.pitchMode = static_cast<int>(m_pitchMode);
+		logEvent.planStartFrame = plan.startFrame;
+		logEvent.planEndFrame = plan.endFrame;
+		logEvent.planResampleRatio = plan.resampleRatio;
+		logEvent.planTotalOutputFrames = plan.totalOutputFrames;
+		logEvent.planHasStretchedSource = false;
+		StretchDebug::instance().logComputePlaybackPlan(clipId, logEvent);
+
 		return plan;
 	}
 
@@ -639,6 +720,22 @@ SampleClip::PlaybackPlan SampleClip::computePlaybackPlan(double startOutputFrame
 	plan.endFrame = static_cast<int>(std::lround(last));
 	plan.resampleRatio = ratio;
 	plan.totalOutputFrames = std::max(0.0, static_cast<double>(plan.endFrame - plan.startFrame) * outputFramesPerSourceFrame());
+
+	StretchDebug::Event logEvent;
+	logEvent.sampleRate = Engine::audioEngine()->outputSampleRate();
+	logEvent.originalFrames = m_sample.sampleSize();
+	logEvent.clipLength = length();
+	logEvent.sourceStartFrame = sourceStartFrame();
+	logEvent.sourceEndFrame = sourceEndFrame();
+	logEvent.stretchRatio = m_stretchRatio;
+	logEvent.pitchMode = static_cast<int>(m_pitchMode);
+	logEvent.planStartFrame = plan.startFrame;
+	logEvent.planEndFrame = plan.endFrame;
+	logEvent.planResampleRatio = plan.resampleRatio;
+	logEvent.planTotalOutputFrames = plan.totalOutputFrames;
+	logEvent.planHasStretchedSource = false;
+	StretchDebug::instance().logComputePlaybackPlan(clipId, logEvent);
+
 	return plan;
 }
 
@@ -657,6 +754,11 @@ SampleClip::PlaybackPlan SampleClip::computePlaybackPlan(double startOutputFrame
 
 void SampleClip::trimToLength(const TimePos& newLength)
 {
+	const auto clipId = makeClipId(this);
+	const auto clamped = std::max(static_cast<int>(newLength), 1);
+
+	StretchDebug::instance().logTrimToLength(clipId, clamped, sourceStartFrame(), sourceEndFrame());
+
 	// Ordinary right-edge trim/extend at the current speed. The clip's right
 	// edge marks where the retained audio ends, so the *playable source range*
 	// has to shrink (or grow) by the same amount of audio: what falls off the
@@ -668,7 +770,6 @@ void SampleClip::trimToLength(const TimePos& newLength)
 	// ratio a stretch computes is derived from sourceRangeTicks(), so without
 	// this the stretch would fit the *original* full source into the clip and
 	// resurrect audio the user had trimmed away.
-	const auto clamped = std::max(static_cast<int>(newLength), 1);
 	Clip::changeLength(clamped);
 
 	// The frame the clip's new right edge lands on, using the very same
@@ -710,14 +811,7 @@ void SampleClip::trimFromStart(const TimePos& newPos)
 
 void SampleClip::stretchToLength(const TimePos& newLength)
 {
-	// Pitch-preserving right-edge stretch: the whole playable source range is
-	// time-stretched to fill the clip's new length. This is a stretch
-	// operation, not a trim: it changes the ratio so the clip's new length is
-	// filled by the selected source range. Whether that ratio is rendered
-	// with a pitch-preserving buffer or by resampling is decided by the
-	// clip's Pitch mode, which this function does not touch -- the toolbar
-	// Stretch edit mode and the context-menu Pitch mode are independent
-	// controls (see the behaviour matrix in STRETCH_REPAIR_REPORT.md).
+	const auto clipId = makeClipId(this);
 	const auto clamped = std::max(static_cast<int>(newLength), 1);
 
 	// Materialise the audible range: a left trim (negative start-time offset)
@@ -732,6 +826,9 @@ void SampleClip::stretchToLength(const TimePos& newLength)
 	{
 		m_stretchRatio = std::clamp(audible / natural, 0.01, 100.0);
 	}
+
+	StretchDebug::instance().logStretchToLength(clipId, clamped, sourceStartFrame(), sourceEndFrame(), m_stretchRatio);
+
 	Clip::changeLength(clamped);
 	setAutoResize(false);
 	refreshStretchBuffer();

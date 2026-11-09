@@ -1,0 +1,8 @@
+<RCC>
+	<qresource prefix="artwork/organic">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Organic/artwork.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Organic/logo.png</file>
+		<file alias="randomise.png">/home/ascend/git/sampled-lmms/plugins/Organic/randomise.png</file>
+		<file alias="randomise_pressed.png">/home/ascend/git/sampled-lmms/plugins/Organic/randomise_pressed.png</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,19 @@
+<RCC>
+	<qresource prefix="artwork/frequencyshifter">
+		<file alias="antireflect_off.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/antireflect_off.png</file>
+		<file alias="antireflect_on.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/antireflect_on.png</file>
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/artwork.png</file>
+		<file alias="help_off.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/help_off.png</file>
+		<file alias="help_on.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/help_on.png</file>
+		<file alias="mute_off.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/mute_off.png</file>
+		<file alias="mute_on.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/mute_on.png</file>
+		<file alias="pass_off.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/pass_off.png</file>
+		<file alias="pass_on.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/pass_on.png</file>
+		<file alias="reset_lfo_off.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/reset_lfo_off.png</file>
+		<file alias="reset_lfo_on.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/reset_lfo_on.png</file>
+		<file alias="reset_shifter_off.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/reset_shifter_off.png</file>
+		<file alias="reset_shifter_on.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/reset_shifter_on.png</file>
+		<file alias="send_off.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/send_off.png</file>
+		<file alias="send_on.png">/home/ascend/git/sampled-lmms/plugins/FrequencyShifter/send_on.png</file>
+	</qresource>
+</RCC>

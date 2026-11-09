@@ -1,0 +1,17 @@
+ArrayVectorTest 4 0.00218972
+AudioBufferTest 4 0.00235483
+AutomatableModelTest 4 0.243501
+ClipboardMimeTest 4 0.0752981
+MathTest 4 0.00210119
+ProjectVersionTest 4 0.00220738
+RelativePathsTest 4 0.00241851
+SampleRecordingTest 4 0.23933
+RecordingWorkflowTest 4 0.238489
+SampleStretchTest 4 4.94246
+TimelineTest 4 0.237266
+SampleClipContextMenuTest 4 1.20022
+SampleClipSplitStretchTest 4 1.04712
+SampleClipViewWaveformTest 4 0.52165
+TrackRowInteractionFilterTest 4 0.0841352
+AutomationTrackTest 4 0.242843
+---

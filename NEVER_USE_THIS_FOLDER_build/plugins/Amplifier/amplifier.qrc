@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/amplifier">
+		<file alias="artwork.svg">/home/ascend/git/sampled-lmms/plugins/Amplifier/artwork.svg</file>
+	</qresource>
+</RCC>

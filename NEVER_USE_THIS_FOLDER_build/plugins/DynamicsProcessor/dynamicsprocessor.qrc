@@ -1,0 +1,20 @@
+<RCC>
+	<qresource prefix="artwork/dynamicsprocessor">
+		<file alias="add1_active.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/add1_active.png</file>
+		<file alias="add1_inactive.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/add1_inactive.png</file>
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/artwork.png</file>
+		<file alias="avg_active.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/avg_active.png</file>
+		<file alias="avg_inactive.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/avg_inactive.png</file>
+		<file alias="max_active.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/max_active.png</file>
+		<file alias="max_inactive.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/max_inactive.png</file>
+		<file alias="reset_active.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/reset_active.png</file>
+		<file alias="reset_inactive.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/reset_inactive.png</file>
+		<file alias="smooth_active.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/smooth_active.png</file>
+		<file alias="smooth_inactive.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/smooth_inactive.png</file>
+		<file alias="sub1_active.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/sub1_active.png</file>
+		<file alias="sub1_inactive.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/sub1_inactive.png</file>
+		<file alias="unl_active.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/unl_active.png</file>
+		<file alias="unl_inactive.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/unl_inactive.png</file>
+		<file alias="wavegraph.png">/home/ascend/git/sampled-lmms/plugins/DynamicsProcessor/wavegraph.png</file>
+	</qresource>
+</RCC>

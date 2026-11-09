@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/ladspaeffect">
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/LadspaEffect/logo.png</file>
+	</qresource>
+</RCC>

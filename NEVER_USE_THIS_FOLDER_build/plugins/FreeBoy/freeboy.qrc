@@ -1,0 +1,12 @@
+<RCC>
+	<qresource prefix="artwork/freeboy">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/FreeBoy/artwork.png</file>
+		<file alias="btn_15.png">/home/ascend/git/sampled-lmms/plugins/FreeBoy/btn_15.png</file>
+		<file alias="btn_7.png">/home/ascend/git/sampled-lmms/plugins/FreeBoy/btn_7.png</file>
+		<file alias="btn_down.png">/home/ascend/git/sampled-lmms/plugins/FreeBoy/btn_down.png</file>
+		<file alias="btn_off.png">/home/ascend/git/sampled-lmms/plugins/FreeBoy/btn_off.png</file>
+		<file alias="btn_on.png">/home/ascend/git/sampled-lmms/plugins/FreeBoy/btn_on.png</file>
+		<file alias="btn_up.png">/home/ascend/git/sampled-lmms/plugins/FreeBoy/btn_up.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/FreeBoy/logo.png</file>
+	</qresource>
+</RCC>

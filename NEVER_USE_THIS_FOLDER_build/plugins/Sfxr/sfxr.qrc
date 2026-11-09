@@ -1,0 +1,32 @@
+<RCC>
+	<qresource prefix="artwork/sfxr">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/artwork.png</file>
+		<file alias="blip_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/blip_active.png</file>
+		<file alias="blip_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/blip_inactive.png</file>
+		<file alias="explosion_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/explosion_active.png</file>
+		<file alias="explosion_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/explosion_inactive.png</file>
+		<file alias="hit_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/hit_active.png</file>
+		<file alias="hit_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/hit_inactive.png</file>
+		<file alias="jump_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/jump_active.png</file>
+		<file alias="jump_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/jump_inactive.png</file>
+		<file alias="laser_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/laser_active.png</file>
+		<file alias="laser_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/laser_inactive.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/logo.png</file>
+		<file alias="mutate_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/mutate_active.png</file>
+		<file alias="mutate_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/mutate_inactive.png</file>
+		<file alias="pickup_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/pickup_active.png</file>
+		<file alias="pickup_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/pickup_inactive.png</file>
+		<file alias="powerup_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/powerup_active.png</file>
+		<file alias="powerup_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/powerup_inactive.png</file>
+		<file alias="randomize_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/randomize_active.png</file>
+		<file alias="randomize_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/randomize_inactive.png</file>
+		<file alias="sfxr_saw_wave_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/sfxr_saw_wave_active.png</file>
+		<file alias="sfxr_saw_wave_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/sfxr_saw_wave_inactive.png</file>
+		<file alias="sfxr_sin_wave_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/sfxr_sin_wave_active.png</file>
+		<file alias="sfxr_sin_wave_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/sfxr_sin_wave_inactive.png</file>
+		<file alias="sfxr_square_wave_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/sfxr_square_wave_active.png</file>
+		<file alias="sfxr_square_wave_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/sfxr_square_wave_inactive.png</file>
+		<file alias="sfxr_white_noise_wave_active.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/sfxr_white_noise_wave_active.png</file>
+		<file alias="sfxr_white_noise_wave_inactive.png">/home/ascend/git/sampled-lmms/plugins/Sfxr/sfxr_white_noise_wave_inactive.png</file>
+	</qresource>
+</RCC>

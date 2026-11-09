@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/reverbsc">
+		<file alias="artwork.svg">/home/ascend/git/sampled-lmms/plugins/ReverbSC/artwork.svg</file>
+	</qresource>
+</RCC>

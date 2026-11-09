@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/stereomatrix">
+		<file alias="artwork.svg">/home/ascend/git/sampled-lmms/plugins/StereoMatrix/artwork.svg</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,1 @@
+/usr/bin/cc -fPIC  -fPIC -DPIC -g -DLMMS_DEBUG -shared  -o ../../ladspa/declip_1195.so CMakeFiles/declip_1195.dir/ladspa/declip_1195.c.o  /usr/lib/x86_64-linux-gnu/libfftw3f.so -lm 

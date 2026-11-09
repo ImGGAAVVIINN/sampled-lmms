@@ -1,0 +1,38 @@
+# CMake generated Testfile for 
+# Source directory: /home/ascend/git/sampled-lmms/tests
+# Build directory: /home/ascend/git/sampled-lmms/build/tests
+# 
+# This file includes the relevant testing commands required for 
+# testing this directory and lists subdirectories to be tested as well.
+add_test(ArrayVectorTest "/home/ascend/git/sampled-lmms/build/tests/ArrayVectorTest")
+set_tests_properties(ArrayVectorTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(AudioBufferTest "/home/ascend/git/sampled-lmms/build/tests/AudioBufferTest")
+set_tests_properties(AudioBufferTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(AutomatableModelTest "/home/ascend/git/sampled-lmms/build/tests/AutomatableModelTest")
+set_tests_properties(AutomatableModelTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(ClipboardMimeTest "/home/ascend/git/sampled-lmms/build/tests/ClipboardMimeTest")
+set_tests_properties(ClipboardMimeTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(MathTest "/home/ascend/git/sampled-lmms/build/tests/MathTest")
+set_tests_properties(MathTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(ProjectVersionTest "/home/ascend/git/sampled-lmms/build/tests/ProjectVersionTest")
+set_tests_properties(ProjectVersionTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(RelativePathsTest "/home/ascend/git/sampled-lmms/build/tests/RelativePathsTest")
+set_tests_properties(RelativePathsTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(SampleRecordingTest "/home/ascend/git/sampled-lmms/build/tests/SampleRecordingTest")
+set_tests_properties(SampleRecordingTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(RecordingWorkflowTest "/home/ascend/git/sampled-lmms/build/tests/RecordingWorkflowTest")
+set_tests_properties(RecordingWorkflowTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(SampleStretchTest "/home/ascend/git/sampled-lmms/build/tests/SampleStretchTest")
+set_tests_properties(SampleStretchTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(TimelineTest "/home/ascend/git/sampled-lmms/build/tests/TimelineTest")
+set_tests_properties(TimelineTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(SampleClipContextMenuTest "/home/ascend/git/sampled-lmms/build/tests/SampleClipContextMenuTest")
+set_tests_properties(SampleClipContextMenuTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(SampleClipSplitStretchTest "/home/ascend/git/sampled-lmms/build/tests/SampleClipSplitStretchTest")
+set_tests_properties(SampleClipSplitStretchTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(SampleClipViewWaveformTest "/home/ascend/git/sampled-lmms/build/tests/SampleClipViewWaveformTest")
+set_tests_properties(SampleClipViewWaveformTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(TrackRowInteractionFilterTest "/home/ascend/git/sampled-lmms/build/tests/TrackRowInteractionFilterTest")
+set_tests_properties(TrackRowInteractionFilterTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")
+add_test(AutomationTrackTest "/home/ascend/git/sampled-lmms/build/tests/AutomationTrackTest")
+set_tests_properties(AutomationTrackTest PROPERTIES  _BACKTRACE_TRIPLES "/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;30;add_test;/home/ascend/git/sampled-lmms/tests/CMakeLists.txt;0;")

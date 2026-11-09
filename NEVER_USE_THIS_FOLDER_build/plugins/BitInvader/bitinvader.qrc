@@ -1,0 +1,9 @@
+<RCC>
+	<qresource prefix="artwork/bitinvader">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/BitInvader/artwork.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/BitInvader/logo.png</file>
+		<file alias="smooth_active.png">/home/ascend/git/sampled-lmms/plugins/BitInvader/smooth_active.png</file>
+		<file alias="smooth_inactive.png">/home/ascend/git/sampled-lmms/plugins/BitInvader/smooth_inactive.png</file>
+		<file alias="wavegraph.png">/home/ascend/git/sampled-lmms/plugins/BitInvader/wavegraph.png</file>
+	</qresource>
+</RCC>

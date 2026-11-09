@@ -1,0 +1,9 @@
+<RCC>
+	<qresource prefix="artwork/granularpitchshifter">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/GranularPitchShifter/artwork.png</file>
+		<file alias="help_active.png">/home/ascend/git/sampled-lmms/plugins/GranularPitchShifter/help_active.png</file>
+		<file alias="help_inactive.png">/home/ascend/git/sampled-lmms/plugins/GranularPitchShifter/help_inactive.png</file>
+		<file alias="prefilter_active.png">/home/ascend/git/sampled-lmms/plugins/GranularPitchShifter/prefilter_active.png</file>
+		<file alias="prefilter_inactive.png">/home/ascend/git/sampled-lmms/plugins/GranularPitchShifter/prefilter_inactive.png</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,1049 @@
+Start testing: Nov 04 17:35 AEDT
+----------------------------------------------------------
+1/16 Testing: ArrayVectorTest
+1/16 Test: ArrayVectorTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/ArrayVectorTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"ArrayVectorTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of ArrayVectorTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : ArrayVectorTest::initTestCase()
+PASS   : ArrayVectorTest::defaultConstructorTest()
+PASS   : ArrayVectorTest::copyConstructorTest()
+PASS   : ArrayVectorTest::moveConstructorTest()
+PASS   : ArrayVectorTest::fillValueConstructorTest()
+PASS   : ArrayVectorTest::fillDefaultConstructorTest()
+PASS   : ArrayVectorTest::rangeConstructorTest()
+PASS   : ArrayVectorTest::initializerListConstructorTest()
+PASS   : ArrayVectorTest::destructorTest()
+PASS   : ArrayVectorTest::copyAssignmentTest()
+PASS   : ArrayVectorTest::moveAssignmentTest()
+PASS   : ArrayVectorTest::initializerListAssignmentTest()
+PASS   : ArrayVectorTest::fillValueAssignTest()
+PASS   : ArrayVectorTest::rangeAssignTest()
+PASS   : ArrayVectorTest::atTest()
+PASS   : ArrayVectorTest::subscriptTest()
+PASS   : ArrayVectorTest::frontTest()
+PASS   : ArrayVectorTest::backTest()
+PASS   : ArrayVectorTest::dataTest()
+PASS   : ArrayVectorTest::beginEndTest()
+PASS   : ArrayVectorTest::rbeginRendTest()
+PASS   : ArrayVectorTest::emptyFullSizeMaxCapacityTest()
+PASS   : ArrayVectorTest::insertValueTest()
+PASS   : ArrayVectorTest::insertFillValueTest()
+PASS   : ArrayVectorTest::insertRangeTest()
+PASS   : ArrayVectorTest::insertInitializerListTest()
+PASS   : ArrayVectorTest::emplaceTest()
+PASS   : ArrayVectorTest::eraseTest()
+PASS   : ArrayVectorTest::eraseRangeTest()
+PASS   : ArrayVectorTest::pushBackTest()
+PASS   : ArrayVectorTest::emplaceBackTest()
+PASS   : ArrayVectorTest::popBackTest()
+PASS   : ArrayVectorTest::resizeDefaultTest()
+PASS   : ArrayVectorTest::resizeValueTest()
+PASS   : ArrayVectorTest::clearTest()
+PASS   : ArrayVectorTest::memberSwapTest()
+PASS   : ArrayVectorTest::freeSwapTest()
+PASS   : ArrayVectorTest::comparisonTest()
+PASS   : ArrayVectorTest::cleanupTestCase()
+Totals: 39 passed, 0 failed, 0 skipped, 0 blacklisted, 0ms
+********* Finished testing of ArrayVectorTest *********
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ArrayVectorTest" end time: Nov 04 17:35 AEDT
+"ArrayVectorTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/16 Testing: AudioBufferTest
+2/16 Test: AudioBufferTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/AudioBufferTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"AudioBufferTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of AudioBufferTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : AudioBufferTest::initTestCase()
+PASS   : AudioBufferTest::Constructor_DefaultChannels()
+PASS   : AudioBufferTest::Constructor_NoChannels()
+PASS   : AudioBufferTest::Constructor_SharedMemoryResource()
+PASS   : AudioBufferTest::AllocateInterleavedBuffer()
+PASS   : AudioBufferTest::AddGroup_FirstGroup()
+PASS   : AudioBufferTest::AddGroup_SecondGroup()
+PASS   : AudioBufferTest::AddGroup_ZeroChannelsFails()
+PASS   : AudioBufferTest::AddGroup_MaximumGroups()
+PASS   : AudioBufferTest::AddGroup_MaximumTotalChannels()
+PASS   : AudioBufferTest::AddGroup_SharedMemoryResource()
+PASS   : AudioBufferTest::SetGroups()
+PASS   : AudioBufferTest::TwoAudioBuffersWithSameSharedMemory()
+PASS   : AudioBufferTest::SilenceFlags_AllSilentWhenNoChannels()
+PASS   : AudioBufferTest::SilenceFlags_AllSilentWhenNewGroupsAdded()
+PASS   : AudioBufferTest::AssumeNonSilent()
+PASS   : AudioBufferTest::EnableSilenceTracking_GetterSetter()
+PASS   : AudioBufferTest::EnableSilenceTracking_UpdatesSilenceFlags()
+PASS   : AudioBufferTest::UpdateSilenceFlags_DoesNothingWhenSilent()
+PASS   : AudioBufferTest::UpdateSilenceFlags_UpdatesChannelWhenSelected()
+PASS   : AudioBufferTest::UpdateSilenceFlags_WorksWithGroups()
+PASS   : AudioBufferTest::UpdateSilenceFlags_UpdatesFromNonSilenceToSilence()
+PASS   : AudioBufferTest::UpdateSilenceFlags_NonSilentWhenSilenceTrackingDisabled()
+PASS   : AudioBufferTest::UpdateSilenceFlags_NoSelectionIsSilent()
+PASS   : AudioBufferTest::UpdateAllSilenceFlags_SilenceTrackingEnabled()
+PASS   : AudioBufferTest::UpdateAllSilenceFlags_SilenceTrackingDisabled()
+PASS   : AudioBufferTest::UpdateAllSilenceFlags_NoChannelsIsSilent()
+PASS   : AudioBufferTest::HasSignal()
+PASS   : AudioBufferTest::Sanitize_SilencesOnlyInfAndNaN()
+PASS   : AudioBufferTest::SilenceChannels_SilencesSelectedChannels()
+PASS   : AudioBufferTest::cleanupTestCase()
+Totals: 31 passed, 0 failed, 0 skipped, 0 blacklisted, 1ms
+********* Finished testing of AudioBufferTest *********
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"AudioBufferTest" end time: Nov 04 17:35 AEDT
+"AudioBufferTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/16 Testing: AutomatableModelTest
+3/16 Test: AutomatableModelTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/AutomatableModelTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"AutomatableModelTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of AutomatableModelTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : AutomatableModelTest::initTestCase()
+PASS   : AutomatableModelTest::onM1Changed()
+PASS   : AutomatableModelTest::onM2Changed()
+PASS   : AutomatableModelTest::CastTests()
+PASS   : AutomatableModelTest::LinkTests()
+PASS   : AutomatableModelTest::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 965ms
+********* Finished testing of AutomatableModelTest *********
+<end of output>
+Test time =   0.97 sec
+----------------------------------------------------------
+Test Passed.
+"AutomatableModelTest" end time: Nov 04 17:35 AEDT
+"AutomatableModelTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/16 Testing: ClipboardMimeTest
+4/16 Test: ClipboardMimeTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/ClipboardMimeTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"ClipboardMimeTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+qt.svg: /home/ascend/.config/Kvantum/Fluent-round/Fluent-roundDark.svg:7987:6: Could not resolve property: #paint0_linear
+********* Start testing of ClipboardMimeTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : ClipboardMimeTest::initTestCase()
+PASS   : ClipboardMimeTest::testDecodeExplorerWav()
+PASS   : ClipboardMimeTest::testDecodeExplorerOgg()
+PASS   : ClipboardMimeTest::testDecodeExplorerFlac()
+PASS   : ClipboardMimeTest::testDecodeExplorerMp3()
+PASS   : ClipboardMimeTest::testDecodeRejectsNonAudio()
+PASS   : ClipboardMimeTest::testDecodeRejectsDirectory()
+PASS   : ClipboardMimeTest::testDecodeExplorerProjectFile()
+PASS   : ClipboardMimeTest::testDecodeExplorerMidi()
+PASS   : ClipboardMimeTest::testDecodeStringPairFallback()
+PASS   : ClipboardMimeTest::testOldStringPairPathRejectsExplorerDrop()
+PASS   : ClipboardMimeTest::testExplorerProvidesUriList()
+PASS   : ClipboardMimeTest::testIsAudioFileExtensions()
+PASS   : ClipboardMimeTest::testDecodeEmptyMimeData()
+PASS   : ClipboardMimeTest::cleanupTestCase()
+Totals: 15 passed, 0 failed, 0 skipped, 0 blacklisted, 0ms
+********* Finished testing of ClipboardMimeTest *********
+<end of output>
+Test time =   0.30 sec
+----------------------------------------------------------
+Test Passed.
+"ClipboardMimeTest" end time: Nov 04 17:35 AEDT
+"ClipboardMimeTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/16 Testing: MathTest
+5/16 Test: MathTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/MathTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"MathTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of MathTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : MathTest::initTestCase()
+PASS   : MathTest::NumDigitsTest()
+PASS   : MathTest::cleanupTestCase()
+Totals: 3 passed, 0 failed, 0 skipped, 0 blacklisted, 0ms
+********* Finished testing of MathTest *********
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"MathTest" end time: Nov 04 17:35 AEDT
+"MathTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/16 Testing: ProjectVersionTest
+6/16 Test: ProjectVersionTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/ProjectVersionTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"ProjectVersionTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of ProjectVersionTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : ProjectVersionTest::initTestCase()
+PASS   : ProjectVersionTest::ProjectVersionComparisonTests()
+PASS   : ProjectVersionTest::cleanupTestCase()
+Totals: 3 passed, 0 failed, 0 skipped, 0 blacklisted, 0ms
+********* Finished testing of ProjectVersionTest *********
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"ProjectVersionTest" end time: Nov 04 17:35 AEDT
+"ProjectVersionTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+7/16 Testing: RelativePathsTest
+7/16 Test: RelativePathsTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/RelativePathsTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"RelativePathsTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of RelativePathsTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : RelativePathsTest::initTestCase()
+PASS   : RelativePathsTest::PathUtilComparisonTests()
+PASS   : RelativePathsTest::StringToPathTest()
+PASS   : RelativePathsTest::QStringToPathTest()
+PASS   : RelativePathsTest::PathToStringTest()
+PASS   : RelativePathsTest::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 1ms
+********* Finished testing of RelativePathsTest *********
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"RelativePathsTest" end time: Nov 04 17:35 AEDT
+"RelativePathsTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+8/16 Testing: SampleRecordingTest
+8/16 Test: SampleRecordingTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/SampleRecordingTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"SampleRecordingTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of SampleRecordingTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : SampleRecordingTest::initTestCase()
+PASS   : SampleRecordingTest::refusesToArmRecordingWithoutCaptureDevice()
+PASS   : SampleRecordingTest::armsRecordingWithCaptureDevice()
+PASS   : SampleRecordingTest::stopEndsRecording()
+PASS   : SampleRecordingTest::playbackNeverRecords()
+PASS   : SampleRecordingTest::pushedFramesBecomeReadableOnce()
+PASS   : SampleRecordingTest::emptyTakeLeavesClipAudioAlone()
+PASS   : SampleRecordingTest::capturedFramesAreCommittedToClip()
+PASS   : SampleRecordingTest::cleanupTestCase()
+Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 948ms
+********* Finished testing of SampleRecordingTest *********
+<end of output>
+Test time =   0.96 sec
+----------------------------------------------------------
+Test Passed.
+"SampleRecordingTest" end time: Nov 04 17:35 AEDT
+"SampleRecordingTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+9/16 Testing: RecordingWorkflowTest
+9/16 Test: RecordingWorkflowTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/RecordingWorkflowTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"RecordingWorkflowTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of RecordingWorkflowTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : RecordingWorkflowTest::initTestCase()
+PASS   : RecordingWorkflowTest::recordSelectedTrackCreatesClipWhenNoneExists()
+PASS   : RecordingWorkflowTest::recordSelectedTrackUsesSelectedSampleTrack()
+PASS   : RecordingWorkflowTest::recordClipStartsAtPlayhead()
+PASS   : RecordingWorkflowTest::existingNonRecordClipIsNotOverwritten()
+PASS   : RecordingWorkflowTest::recordNewTrackCreatesAndSelectsSampleTrack()
+PASS   : RecordingWorkflowTest::interactingWithTrackRetargetsRecording()
+PASS   : RecordingWorkflowTest::reorderingPreservesTarget()
+PASS   : RecordingWorkflowTest::addingSampleTrackSelectsIt()
+PASS   : RecordingWorkflowTest::addingNonSampleTrackKeepsTarget()
+PASS   : RecordingWorkflowTest::removingTargetMovesTargetToNeighbour()
+PASS   : RecordingWorkflowTest::removingOtherTrackKeepsTarget()
+PASS   : RecordingWorkflowTest::removingLastSampleTrackClearsTarget()
+QWARN  : RecordingWorkflowTest::recordSelectedTrackWithoutSampleTrackDoesNothing() Song::recordSelectedTrack: no track is selected, so nothing was recorded. Select a Sample Track first, or choose 'Record into new Sample Track'.
+PASS   : RecordingWorkflowTest::recordSelectedTrackWithoutSampleTrackDoesNothing()
+QWARN  : RecordingWorkflowTest::recordSelectedTrackAfterTargetRemovedDoesNothing() Song::recordSelectedTrack: no track is selected, so nothing was recorded. Select a Sample Track first, or choose 'Record into new Sample Track'.
+PASS   : RecordingWorkflowTest::recordSelectedTrackAfterTargetRemovedDoesNothing()
+PASS   : RecordingWorkflowTest::recordSelectedTrackWithoutCaptureDeviceDoesNothing()
+PASS   : RecordingWorkflowTest::recordSelectedTrackWithoutCaptureDeviceEmitsWarning()
+PASS   : RecordingWorkflowTest::recordNewTrackWithoutCaptureDeviceEmitsWarning()
+PASS   : RecordingWorkflowTest::selectedTrackChangedIsEmitted()
+PASS   : RecordingWorkflowTest::defaultRecordModeIsNewTrack()
+PASS   : RecordingWorkflowTest::newTrackModeRepeatsTrackCreation()
+PASS   : RecordingWorkflowTest::selectedTrackModeReusesTargetTrack()
+PASS   : RecordingWorkflowTest::changingModeChangesNextClick()
+QWARN  : RecordingWorkflowTest::primaryClickKeepsRememberedMode() QSignalSpy: Unable to handle parameter 'mode' of type 'RecordMode' of method 'recordModeChanged', use qRegisterMetaType to register it.
+QWARN  : RecordingWorkflowTest::primaryClickKeepsRememberedMode() Song::recordSelectedTrack: no track is selected, so nothing was recorded. Select a Sample Track first, or choose 'Record into new Sample Track'.
+PASS   : RecordingWorkflowTest::primaryClickKeepsRememberedMode()
+QWARN  : RecordingWorkflowTest::selectedTrackModeWithoutTargetDoesNothing() Song::recordSelectedTrack: no track is selected, so nothing was recorded. Select a Sample Track first, or choose 'Record into new Sample Track'.
+PASS   : RecordingWorkflowTest::selectedTrackModeWithoutTargetDoesNothing()
+PASS   : RecordingWorkflowTest::cleanupTestCase()
+Totals: 26 passed, 0 failed, 0 skipped, 0 blacklisted, 945ms
+********* Finished testing of RecordingWorkflowTest *********
+<end of output>
+Test time =   0.95 sec
+----------------------------------------------------------
+Test Passed.
+"RecordingWorkflowTest" end time: Nov 04 17:35 AEDT
+"RecordingWorkflowTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+10/16 Testing: SampleStretchTest
+10/16 Test: SampleStretchTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/SampleStretchTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"SampleStretchTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of SampleStretchTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : SampleStretchTest::initTestCase()
+PASS   : SampleStretchTest::stretchModeAndTrimModeDifferInEditingBehaviour()
+PASS   : SampleStretchTest::resampleDoubleLengthDoublesDurationAndLowersPitch()
+PASS   : SampleStretchTest::resampleHalfLengthHalvesDurationAndRaisesPitch()
+PASS   : SampleStretchTest::stretchDoublePreservesPitch()
+PASS   : SampleStretchTest::stretchHalfPreservesPitch()
+PASS   : SampleStretchTest::trimDoesNotChangePlaybackSpeed()
+PASS   : SampleStretchTest::frontEdgeStretchKeepsEndAndAllAudio()
+PASS   : SampleStretchTest::frontEdgeTrimKeepsEndAndSpeed()
+PASS   : SampleStretchTest::stretchedBufferMatchesClipOutputDuration()
+PASS   : SampleStretchTest::seekMatchesContinuousPlayback()
+PASS   : SampleStretchTest::stretchRoundTripRestoresOriginal()
+PASS   : SampleStretchTest::serializationPreservesStretchState()
+PASS   : SampleStretchTest::defaultModeIsResample()
+PASS   : SampleStretchTest::modeSwitchKeepsLength()
+PASS   : SampleStretchTest::selectingActiveModeIsNoOp()
+PASS   : SampleStretchTest::stretchModeAtRatioOneBypasses()
+PASS   : SampleStretchTest::switchingToResampleClearsStretchedBuffer()
+PASS   : SampleStretchTest::stretchDurationFollowsRatio()
+PASS   : SampleStretchTest::stretchLeavesSourceUntouched()
+PASS   : SampleStretchTest::stretchHonoursSubrange()
+PASS   : SampleStretchTest::stretchRejectsDegenerateInputs()
+PASS   : SampleStretchTest::cacheKeyDistinguishesParameters()
+PASS   : SampleStretchTest::oldProjectsDefaultToResample()
+PASS   : SampleStretchTest::modeSwitchIsOneUndoEntry()
+QWARN  : SampleStretchTest::missingSourceFileDoesNotCrash() QIODevice::read (QFile, "/nonexistent/path/to/sample.wav"): device not open
+QWARN  : SampleStretchTest::missingSourceFileDoesNotCrash() "Failed to load sample at path /nonexistent/path/to/sample.wav, the file may not exist, be corrupted, or is unsupported."
+PASS   : SampleStretchTest::missingSourceFileDoesNotCrash()
+PASS   : SampleStretchTest::sharedSourceClipsRenderIndependently()
+QDEBUG : SampleStretchTest::liveRenderMatchesOfflineStretchedBuffer() live-vs-offline best shift (frames): -1
+PASS   : SampleStretchTest::liveRenderMatchesOfflineStretchedBuffer()
+PASS   : SampleStretchTest::stretchUnavailableReportsDegradedBuild()
+PASS   : SampleStretchTest::stretchModeWithoutBufferYetPreservesPitch()
+PASS   : SampleStretchTest::waveformMappingStretchedBufferSpansFullBuffer()
+PASS   : SampleStretchTest::waveformMappingOriginalBufferUsesResampleMapping()
+PASS   : SampleStretchTest::waveformResampleModeDrawsAtNaturalLength()
+PASS   : SampleStretchTest::waveformStretchModeDrawsStretchedBuffer()
+PASS   : SampleStretchTest::waveformSwitchingModesUpdatesRendering()
+PASS   : SampleStretchTest::trimThenStretchPreservesSourceRange()
+PASS   : SampleStretchTest::trimThenStretchCannotResurrectDiscardedAudio()
+PASS   : SampleStretchTest::twoToneControlShowsDiscardedAudioWhenNotTrimmed()
+PASS   : SampleStretchTest::pendingStretchIsCommittedBeforeRenderingStarts()
+PASS   : SampleStretchTest::pendingStretchWaitIsHarmlessWithNothingPending()
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+===  Stage 0: loaded 8s sample  ===
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceFrameCount: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   clipDurationTicks: 896
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchRatio: 1
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   pitchMode: Resample
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferExists: false
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+===  Stage 1: PitchMode=Stretch (ratio still 1.0, no stretch yet)  ===
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceFrameCount: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   clipDurationTicks: 896
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchRatio: 1
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferExists: false
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+===  Stage 2: stretched to 16s (async pending, buffer not ready)  ===
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceFrameCount: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   clipDurationTicks: 1792
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchRatio: 2
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferExists: false
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+  stretch jobs completed:  24 -> 25
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+===  Stage 3: after async processing (buffer should be installed)  ===
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceFrameCount: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   clipDurationTicks: 1792
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchRatio: 2
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferExists: true
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferRate: 44100
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferDataPtr: 0x7fc3f02ba0c0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferSeconds: 15
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+=== Stage 4: play from beginning ===
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.stretchedSource: 0x7fc3f0005590
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.startFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.endFrame: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.totalOutputFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.totalOutputSeconds: 15.9979
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.stretchedBufferDataPtr: 0x7fc3f02ba0c0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.stretchedBufferFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   handle.totalFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   handle.totalSeconds: 15
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   handle.consumes: STRETCHED buffer (dataPtr  0x7fc3f02ba0c0 )
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedSeconds: 15
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedFreqL: 439.121 Hz (expect 440 for pitch-preserved, 220 for resample 2x)
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedFreqR: 878.054 Hz (expect 880 for pitch-preserved, 440 for resample 2x)
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+===  Stage 5: after first play (handle done, clip unchanged)  ===
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   sourceFrameCount: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   clipDurationTicks: 1792
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchRatio: 2
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferExists: true
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferRate: 44100
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferDataPtr: 0x7fc3f02ba0c0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchBufferSeconds: 15
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+=== Stage 6: play again ===
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.stretchedSource: 0x7fc3f0005590
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.startFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.endFrame: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.totalOutputFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.totalOutputSeconds: 15.9979
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.stretchedBufferDataPtr: 0x7fc3f02ba0c0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.stretchedBufferFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   handle.totalFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   handle.totalSeconds: 15
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   handle.consumes: STRETCHED buffer (dataPtr  0x7fc3f02ba0c0 )
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedSeconds: 15
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedFreqL: 439.121 Hz (expect 440 for pitch-preserved, 220 for resample 2x)
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedFreqR: 878.054 Hz (expect 880 for pitch-preserved, 440 for resample 2x)
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+=== Stage 7: seek to middle ===
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   midTicks: 896 midOutputFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.stretchedSource: 0x7fc3f0005590
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.startFrame: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.endFrame: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.totalOutputFrames: 352706
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.totalOutputSeconds: 7.99787
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.stretchedBufferDataPtr: 0x7fc3f02ba0c0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   plan.stretchedBufferFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   handle.totalFrames: 352706
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   handle.totalSeconds: 7
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   handle.consumes: STRETCHED buffer (dataPtr  0x7fc3f02ba0c0 )
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedFrames: 352706
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedSeconds: 7
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedFreqL: 438.242 Hz (expect 440 for pitch-preserved, 220 for resample 2x)
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   renderedFreqR: 876.108 Hz (expect 880 for pitch-preserved, 440 for resample 2x)
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s() 
+=== Stage 8: buffer identity verification ===
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchedBufferDataPtr: 0x7fc3f02ba0c0
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   buffersAreDifferent: true
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchedBufferIsAtEngineRate: true
+QDEBUG : SampleStretchTest::runtimeTrace_8sStretchTo16s()   stretchedBufferDuration: 15 s (expect ~16s)
+PASS   : SampleStretchTest::runtimeTrace_8sStretchTo16s()
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch() 
+===  Stage 0: loaded 8s sample  ===
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceFrameCount: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   clipDurationTicks: 896
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchRatio: 1
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   pitchMode: Resample
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchBufferExists: false
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch() 
+===  Stage 1: trimmed to 4s (EditMode::Draw)  ===
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceEndFrame: 176400
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceFrameCount: 176400
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   clipDurationTicks: 448
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchRatio: 1
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   pitchMode: Resample
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchBufferExists: false
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch() 
+===  Stage 2: PitchMode=Stretch  ===
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceEndFrame: 176400
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceFrameCount: 176400
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   clipDurationTicks: 448
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchRatio: 1
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchBufferExists: false
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch() 
+===  Stage 3: stretched to 8s (async pending)  ===
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceEndFrame: 176400
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceFrameCount: 176400
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   clipDurationTicks: 896
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchRatio: 2
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchBufferExists: false
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch() 
+===  Stage 4: after async processing  ===
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceEndFrame: 176400
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceFrameCount: 176400
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   clipDurationTicks: 896
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchRatio: 2
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchBufferExists: true
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchBufferFrames: 352706
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchBufferSeconds: 7
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchBufferDataPtr: 0x7fc3f0161840
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch() 
+=== Stage 5: play ===
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   plan.stretchedSource: 0x7fc3f00082c0
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   plan.startFrame: 0
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   plan.endFrame: 352706
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   plan.totalOutputFrames: 352706
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   plan.totalOutputSeconds: 7.99787
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   plan.consumes: STRETCHED buffer (dataPtr  0x7fc3f0161840 )
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   handle.totalFrames: 352706
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   handle.totalSeconds: 7
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   renderedFrames: 352706
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   renderedSeconds: 7
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   renderedFreqL: 438.242 Hz (expect 440 = original pitch, NOT 220)
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch() 
+=== Bug C verification ===
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceStartFrame: 0 (expect 0)
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceEndFrame: 176400
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceRangeFrames: 176400 (expect ~ 176400 )
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   sourceRangeIs4s: true
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchedBufferFrames: 352706 (expect ~ 352800 )
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchedBufferIs8s: true
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   stretchedBufferDataPtr: 0x7fc3f0161840
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   originalBufferDataPtr: 0x5a82a5992770
+QDEBUG : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()   usesGeneratedBuffer: true
+PASS   : SampleStretchTest::runtimeTrace_bugC_trimThenStretch()
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition() 
+=== Async transition: BEFORE buffer lands ===
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   plan.stretchedSource: 0x0 (expect nullptr)
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   plan.resampleRatio: 1 (expect 2.0)
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   plan.totalOutputFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   plan.totalOutputSeconds: 8
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   handle.totalFrames: 352800
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   handle.consumes: ORIGINAL buffer (resample fallback)
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   handle.framesDone after 1 period: 256
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition() 
+=== Async transition: AFTER buffer lands ===
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   hasStretchedSample: true
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   stretchedBufferFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   stretchedBufferSeconds: 15
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   stretchedBufferDataPtr: 0x7fc3f02ba0c0
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   NEW plan.stretchedSource: 0x7fc3f00080f0 (expect non-null)
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   NEW plan.resampleRatio: 1 (expect 1.0)
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   NEW plan.totalOutputFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   NEW plan.totalOutputSeconds: 15.9979
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   NEW plan.consumes: STRETCHED buffer (dataPtr  0x7fc3f02ba0c0 )
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   buffer identity matches clip: true
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   NEW handle.totalFrames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition() 
+  Old handle (from step 1) continues with resample fallback until it finishes
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   New handles (from step 3) use the stretched buffer at ratio 1.0
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition() 
+=== Generation/cache key verification ===
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   buffer installed (not discarded): true
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   buffer frames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   buffer rate: 44100
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   buffer is at engine rate: true
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition() 
+=== PitchMode invalidation ===
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   After switch to Resample: hasStretchedSample: false (expect false)
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   After switch back to Stretch: hasStretchedSample: true (expect true)
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   rebuilt buffer frames: 705506
+QDEBUG : SampleStretchTest::runtimeTrace_asyncTransition()   rebuilt buffer dataPtr: 0x7fc3f081dfe0
+PASS   : SampleStretchTest::runtimeTrace_asyncTransition()
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   original pitch: 439.875 Hz (expect ~440)
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   pitchMode after toolbar stretch: 0 (0=Resample default, 1=Stretch) -- toolbar stretch does NOT change pitch mode
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   stretchRatio: 2 (expect 2.0)
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   clip length ticks: 1792
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   plan.stretchedSource: 0x0 (nullptr = resample fallback, non-null = pitch-preserved stretch)
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   plan.resampleRatio: 2 (1.0 = pitch preserved, 2.0 = resample, one octave lower)
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   plan.totalOutputSeconds: 16
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   rendered pitch: 219.938 Hz (440 = pitch preserved, 220 = resample 2x)
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   rendered seconds: 16
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   expectedOutputFrames: 705600  actual: 705600
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   durationOK: true   pitchIsResample: true
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   pitchMode after setPitchMode(Stretch): 1
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   plan.stretchedSource: 0x7fc3f0008290
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   rendered pitch: 439.121 Hz (440 = pitch preserved)
+QDEBUG : SampleStretchTest::toolbarStretchDoesNotChangePitch()   half-length pitch (Resample): 879.75 Hz (880 = resample 2x up)
+PASS   : SampleStretchTest::toolbarStretchDoesNotChangePitch()
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage() 
+===  Stage 0: loaded 8s sample (default Resample)  ===
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   pitchMode: Resample
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchRatio: 1
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   clipLengthTicks: 896
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceRangeFrames: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   hasStretchedSample: false
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.stretchedSource: 0x0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.totalOutputSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedFreqL: 439.875 Hz (440 = pitch preserved, 220 = resample 2x down, 880 = resample 2x up)
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage() 
+===  Stage 1: stretchToLength(16s) -- toolbar path, no setPitchMode  ===
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   pitchMode: Resample
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   clipLengthTicks: 1792
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceRangeFrames: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   hasStretchedSample: false
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.stretchedSource: 0x0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.resampleRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.totalOutputSeconds: 16
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedFreqL: 219.938 Hz (440 = pitch preserved, 220 = resample 2x down, 880 = resample 2x up)
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedSeconds: 16
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage() 
+===  Stage 2: after async buffer lands  ===
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   pitchMode: Resample
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   clipLengthTicks: 1792
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceRangeFrames: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   hasStretchedSample: false
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.stretchedSource: 0x0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.resampleRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.totalOutputSeconds: 16
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedFreqL: 219.938 Hz (440 = pitch preserved, 220 = resample 2x down, 880 = resample 2x up)
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedSeconds: 16
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage() 
+===  Stage 3a: trimToLength(4s) at ratio 1.0 -- normal edit mode  ===
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   pitchMode: Resample
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchRatio: 1
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   clipLengthTicks: 448
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceEndFrame: 176400
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceRangeFrames: 176400
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   hasStretchedSample: false
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.stretchedSource: 0x0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.totalOutputSeconds: 4
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedFreqL: 439.75 Hz (440 = pitch preserved, 220 = resample 2x down, 880 = resample 2x up)
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedSeconds: 4
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage() 
+===  Stage 3b: stretchToLength(8s) -- toolbar path, no setPitchMode  ===
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   pitchMode: Resample
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   clipLengthTicks: 896
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceEndFrame: 176400
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceRangeFrames: 176400
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   hasStretchedSample: false
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.stretchedSource: 0x0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.resampleRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.totalOutputSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedFreqL: 219.875 Hz (440 = pitch preserved, 220 = resample 2x down, 880 = resample 2x up)
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage() 
+===  Stage 3c: after async buffer lands  ===
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   pitchMode: Resample
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   clipLengthTicks: 896
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceEndFrame: 176400
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceRangeFrames: 176400
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   hasStretchedSample: false
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.stretchedSource: 0x0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.resampleRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.totalOutputSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedFreqL: 219.875 Hz (440 = pitch preserved, 220 = resample 2x down, 880 = resample 2x up)
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage() 
+===  Stage 4a: setPitchMode(Stretch) -- context menu  ===
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   clipLengthTicks: 1792
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceRangeFrames: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   hasStretchedSample: false
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.stretchedSource: 0x0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.totalOutputSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedFreqL: 439.875 Hz (440 = pitch preserved, 220 = resample 2x down, 880 = resample 2x up)
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage() 
+===  Stage 4b: stretchToLength again after context-menu Stretch  ===
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   clipLengthTicks: 1792
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceRangeFrames: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   hasStretchedSample: false
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.stretchedSource: 0x0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.totalOutputSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedFreqL: 439.875 Hz (440 = pitch preserved, 220 = resample 2x down, 880 = resample 2x up)
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedSeconds: 8
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage() 
+===  Stage 4c: after async buffer lands  ===
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   pitchMode: Stretch
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchRatio: 2
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   clipLengthTicks: 1792
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceStartFrame: 0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceEndFrame: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   sourceRangeFrames: 352800
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   hasStretchedSample: true
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchedBufferFrames: 705506
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   stretchedBufferSeconds: 15
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.stretchedSource: 0x7fc3f00056b0
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.resampleRatio: 1
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   plan.totalOutputSeconds: 15.9979
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedFreqL: 439.121 Hz (440 = pitch preserved, 220 = resample 2x down, 880 = resample 2x up)
+QDEBUG : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()   renderedSeconds: 15
+PASS   : SampleStretchTest::diagnostic_toolbarWorkflow_stateAtEachStage()
+QDEBUG : SampleStretchTest::asyncTransitionDuringActivePlayback() 
+=== Async transition during active playback ===
+QDEBUG : SampleStretchTest::asyncTransitionDuringActivePlayback()   Old handle (started before buffer):
+QDEBUG : SampleStretchTest::asyncTransitionDuringActivePlayback()     totalFrames: 352800 (source path, ratio 1.0)
+QDEBUG : SampleStretchTest::asyncTransitionDuringActivePlayback()     rendered pitch: 439.816 Hz (expect ~440 = pitch preserved)
+QDEBUG : SampleStretchTest::asyncTransitionDuringActivePlayback()   New handle (started after buffer):
+QDEBUG : SampleStretchTest::asyncTransitionDuringActivePlayback()     totalFrames: 705506 (stretch path, ratio 1.0)
+QDEBUG : SampleStretchTest::asyncTransitionDuringActivePlayback()     rendered pitch: 439.121 Hz (expect ~440 = pitch preserved)
+QDEBUG : SampleStretchTest::asyncTransitionDuringActivePlayback()   Old handle plays the natural 8 s: true
+QDEBUG : SampleStretchTest::asyncTransitionDuringActivePlayback()   New handle has correct duration: true
+PASS   : SampleStretchTest::asyncTransitionDuringActivePlayback()
+PASS   : SampleStretchTest::cleanupTestCase()
+Totals: 47 passed, 0 failed, 0 skipped, 0 blacklisted, 19760ms
+********* Finished testing of SampleStretchTest *********
+<end of output>
+Test time =  19.77 sec
+----------------------------------------------------------
+Test Passed.
+"SampleStretchTest" end time: Nov 04 17:35 AEDT
+"SampleStretchTest" time elapsed: 00:00:19
+----------------------------------------------------------
+
+11/16 Testing: TimelineTest
+11/16 Test: TimelineTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/TimelineTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"TimelineTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of TimelineTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : TimelineTest::initTestCase()
+PASS   : TimelineTest::onPositionChanged()
+PASS   : TimelineTest::onPositionJumped()
+PASS   : TimelineTest::JumpedTests()
+PASS   : TimelineTest::ElapsedTimeTests()
+PASS   : TimelineTest::cleanupTestCase()
+Totals: 6 passed, 0 failed, 0 skipped, 0 blacklisted, 940ms
+********* Finished testing of TimelineTest *********
+<end of output>
+Test time =   0.95 sec
+----------------------------------------------------------
+Test Passed.
+"TimelineTest" end time: Nov 04 17:35 AEDT
+"TimelineTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+12/16 Testing: SampleClipContextMenuTest
+12/16 Test: SampleClipContextMenuTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/SampleClipContextMenuTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"SampleClipContextMenuTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+qt.svg: /home/ascend/.config/Kvantum/Fluent-round/Fluent-roundDark.svg:7987:6: Could not resolve property: #paint0_linear
+********* Start testing of SampleClipContextMenuTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+QWARN  : SampleClipContextMenuTest::initTestCase() QIODevice::read (QFile, "resources:style.css"): device not open
+PASS   : SampleClipContextMenuTest::initTestCase()
+QINFO  : SampleClipContextMenuTest::freshClipIsEightSecondsAt440()   fresh clip: 8 s @ 439.875 Hz
+PASS   : SampleClipContextMenuTest::freshClipIsEightSecondsAt440()
+PASS   : SampleClipContextMenuTest::contextMenuOffersPitchModes()
+PASS   : SampleClipContextMenuTest::menuActionSetsPitchMode()
+QINFO  : SampleClipContextMenuTest::stretchTo16sKeepsPitch()   menu Stretch -> 16 s: 15.9979 s @ 439.121 Hz
+PASS   : SampleClipContextMenuTest::stretchTo16sKeepsPitch()
+QINFO  : SampleClipContextMenuTest::resampleTo16sShiftsPitch()   Resample -> 16 s: 16 s @ 219.938 Hz
+PASS   : SampleClipContextMenuTest::resampleTo16sShiftsPitch()
+QINFO  : SampleClipContextMenuTest::stretchTo4sKeepsPitch()   menu Stretch -> 4 s: 3.99948 s @ 439.807 Hz
+PASS   : SampleClipContextMenuTest::stretchTo4sKeepsPitch()
+QINFO  : SampleClipContextMenuTest::resampleTo4sShiftsPitch()   Resample -> 4 s: 4 s @ 879.75 Hz
+PASS   : SampleClipContextMenuTest::resampleTo4sShiftsPitch()
+QINFO  : SampleClipContextMenuTest::ordinaryResizeWithToolbarStretchOffTrimsNotStretches()   ordinary resize -> 16 s: 8 s @ 439.875 Hz
+PASS   : SampleClipContextMenuTest::ordinaryResizeWithToolbarStretchOffTrimsNotStretches()
+QINFO  : SampleClipContextMenuTest::ordinaryResizeShorteningTrimsNotStretches()   ordinary resize -> 4 s: 4 s @ 439.75 Hz
+PASS   : SampleClipContextMenuTest::ordinaryResizeShorteningTrimsNotStretches()
+QINFO  : SampleClipContextMenuTest::selectingStretchFromMenuChangesWhatIsHeard()   before the menu choice: 16 s @ 219.938 Hz
+QINFO  : SampleClipContextMenuTest::selectingStretchFromMenuChangesWhatIsHeard()   after the menu choice: 15.9979 s @ 439.121 Hz
+PASS   : SampleClipContextMenuTest::selectingStretchFromMenuChangesWhatIsHeard()
+PASS   : SampleClipContextMenuTest::cleanupTestCase()
+Totals: 12 passed, 0 failed, 0 skipped, 0 blacklisted, 4457ms
+********* Finished testing of SampleClipContextMenuTest *********
+<end of output>
+Test time =   4.80 sec
+----------------------------------------------------------
+Test Passed.
+"SampleClipContextMenuTest" end time: Nov 04 17:35 AEDT
+"SampleClipContextMenuTest" time elapsed: 00:00:04
+----------------------------------------------------------
+
+13/16 Testing: SampleClipSplitStretchTest
+13/16 Test: SampleClipSplitStretchTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/SampleClipSplitStretchTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"SampleClipSplitStretchTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+qt.svg: /home/ascend/.config/Kvantum/Fluent-round/Fluent-roundDark.svg:7987:6: Could not resolve property: #paint0_linear
+********* Start testing of SampleClipSplitStretchTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+QWARN  : SampleClipSplitStretchTest::initTestCase() QIODevice::read (QFile, "resources:style.css"): device not open
+PASS   : SampleClipSplitStretchTest::initTestCase()
+QWARN  : SampleClipSplitStretchTest::splitProducesTwoClipsWithExpectedGeometry() QObject::connect: No such slot lmms::SampleClip::updateLength() in /home/ascend/git/sampled-lmms/src/core/SampleClip.cpp:105
+PASS   : SampleClipSplitStretchTest::splitProducesTwoClipsWithExpectedGeometry()
+QWARN  : SampleClipSplitStretchTest::splitAssignsRetainedSourceRangeToEachHalf() QObject::connect: No such slot lmms::SampleClip::updateLength() in /home/ascend/git/sampled-lmms/src/core/SampleClip.cpp:105
+QINFO  : SampleClipSplitStretchTest::splitAssignsRetainedSourceRangeToEachHalf() [after split: LEFT ] clip@0 len=448 (4.000 s) offset=0 | source frames [0 .. 176400] of 352800 => range 4.000 s | ratio 1.0000 | stretched buffer no
+QINFO  : SampleClipSplitStretchTest::splitAssignsRetainedSourceRangeToEachHalf() [after split: RIGHT] clip@448 len=448 (4.000 s) offset=-448 | source frames [0 .. 352800] of 352800 => range 8.000 s | ratio 1.0000 | stretched buffer no
+PASS   : SampleClipSplitStretchTest::splitAssignsRetainedSourceRangeToEachHalf()
+QWARN  : SampleClipSplitStretchTest::stretchingLeftHalfKeepsFirstSection() QObject::connect: No such slot lmms::SampleClip::updateLength() in /home/ascend/git/sampled-lmms/src/core/SampleClip.cpp:105
+QINFO  : SampleClipSplitStretchTest::stretchingLeftHalfKeepsFirstSection() [LEFT before stretch] clip@0 len=448 (4.000 s) offset=0 | source frames [0 .. 176400] of 352800 => range 4.000 s | ratio 1.0000 | stretched buffer no
+QINFO  : SampleClipSplitStretchTest::stretchingLeftHalfKeepsFirstSection() [LEFT after stretch ] clip@0 len=896 (8.000 s) offset=0 | source frames [0 .. 176400] of 352800 => range 4.000 s | ratio 2.0000 | stretched buffer yes
+QINFO  : SampleClipSplitStretchTest::stretchingLeftHalfKeepsFirstSection() LEFT rendered 7.998 s
+QINFO  : SampleClipSplitStretchTest::stretchingLeftHalfKeepsFirstSection() LEFT left-channel pitch: overall 438.2 Hz, first quarter 439.6 Hz, last quarter 433.1 Hz
+PASS   : SampleClipSplitStretchTest::stretchingLeftHalfKeepsFirstSection()
+QWARN  : SampleClipSplitStretchTest::stretchingRightHalfKeepsSecondSection() QObject::connect: No such slot lmms::SampleClip::updateLength() in /home/ascend/git/sampled-lmms/src/core/SampleClip.cpp:105
+QINFO  : SampleClipSplitStretchTest::stretchingRightHalfKeepsSecondSection() [RIGHT before stretch] clip@448 len=448 (4.000 s) offset=-448 | source frames [0 .. 352800] of 352800 => range 8.000 s | ratio 1.0000 | stretched buffer no
+QINFO  : SampleClipSplitStretchTest::stretchingRightHalfKeepsSecondSection() [RIGHT after stretch] clip@448 len=896 (8.000 s) offset=0 | source frames [176400 .. 352800] of 352800 => range 4.000 s | ratio 2.0000 | stretched buffer yes
+QINFO  : SampleClipSplitStretchTest::stretchingRightHalfKeepsSecondSection() RIGHT rendered 7.998 s
+QINFO  : SampleClipSplitStretchTest::stretchingRightHalfKeepsSecondSection() RIGHT left-channel pitch: overall 876.0 Hz, first quarter 879.7 Hz, last quarter 864.2 Hz
+PASS   : SampleClipSplitStretchTest::stretchingRightHalfKeepsSecondSection()
+QWARN  : SampleClipSplitStretchTest::shorteningLeftHalfKeepsFirstSection() QObject::connect: No such slot lmms::SampleClip::updateLength() in /home/ascend/git/sampled-lmms/src/core/SampleClip.cpp:105
+QINFO  : SampleClipSplitStretchTest::shorteningLeftHalfKeepsFirstSection() [LEFT before shorten] clip@0 len=448 (4.000 s) offset=0 | source frames [0 .. 176400] of 352800 => range 4.000 s | ratio 1.0000 | stretched buffer no
+QINFO  : SampleClipSplitStretchTest::shorteningLeftHalfKeepsFirstSection() [LEFT after shorten ] clip@0 len=224 (2.000 s) offset=0 | source frames [0 .. 176400] of 352800 => range 4.000 s | ratio 0.5000 | stretched buffer yes
+QINFO  : SampleClipSplitStretchTest::shorteningLeftHalfKeepsFirstSection() LEFT rendered 1.999 s
+QINFO  : SampleClipSplitStretchTest::shorteningLeftHalfKeepsFirstSection() LEFT left-channel pitch: overall 439.6 Hz, first quarter 438.1 Hz, last quarter 440.1 Hz
+PASS   : SampleClipSplitStretchTest::shorteningLeftHalfKeepsFirstSection()
+QINFO  : SampleClipSplitStretchTest::freshUnsplitClipStillStretchesWholeSample() [FRESH after stretch] clip@0 len=1792 (16.000 s) offset=0 | source frames [0 .. 352800] of 352800 => range 8.000 s | ratio 2.0000 | stretched buffer yes
+PASS   : SampleClipSplitStretchTest::freshUnsplitClipStillStretchesWholeSample()
+PASS   : SampleClipSplitStretchTest::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 3797ms
+********* Finished testing of SampleClipSplitStretchTest *********
+<end of output>
+Test time =   4.19 sec
+----------------------------------------------------------
+Test Passed.
+"SampleClipSplitStretchTest" end time: Nov 04 17:35 AEDT
+"SampleClipSplitStretchTest" time elapsed: 00:00:04
+----------------------------------------------------------
+
+14/16 Testing: SampleClipViewWaveformTest
+14/16 Test: SampleClipViewWaveformTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/SampleClipViewWaveformTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"SampleClipViewWaveformTest" start time: Nov 04 17:35 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+qt.svg: /home/ascend/.config/Kvantum/Fluent-round/Fluent-roundDark.svg:7987:6: Could not resolve property: #paint0_linear
+********* Start testing of SampleClipViewWaveformTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : SampleClipViewWaveformTest::initTestCase()
+PASS   : SampleClipViewWaveformTest::toolbarOffResizeNeverRescalesWaveform()
+PASS   : SampleClipViewWaveformTest::toolbarOffTrimShrinksDrawingInsteadOfCompressingIt()
+PASS   : SampleClipViewWaveformTest::pitchModeStretchDoesNotAffectToolbarOffWaveform()
+PASS   : SampleClipViewWaveformTest::toolbarOnWaveformSpansTheClip()
+QDEBUG : SampleClipViewWaveformTest::trimThenStretchDrawsOnlyTheRetainedRegion()   stretched buffer pitch: 439.867 / 436.616 Hz
+PASS   : SampleClipViewWaveformTest::trimThenStretchDrawsOnlyTheRetainedRegion()
+PASS   : SampleClipViewWaveformTest::toolbarOffLeftTrimShiftsDrawingWithoutRescaling()
+PASS   : SampleClipViewWaveformTest::cleanupTestCase()
+Totals: 8 passed, 0 failed, 0 skipped, 0 blacklisted, 1710ms
+********* Finished testing of SampleClipViewWaveformTest *********
+<end of output>
+Test time =   2.09 sec
+----------------------------------------------------------
+Test Passed.
+"SampleClipViewWaveformTest" end time: Nov 04 17:36 AEDT
+"SampleClipViewWaveformTest" time elapsed: 00:00:02
+----------------------------------------------------------
+
+15/16 Testing: TrackRowInteractionFilterTest
+15/16 Test: TrackRowInteractionFilterTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/TrackRowInteractionFilterTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"TrackRowInteractionFilterTest" start time: Nov 04 17:36 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,10,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+QFont::fromString: Invalid description 'Inter,8,-1,5,400,0,0,0,0,0,0,0,0,0,0,1'
+qt.svg: /home/ascend/.config/Kvantum/Fluent-round/Fluent-roundDark.svg:7987:6: Could not resolve property: #paint0_linear
+********* Start testing of TrackRowInteractionFilterTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : TrackRowInteractionFilterTest::initTestCase()
+PASS   : TrackRowInteractionFilterTest::pressOnRowIsReported()
+PASS   : TrackRowInteractionFilterTest::pressOnNestedWidgetIsReported()
+PASS   : TrackRowInteractionFilterTest::pressOnSelfContainedButtonStillCounts()
+PASS   : TrackRowInteractionFilterTest::widgetCreatedLaterIsReported()
+PASS   : TrackRowInteractionFilterTest::subtreeCreatedLaterIsReported()
+PASS   : TrackRowInteractionFilterTest::pressElsewhereIsNotReported()
+PASS   : TrackRowInteractionFilterTest::otherEventsAreNotInteractions()
+PASS   : TrackRowInteractionFilterTest::releaseIsNotAnInteraction()
+PASS   : TrackRowInteractionFilterTest::pressStillReachesTheWidget()
+PASS   : TrackRowInteractionFilterTest::twoRowsReportIndependently()
+PASS   : TrackRowInteractionFilterTest::reparentedWidgetStopsReporting()
+PASS   : TrackRowInteractionFilterTest::destroyingRowIsSafe()
+PASS   : TrackRowInteractionFilterTest::cleanupTestCase()
+Totals: 14 passed, 0 failed, 0 skipped, 0 blacklisted, 1ms
+********* Finished testing of TrackRowInteractionFilterTest *********
+<end of output>
+Test time =   0.34 sec
+----------------------------------------------------------
+Test Passed.
+"TrackRowInteractionFilterTest" end time: Nov 04 17:36 AEDT
+"TrackRowInteractionFilterTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+16/16 Testing: AutomationTrackTest
+16/16 Test: AutomationTrackTest
+Command: "/home/ascend/git/sampled-lmms/build/tests/AutomationTrackTest"
+Directory: /home/ascend/git/sampled-lmms/build/tests
+"AutomationTrackTest" start time: Nov 04 17:36 AEDT
+Output:
+----------------------------------------------------------
+*** WEAK-JACK: initializing
+*** WEAK-JACK: OK. (0)
+********* Start testing of AutomationTrackTest *********
+Config: Using QtTest library 5.15.12, Qt 5.15.12 (x86_64-little_endian-lp64 shared (dynamic) release build; by GCC 11.4.0), ubuntu 2025.03
+PASS   : AutomationTrackTest::initTestCase()
+PASS   : AutomationTrackTest::testClipLinear()
+PASS   : AutomationTrackTest::testClipDiscrete()
+PASS   : AutomationTrackTest::testClips()
+PASS   : AutomationTrackTest::testLengthRespected()
+PASS   : AutomationTrackTest::testInlineAutomation()
+PASS   : AutomationTrackTest::testPatternTrack()
+PASS   : AutomationTrackTest::testGlobalAutomation()
+PASS   : AutomationTrackTest::cleanupTestCase()
+Totals: 9 passed, 0 failed, 0 skipped, 0 blacklisted, 962ms
+********* Finished testing of AutomationTrackTest *********
+<end of output>
+Test time =   0.97 sec
+----------------------------------------------------------
+Test Passed.
+"AutomationTrackTest" end time: Nov 04 17:36 AEDT
+"AutomationTrackTest" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Nov 04 17:36 AEDT

@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/carlapatchbay">
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/CarlaPatchbay/logo.png</file>
+	</qresource>
+</RCC>

@@ -71,6 +71,7 @@ set(LMMS_SRCS
 	core/SampleBuffer.cpp
 	core/SampleClip.cpp
 	core/SampleStretch.cpp
+	core/StretchDebug.cpp
 	core/SampleDecoder.cpp
 	core/SamplePlayHandle.cpp
 	core/SampleRecordHandle.cpp

@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/ladspabrowser">
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/LadspaBrowser/logo.png</file>
+	</qresource>
+</RCC>

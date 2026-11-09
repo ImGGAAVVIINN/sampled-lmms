@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/carlarack">
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/CarlaRack/logo.png</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,5 @@
+<RCC>
+	<qresource prefix="artwork/taptempo">
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/TapTempo/logo.png</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,32 @@
+<RCC>
+	<qresource prefix="artwork/monstro">
+		<file alias="am_active.png">/home/ascend/git/sampled-lmms/plugins/Monstro/am_active.png</file>
+		<file alias="am_inactive.png">/home/ascend/git/sampled-lmms/plugins/Monstro/am_inactive.png</file>
+		<file alias="artwork_mat.png">/home/ascend/git/sampled-lmms/plugins/Monstro/artwork_mat.png</file>
+		<file alias="artwork_op.png">/home/ascend/git/sampled-lmms/plugins/Monstro/artwork_op.png</file>
+		<file alias="exp.png">/home/ascend/git/sampled-lmms/plugins/Monstro/exp.png</file>
+		<file alias="fm_active.png">/home/ascend/git/sampled-lmms/plugins/Monstro/fm_active.png</file>
+		<file alias="fm_inactive.png">/home/ascend/git/sampled-lmms/plugins/Monstro/fm_inactive.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Monstro/logo.png</file>
+		<file alias="matview_active.png">/home/ascend/git/sampled-lmms/plugins/Monstro/matview_active.png</file>
+		<file alias="matview_inactive.png">/home/ascend/git/sampled-lmms/plugins/Monstro/matview_inactive.png</file>
+		<file alias="mix_active.png">/home/ascend/git/sampled-lmms/plugins/Monstro/mix_active.png</file>
+		<file alias="mix_inactive.png">/home/ascend/git/sampled-lmms/plugins/Monstro/mix_inactive.png</file>
+		<file alias="moog.png">/home/ascend/git/sampled-lmms/plugins/Monstro/moog.png</file>
+		<file alias="noise.png">/home/ascend/git/sampled-lmms/plugins/Monstro/noise.png</file>
+		<file alias="opview_active.png">/home/ascend/git/sampled-lmms/plugins/Monstro/opview_active.png</file>
+		<file alias="opview_inactive.png">/home/ascend/git/sampled-lmms/plugins/Monstro/opview_inactive.png</file>
+		<file alias="pm_active.png">/home/ascend/git/sampled-lmms/plugins/Monstro/pm_active.png</file>
+		<file alias="pm_inactive.png">/home/ascend/git/sampled-lmms/plugins/Monstro/pm_inactive.png</file>
+		<file alias="ramp.png">/home/ascend/git/sampled-lmms/plugins/Monstro/ramp.png</file>
+		<file alias="rand.png">/home/ascend/git/sampled-lmms/plugins/Monstro/rand.png</file>
+		<file alias="saw.png">/home/ascend/git/sampled-lmms/plugins/Monstro/saw.png</file>
+		<file alias="sin.png">/home/ascend/git/sampled-lmms/plugins/Monstro/sin.png</file>
+		<file alias="sinabs.png">/home/ascend/git/sampled-lmms/plugins/Monstro/sinabs.png</file>
+		<file alias="sqr.png">/home/ascend/git/sampled-lmms/plugins/Monstro/sqr.png</file>
+		<file alias="sqrsoft.png">/home/ascend/git/sampled-lmms/plugins/Monstro/sqrsoft.png</file>
+		<file alias="tinyled_off.png">/home/ascend/git/sampled-lmms/plugins/Monstro/tinyled_off.png</file>
+		<file alias="tinyled_on.png">/home/ascend/git/sampled-lmms/plugins/Monstro/tinyled_on.png</file>
+		<file alias="tri.png">/home/ascend/git/sampled-lmms/plugins/Monstro/tri.png</file>
+	</qresource>
+</RCC>

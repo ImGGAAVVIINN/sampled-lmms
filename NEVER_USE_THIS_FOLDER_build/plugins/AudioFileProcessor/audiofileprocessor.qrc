@@ -1,0 +1,17 @@
+<RCC>
+	<qresource prefix="artwork/audiofileprocessor">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/artwork.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/logo.png</file>
+		<file alias="loop_off_off.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/loop_off_off.png</file>
+		<file alias="loop_off_on.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/loop_off_on.png</file>
+		<file alias="loop_on_off.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/loop_on_off.png</file>
+		<file alias="loop_on_on.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/loop_on_on.png</file>
+		<file alias="loop_pingpong_off.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/loop_pingpong_off.png</file>
+		<file alias="loop_pingpong_on.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/loop_pingpong_on.png</file>
+		<file alias="reverse_off.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/reverse_off.png</file>
+		<file alias="reverse_on.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/reverse_on.png</file>
+		<file alias="select_file.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/select_file.png</file>
+		<file alias="stutter_off.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/stutter_off.png</file>
+		<file alias="stutter_on.png">/home/ascend/git/sampled-lmms/plugins/AudioFileProcessor/stutter_on.png</file>
+	</qresource>
+</RCC>

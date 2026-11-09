@@ -1,0 +1,34 @@
+<RCC>
+	<qresource prefix="artwork/sid">
+		<file alias="3off.png">/home/ascend/git/sampled-lmms/plugins/Sid/3off.png</file>
+		<file alias="3offred.png">/home/ascend/git/sampled-lmms/plugins/Sid/3offred.png</file>
+		<file alias="6581.png">/home/ascend/git/sampled-lmms/plugins/Sid/6581.png</file>
+		<file alias="6581red.png">/home/ascend/git/sampled-lmms/plugins/Sid/6581red.png</file>
+		<file alias="8580.png">/home/ascend/git/sampled-lmms/plugins/Sid/8580.png</file>
+		<file alias="8580red.png">/home/ascend/git/sampled-lmms/plugins/Sid/8580red.png</file>
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Sid/artwork.png</file>
+		<file alias="bp.png">/home/ascend/git/sampled-lmms/plugins/Sid/bp.png</file>
+		<file alias="bpred.png">/home/ascend/git/sampled-lmms/plugins/Sid/bpred.png</file>
+		<file alias="filter.png">/home/ascend/git/sampled-lmms/plugins/Sid/filter.png</file>
+		<file alias="filterred.png">/home/ascend/git/sampled-lmms/plugins/Sid/filterred.png</file>
+		<file alias="hp.png">/home/ascend/git/sampled-lmms/plugins/Sid/hp.png</file>
+		<file alias="hpred.png">/home/ascend/git/sampled-lmms/plugins/Sid/hpred.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Sid/logo.png</file>
+		<file alias="lp.png">/home/ascend/git/sampled-lmms/plugins/Sid/lp.png</file>
+		<file alias="lpred.png">/home/ascend/git/sampled-lmms/plugins/Sid/lpred.png</file>
+		<file alias="noise.png">/home/ascend/git/sampled-lmms/plugins/Sid/noise.png</file>
+		<file alias="noisered.png">/home/ascend/git/sampled-lmms/plugins/Sid/noisered.png</file>
+		<file alias="pulse.png">/home/ascend/git/sampled-lmms/plugins/Sid/pulse.png</file>
+		<file alias="pulsered.png">/home/ascend/git/sampled-lmms/plugins/Sid/pulsered.png</file>
+		<file alias="ring.png">/home/ascend/git/sampled-lmms/plugins/Sid/ring.png</file>
+		<file alias="ringred.png">/home/ascend/git/sampled-lmms/plugins/Sid/ringred.png</file>
+		<file alias="saw.png">/home/ascend/git/sampled-lmms/plugins/Sid/saw.png</file>
+		<file alias="sawred.png">/home/ascend/git/sampled-lmms/plugins/Sid/sawred.png</file>
+		<file alias="sync.png">/home/ascend/git/sampled-lmms/plugins/Sid/sync.png</file>
+		<file alias="syncred.png">/home/ascend/git/sampled-lmms/plugins/Sid/syncred.png</file>
+		<file alias="test.png">/home/ascend/git/sampled-lmms/plugins/Sid/test.png</file>
+		<file alias="testred.png">/home/ascend/git/sampled-lmms/plugins/Sid/testred.png</file>
+		<file alias="triangle.png">/home/ascend/git/sampled-lmms/plugins/Sid/triangle.png</file>
+		<file alias="trianglered.png">/home/ascend/git/sampled-lmms/plugins/Sid/trianglered.png</file>
+	</qresource>
+</RCC>

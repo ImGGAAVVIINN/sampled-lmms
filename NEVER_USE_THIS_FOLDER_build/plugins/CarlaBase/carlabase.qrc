@@ -1,0 +1,6 @@
+<RCC>
+	<qresource prefix="artwork/carlabase">
+		<file alias="artwork-patchbay.png">/home/ascend/git/sampled-lmms/plugins/CarlaBase/artwork-patchbay.png</file>
+		<file alias="artwork-rack.png">/home/ascend/git/sampled-lmms/plugins/CarlaBase/artwork-rack.png</file>
+	</qresource>
+</RCC>

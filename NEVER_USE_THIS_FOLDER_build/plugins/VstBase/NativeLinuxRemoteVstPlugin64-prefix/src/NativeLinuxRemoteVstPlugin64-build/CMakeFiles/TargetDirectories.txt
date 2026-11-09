@@ -1,0 +1,13 @@
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/CMakeFiles/NativeLinuxRemoteVstPlugin64.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/CMakeFiles/edit_cache.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/CMakeFiles/rebuild_cache.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/CMakeFiles/list_install_components.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/CMakeFiles/install.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/CMakeFiles/install/local.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/CMakeFiles/install/strip.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/common/CMakeFiles/edit_cache.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/common/CMakeFiles/rebuild_cache.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/common/CMakeFiles/list_install_components.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/common/CMakeFiles/install.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/common/CMakeFiles/install/local.dir
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-build/common/CMakeFiles/install/strip.dir

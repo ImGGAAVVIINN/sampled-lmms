@@ -1,0 +1,44 @@
+<RCC>
+	<qresource prefix="artwork/eq">
+		<file alias="12dB.png">/home/ascend/git/sampled-lmms/plugins/Eq/12dB.png</file>
+		<file alias="12dBoff.png">/home/ascend/git/sampled-lmms/plugins/Eq/12dBoff.png</file>
+		<file alias="24dB.png">/home/ascend/git/sampled-lmms/plugins/Eq/24dB.png</file>
+		<file alias="24dBoff.png">/home/ascend/git/sampled-lmms/plugins/Eq/24dBoff.png</file>
+		<file alias="48dB.png">/home/ascend/git/sampled-lmms/plugins/Eq/48dB.png</file>
+		<file alias="48dBoff.png">/home/ascend/git/sampled-lmms/plugins/Eq/48dBoff.png</file>
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Eq/artwork.png</file>
+		<file alias="bandLabel1.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel1.png</file>
+		<file alias="bandLabel1off.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel1off.png</file>
+		<file alias="bandLabel2.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel2.png</file>
+		<file alias="bandLabel2off.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel2off.png</file>
+		<file alias="bandLabel3.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel3.png</file>
+		<file alias="bandLabel3off.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel3off.png</file>
+		<file alias="bandLabel4.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel4.png</file>
+		<file alias="bandLabel4off.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel4off.png</file>
+		<file alias="bandLabel5.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel5.png</file>
+		<file alias="bandLabel5off.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel5off.png</file>
+		<file alias="bandLabel6.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel6.png</file>
+		<file alias="bandLabel6off.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel6off.png</file>
+		<file alias="bandLabel7.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel7.png</file>
+		<file alias="bandLabel7off.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel7off.png</file>
+		<file alias="bandLabel8.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel8.png</file>
+		<file alias="bandLabel8off.png">/home/ascend/git/sampled-lmms/plugins/Eq/bandLabel8off.png</file>
+		<file alias="handle1.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle1.png</file>
+		<file alias="handle1inactive.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle1inactive.png</file>
+		<file alias="handle2.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle2.png</file>
+		<file alias="handle2inactive.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle2inactive.png</file>
+		<file alias="handle3.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle3.png</file>
+		<file alias="handle3inactive.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle3inactive.png</file>
+		<file alias="handle4.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle4.png</file>
+		<file alias="handle4inactive.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle4inactive.png</file>
+		<file alias="handle5.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle5.png</file>
+		<file alias="handle5inactive.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle5inactive.png</file>
+		<file alias="handle6.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle6.png</file>
+		<file alias="handle6inactive.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle6inactive.png</file>
+		<file alias="handle7.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle7.png</file>
+		<file alias="handle7inactive.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle7inactive.png</file>
+		<file alias="handle8.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle8.png</file>
+		<file alias="handle8inactive.png">/home/ascend/git/sampled-lmms/plugins/Eq/handle8inactive.png</file>
+		<file alias="handlehover.png">/home/ascend/git/sampled-lmms/plugins/Eq/handlehover.png</file>
+	</qresource>
+</RCC>

@@ -741,8 +741,27 @@ void ConfigManager::initDevelopmentWorkingDir()
 				done++;
 			}
 			if (line.startsWith("lmms_BINARY_DIR:")) {
-				m_lmmsRcFile = line.section('=', -1).trimmed() +  QDir::separator() +
-							   ".lmmsrc.xml";
+				const QString binDir = line.section('=', -1).trimmed();
+				// Only keep the config file inside the build directory when that
+				// directory is actually usable at runtime. A cross-compiled build
+				// records the *build host's* paths in CMakeCache.txt, which refer to
+				// a foreign filesystem when the resulting binary runs elsewhere (for
+				// example a Windows binary built on Linux). In that case the build
+				// directory neither exists nor is writable, so we keep the per-user
+				// location chosen by initPortableWorkingDir()/initInstalledWorkingDir().
+				//
+				// Additional safety: on Windows, reject Unix-style paths (starting with /)
+				// since they can never be valid on Windows, regardless of isDir() result.
+				bool usable = QFileInfo(binDir).isDir() && QFileInfo(binDir).isWritable();
+#ifdef Q_OS_WIN
+				// Unix-style absolute paths (starting with /) are never valid on Windows
+				if (binDir.startsWith('/')) {
+					usable = false;
+				}
+#endif
+				if (usable) {
+					m_lmmsRcFile = binDir + QDir::separator() + ".lmmsrc.xml";
+				}
 				done++;
 			}
 			if (done == 2)

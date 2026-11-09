@@ -1,0 +1,68 @@
+
+# Consider dependencies only in project.
+set(CMAKE_DEPENDS_IN_PROJECT_ONLY OFF)
+
+# The set of languages for which implicit dependencies are needed:
+set(CMAKE_DEPENDS_LANGUAGES
+  )
+
+# The set of dependency files which are needed:
+set(CMAKE_DEPENDS_DEPENDENCY_FILES
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/DSP/AnalogFilter.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/AnalogFilter.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/AnalogFilter.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/DSP/FFTwrapper.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/FFTwrapper.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/FFTwrapper.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/DSP/Filter.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/Filter.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/Filter.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/DSP/FormantFilter.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/FormantFilter.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/FormantFilter.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/DSP/SVFilter.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/SVFilter.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/SVFilter.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/DSP/Unison.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/Unison.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/DSP/Unison.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/Alienwah.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Alienwah.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Alienwah.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/Chorus.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Chorus.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Chorus.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/Distorsion.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Distorsion.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Distorsion.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/DynamicFilter.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/DynamicFilter.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/DynamicFilter.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/EQ.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/EQ.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/EQ.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/Echo.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Echo.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Echo.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/Effect.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Effect.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Effect.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/EffectLFO.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/EffectLFO.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/EffectLFO.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/EffectMgr.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/EffectMgr.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/EffectMgr.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/Phaser.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Phaser.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Phaser.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Effects/Reverb.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Reverb.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Effects/Reverb.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/Bank.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Bank.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Bank.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/Config.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Config.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Config.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/Dump.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Dump.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Dump.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/Master.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Master.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Master.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/Microtonal.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Microtonal.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Microtonal.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/Part.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Part.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Part.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/QtXmlWrapper.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/QtXmlWrapper.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/QtXmlWrapper.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/Recorder.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Recorder.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Recorder.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/Util.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Util.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/Util.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/WavFile.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/WavFile.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/WavFile.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Misc/WaveShapeSmps.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/WaveShapeSmps.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Misc/WaveShapeSmps.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/ADnoteParameters.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/ADnoteParameters.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/ADnoteParameters.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/Controller.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/Controller.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/Controller.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/EnvelopeParams.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/EnvelopeParams.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/EnvelopeParams.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/FilterParams.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/FilterParams.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/FilterParams.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/LFOParams.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/LFOParams.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/LFOParams.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/PADnoteParameters.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/PADnoteParameters.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/PADnoteParameters.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/Presets.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/Presets.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/Presets.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/PresetsArray.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/PresetsArray.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/PresetsArray.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/PresetsStore.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/PresetsStore.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/PresetsStore.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Params/SUBnoteParameters.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/SUBnoteParameters.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Params/SUBnoteParameters.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Synth/ADnote.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/ADnote.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/ADnote.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Synth/Envelope.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/Envelope.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/Envelope.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Synth/LFO.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/LFO.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/LFO.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Synth/OscilGen.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/OscilGen.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/OscilGen.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Synth/PADnote.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/PADnote.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/PADnote.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Synth/Resonance.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/Resonance.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/Resonance.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Synth/SUBnote.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/SUBnote.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/SUBnote.cpp.o.d"
+  "/home/ascend/git/sampled-lmms/plugins/ZynAddSubFx/zynaddsubfx/src/Synth/SynthNote.cpp" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/SynthNote.cpp.o" "gcc" "plugins/ZynAddSubFx/CMakeFiles/zynaddsubfx_synth.dir/zynaddsubfx/src/Synth/SynthNote.cpp.o.d"
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_LINKED_INFO_FILES
+  )
+
+# Targets to which this target links which contain Fortran sources.
+set(CMAKE_Fortran_TARGET_FORWARD_LINKED_INFO_FILES
+  )
+
+# Fortran module output directory.
+set(CMAKE_Fortran_TARGET_MODULE_DIR "")

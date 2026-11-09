@@ -26,6 +26,7 @@
 #include "lmmsconfig.h"
 #include "lmmsversion.h"
 #include "versioninfo.h"
+#include "StretchDebug.h"
 
 #include <QDebug>
 #include <QFileInfo>
@@ -710,6 +711,7 @@ int main( int argc, char * * argv )
 	if( !renderOut.isEmpty() )
 	{
 		Engine::init( true );
+		StretchDebug::instance().initialize("/tmp/lmms-stretch-debug.log");
 		destroyEngine = true;
 
 		printf( "Loading project...\n" );
@@ -917,6 +919,7 @@ int main( int argc, char * * argv )
 
 	if( destroyEngine )
 	{
+		StretchDebug::instance().shutdown();
 		Engine::destroy();
 	}
 

@@ -1,0 +1,12 @@
+<RCC>
+	<qresource prefix="artwork/patman">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Patman/artwork.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Patman/logo.png</file>
+		<file alias="loop_off.png">/home/ascend/git/sampled-lmms/plugins/Patman/loop_off.png</file>
+		<file alias="loop_on.png">/home/ascend/git/sampled-lmms/plugins/Patman/loop_on.png</file>
+		<file alias="select_file.png">/home/ascend/git/sampled-lmms/plugins/Patman/select_file.png</file>
+		<file alias="select_file_on.png">/home/ascend/git/sampled-lmms/plugins/Patman/select_file_on.png</file>
+		<file alias="tune_off.png">/home/ascend/git/sampled-lmms/plugins/Patman/tune_off.png</file>
+		<file alias="tune_on.png">/home/ascend/git/sampled-lmms/plugins/Patman/tune_on.png</file>
+	</qresource>
+</RCC>

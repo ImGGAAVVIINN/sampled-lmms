@@ -1,0 +1,253 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'AudioBufferTest.cpp'
+**
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.12)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include <memory>
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'AudioBufferTest.cpp' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.15.12. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_DEPRECATED
+struct qt_meta_stringdata_AudioBufferTest_t {
+    QByteArrayData data[31];
+    char stringdata0[976];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_AudioBufferTest_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_AudioBufferTest_t qt_meta_stringdata_AudioBufferTest = {
+    {
+QT_MOC_LITERAL(0, 0, 15), // "AudioBufferTest"
+QT_MOC_LITERAL(1, 16, 27), // "Constructor_DefaultChannels"
+QT_MOC_LITERAL(2, 44, 0), // ""
+QT_MOC_LITERAL(3, 45, 22), // "Constructor_NoChannels"
+QT_MOC_LITERAL(4, 68, 32), // "Constructor_SharedMemoryResource"
+QT_MOC_LITERAL(5, 101, 25), // "AllocateInterleavedBuffer"
+QT_MOC_LITERAL(6, 127, 19), // "AddGroup_FirstGroup"
+QT_MOC_LITERAL(7, 147, 20), // "AddGroup_SecondGroup"
+QT_MOC_LITERAL(8, 168, 26), // "AddGroup_ZeroChannelsFails"
+QT_MOC_LITERAL(9, 195, 22), // "AddGroup_MaximumGroups"
+QT_MOC_LITERAL(10, 218, 29), // "AddGroup_MaximumTotalChannels"
+QT_MOC_LITERAL(11, 248, 29), // "AddGroup_SharedMemoryResource"
+QT_MOC_LITERAL(12, 278, 9), // "SetGroups"
+QT_MOC_LITERAL(13, 288, 35), // "TwoAudioBuffersWithSameShared..."
+QT_MOC_LITERAL(14, 324, 36), // "SilenceFlags_AllSilentWhenNoC..."
+QT_MOC_LITERAL(15, 361, 40), // "SilenceFlags_AllSilentWhenNew..."
+QT_MOC_LITERAL(16, 402, 15), // "AssumeNonSilent"
+QT_MOC_LITERAL(17, 418, 34), // "EnableSilenceTracking_GetterS..."
+QT_MOC_LITERAL(18, 453, 41), // "EnableSilenceTracking_Updates..."
+QT_MOC_LITERAL(19, 495, 40), // "UpdateSilenceFlags_DoesNothin..."
+QT_MOC_LITERAL(20, 536, 45), // "UpdateSilenceFlags_UpdatesCha..."
+QT_MOC_LITERAL(21, 582, 34), // "UpdateSilenceFlags_WorksWithG..."
+QT_MOC_LITERAL(22, 617, 49), // "UpdateSilenceFlags_UpdatesFro..."
+QT_MOC_LITERAL(23, 667, 55), // "UpdateSilenceFlags_NonSilentW..."
+QT_MOC_LITERAL(24, 723, 38), // "UpdateSilenceFlags_NoSelectio..."
+QT_MOC_LITERAL(25, 762, 44), // "UpdateAllSilenceFlags_Silence..."
+QT_MOC_LITERAL(26, 807, 45), // "UpdateAllSilenceFlags_Silence..."
+QT_MOC_LITERAL(27, 853, 40), // "UpdateAllSilenceFlags_NoChann..."
+QT_MOC_LITERAL(28, 894, 9), // "HasSignal"
+QT_MOC_LITERAL(29, 904, 30), // "Sanitize_SilencesOnlyInfAndNaN"
+QT_MOC_LITERAL(30, 935, 40) // "SilenceChannels_SilencesSelec..."
+
+    },
+    "AudioBufferTest\0Constructor_DefaultChannels\0"
+    "\0Constructor_NoChannels\0"
+    "Constructor_SharedMemoryResource\0"
+    "AllocateInterleavedBuffer\0AddGroup_FirstGroup\0"
+    "AddGroup_SecondGroup\0AddGroup_ZeroChannelsFails\0"
+    "AddGroup_MaximumGroups\0"
+    "AddGroup_MaximumTotalChannels\0"
+    "AddGroup_SharedMemoryResource\0SetGroups\0"
+    "TwoAudioBuffersWithSameSharedMemory\0"
+    "SilenceFlags_AllSilentWhenNoChannels\0"
+    "SilenceFlags_AllSilentWhenNewGroupsAdded\0"
+    "AssumeNonSilent\0EnableSilenceTracking_GetterSetter\0"
+    "EnableSilenceTracking_UpdatesSilenceFlags\0"
+    "UpdateSilenceFlags_DoesNothingWhenSilent\0"
+    "UpdateSilenceFlags_UpdatesChannelWhenSelected\0"
+    "UpdateSilenceFlags_WorksWithGroups\0"
+    "UpdateSilenceFlags_UpdatesFromNonSilenceToSilence\0"
+    "UpdateSilenceFlags_NonSilentWhenSilenceTrackingDisabled\0"
+    "UpdateSilenceFlags_NoSelectionIsSilent\0"
+    "UpdateAllSilenceFlags_SilenceTrackingEnabled\0"
+    "UpdateAllSilenceFlags_SilenceTrackingDisabled\0"
+    "UpdateAllSilenceFlags_NoChannelsIsSilent\0"
+    "HasSignal\0Sanitize_SilencesOnlyInfAndNaN\0"
+    "SilenceChannels_SilencesSelectedChannels"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_AudioBufferTest[] = {
+
+ // content:
+       8,       // revision
+       0,       // classname
+       0,    0, // classinfo
+      29,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags
+       1,    0,  159,    2, 0x08 /* Private */,
+       3,    0,  160,    2, 0x08 /* Private */,
+       4,    0,  161,    2, 0x08 /* Private */,
+       5,    0,  162,    2, 0x08 /* Private */,
+       6,    0,  163,    2, 0x08 /* Private */,
+       7,    0,  164,    2, 0x08 /* Private */,
+       8,    0,  165,    2, 0x08 /* Private */,
+       9,    0,  166,    2, 0x08 /* Private */,
+      10,    0,  167,    2, 0x08 /* Private */,
+      11,    0,  168,    2, 0x08 /* Private */,
+      12,    0,  169,    2, 0x08 /* Private */,
+      13,    0,  170,    2, 0x08 /* Private */,
+      14,    0,  171,    2, 0x08 /* Private */,
+      15,    0,  172,    2, 0x08 /* Private */,
+      16,    0,  173,    2, 0x08 /* Private */,
+      17,    0,  174,    2, 0x08 /* Private */,
+      18,    0,  175,    2, 0x08 /* Private */,
+      19,    0,  176,    2, 0x08 /* Private */,
+      20,    0,  177,    2, 0x08 /* Private */,
+      21,    0,  178,    2, 0x08 /* Private */,
+      22,    0,  179,    2, 0x08 /* Private */,
+      23,    0,  180,    2, 0x08 /* Private */,
+      24,    0,  181,    2, 0x08 /* Private */,
+      25,    0,  182,    2, 0x08 /* Private */,
+      26,    0,  183,    2, 0x08 /* Private */,
+      27,    0,  184,    2, 0x08 /* Private */,
+      28,    0,  185,    2, 0x08 /* Private */,
+      29,    0,  186,    2, 0x08 /* Private */,
+      30,    0,  187,    2, 0x08 /* Private */,
+
+ // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+
+       0        // eod
+};
+
+void AudioBufferTest::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        auto *_t = static_cast<AudioBufferTest *>(_o);
+        (void)_t;
+        switch (_id) {
+        case 0: _t->Constructor_DefaultChannels(); break;
+        case 1: _t->Constructor_NoChannels(); break;
+        case 2: _t->Constructor_SharedMemoryResource(); break;
+        case 3: _t->AllocateInterleavedBuffer(); break;
+        case 4: _t->AddGroup_FirstGroup(); break;
+        case 5: _t->AddGroup_SecondGroup(); break;
+        case 6: _t->AddGroup_ZeroChannelsFails(); break;
+        case 7: _t->AddGroup_MaximumGroups(); break;
+        case 8: _t->AddGroup_MaximumTotalChannels(); break;
+        case 9: _t->AddGroup_SharedMemoryResource(); break;
+        case 10: _t->SetGroups(); break;
+        case 11: _t->TwoAudioBuffersWithSameSharedMemory(); break;
+        case 12: _t->SilenceFlags_AllSilentWhenNoChannels(); break;
+        case 13: _t->SilenceFlags_AllSilentWhenNewGroupsAdded(); break;
+        case 14: _t->AssumeNonSilent(); break;
+        case 15: _t->EnableSilenceTracking_GetterSetter(); break;
+        case 16: _t->EnableSilenceTracking_UpdatesSilenceFlags(); break;
+        case 17: _t->UpdateSilenceFlags_DoesNothingWhenSilent(); break;
+        case 18: _t->UpdateSilenceFlags_UpdatesChannelWhenSelected(); break;
+        case 19: _t->UpdateSilenceFlags_WorksWithGroups(); break;
+        case 20: _t->UpdateSilenceFlags_UpdatesFromNonSilenceToSilence(); break;
+        case 21: _t->UpdateSilenceFlags_NonSilentWhenSilenceTrackingDisabled(); break;
+        case 22: _t->UpdateSilenceFlags_NoSelectionIsSilent(); break;
+        case 23: _t->UpdateAllSilenceFlags_SilenceTrackingEnabled(); break;
+        case 24: _t->UpdateAllSilenceFlags_SilenceTrackingDisabled(); break;
+        case 25: _t->UpdateAllSilenceFlags_NoChannelsIsSilent(); break;
+        case 26: _t->HasSignal(); break;
+        case 27: _t->Sanitize_SilencesOnlyInfAndNaN(); break;
+        case 28: _t->SilenceChannels_SilencesSelectedChannels(); break;
+        default: ;
+        }
+    }
+    (void)_a;
+}
+
+QT_INIT_METAOBJECT const QMetaObject AudioBufferTest::staticMetaObject = { {
+    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
+    qt_meta_stringdata_AudioBufferTest.data,
+    qt_meta_data_AudioBufferTest,
+    qt_static_metacall,
+    nullptr,
+    nullptr
+} };
+
+
+const QMetaObject *AudioBufferTest::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *AudioBufferTest::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_AudioBufferTest.stringdata0))
+        return static_cast<void*>(this);
+    return QObject::qt_metacast(_clname);
+}
+
+int AudioBufferTest::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QObject::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 29)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 29;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 29)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 29;
+    }
+    return _id;
+}
+QT_WARNING_POP
+QT_END_MOC_NAMESPACE

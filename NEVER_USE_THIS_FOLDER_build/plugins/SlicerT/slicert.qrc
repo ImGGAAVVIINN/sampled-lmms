@@ -1,0 +1,15 @@
+<RCC>
+	<qresource prefix="artwork/slicert">
+		<file alias="clear_slices_active.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/clear_slices_active.png</file>
+		<file alias="clear_slices_inactive.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/clear_slices_inactive.png</file>
+		<file alias="copy_midi.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/copy_midi.png</file>
+		<file alias="folder_icon.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/folder_icon.png</file>
+		<file alias="full_logo.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/full_logo.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/logo.png</file>
+		<file alias="reset_slices.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/reset_slices.png</file>
+		<file alias="slice_indicator_arrow.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/slice_indicator_arrow.png</file>
+		<file alias="sync_active.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/sync_active.png</file>
+		<file alias="sync_inactive.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/sync_inactive.png</file>
+		<file alias="toolbox.png">/home/ascend/git/sampled-lmms/plugins/SlicerT/toolbox.png</file>
+	</qresource>
+</RCC>

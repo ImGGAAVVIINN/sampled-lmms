@@ -1,0 +1,31 @@
+<RCC>
+	<qresource prefix="artwork/lomm">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/LOMM/artwork.png</file>
+		<file alias="crossover_led_green.png">/home/ascend/git/sampled-lmms/plugins/LOMM/crossover_led_green.png</file>
+		<file alias="crossover_led_off.png">/home/ascend/git/sampled-lmms/plugins/LOMM/crossover_led_off.png</file>
+		<file alias="depthScaling_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/depthScaling_active.png</file>
+		<file alias="depthScaling_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/depthScaling_inactive.png</file>
+		<file alias="feedback_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/feedback_active.png</file>
+		<file alias="feedback_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/feedback_inactive.png</file>
+		<file alias="high_band_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/high_band_active.png</file>
+		<file alias="high_band_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/high_band_inactive.png</file>
+		<file alias="init_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/init_active.png</file>
+		<file alias="init_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/init_inactive.png</file>
+		<file alias="lookahead_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/lookahead_active.png</file>
+		<file alias="lookahead_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/lookahead_inactive.png</file>
+		<file alias="lowSideUpwardSuppress_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/lowSideUpwardSuppress_active.png</file>
+		<file alias="lowSideUpwardSuppress_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/lowSideUpwardSuppress_inactive.png</file>
+		<file alias="low_band_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/low_band_active.png</file>
+		<file alias="low_band_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/low_band_inactive.png</file>
+		<file alias="mid_band_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/mid_band_active.png</file>
+		<file alias="mid_band_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/mid_band_inactive.png</file>
+		<file alias="midside_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/midside_active.png</file>
+		<file alias="midside_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/midside_inactive.png</file>
+		<file alias="split1Enabled_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/split1Enabled_active.png</file>
+		<file alias="split1Enabled_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/split1Enabled_inactive.png</file>
+		<file alias="split2Enabled_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/split2Enabled_active.png</file>
+		<file alias="split2Enabled_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/split2Enabled_inactive.png</file>
+		<file alias="stereoLink_active.png">/home/ascend/git/sampled-lmms/plugins/LOMM/stereoLink_active.png</file>
+		<file alias="stereoLink_inactive.png">/home/ascend/git/sampled-lmms/plugins/LOMM/stereoLink_inactive.png</file>
+	</qresource>
+</RCC>

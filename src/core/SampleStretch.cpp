@@ -23,6 +23,7 @@
  */
 
 #include "SampleStretch.h"
+#include "StretchDebug.h"
 
 #include <algorithm>
 #include <cmath>
@@ -280,6 +281,17 @@ void SampleStretchManager::Worker::run()
 			m_impl->computing = true;
 		}
 
+		// Log job start
+		if (job.receiver)
+		{
+			QObject* parent = job.receiver->parent();
+			if (parent)
+			{
+				const auto clipId = makeClipId(parent);
+				StretchDebug::instance().logStretchJobStarted(clipId, job.generation, job.key);
+			}
+		}
+
 		// The expensive part, with no lock held: neither the GUI thread nor
 		// the audio thread is involved here.
 		auto stretched = SampleStretch::stretch(job.buffer, job.startFrame,
@@ -293,6 +305,15 @@ void SampleStretchManager::Worker::run()
 		m_impl->active = QueuedJob{};
 		if (receiver != nullptr)
 		{
+			// Log job completion
+			QObject* parent = receiver->parent();
+			if (parent)
+			{
+				const auto clipId = makeClipId(parent);
+				int outputFrames = stretched ? static_cast<int>(stretched->sampleSize()) : 0;
+				StretchDebug::instance().logStretchJobCompleted(clipId, job.generation, job.key, outputFrames);
+			}
+
 			// Queued, and posted with the manager's mutex held so that
 			// ~SampleStretchResult() cannot run between the check above and this
 			// call. The slot runs on the receiver's thread; if the receiver is
@@ -308,6 +329,19 @@ void SampleStretchManager::Worker::run()
 				Q_ARG(uint64_t, job.generation),
 				Q_ARG(uint64_t, job.key),
 				Q_ARG(std::shared_ptr<Sample>, stretched));
+		}
+		else
+		{
+			// Job was discarded because receiver was destroyed
+			if (job.receiver)
+			{
+				QObject* parent = job.receiver->parent();
+				if (parent)
+				{
+					const auto clipId = makeClipId(parent);
+					StretchDebug::instance().logStretchJobDiscarded(clipId, job.generation, job.key, "receiver destroyed");
+				}
+			}
 		}
 		m_impl->waitCondition.wakeAll();
 	}
@@ -370,10 +404,20 @@ void SampleStretchManager::request(
 	job.engineRate = engineRate;
 	job.ratio = ratio;
 
+	// Log the request (we need a clip ID - use the receiver's parent which is the clip)
+	QObject* parent = receiver->parent();
+	if (parent)
+	{
+		const auto clipId = makeClipId(parent);
+		StretchDebug::instance().logStretchRequestQueued(
+			clipId, generation, key, startFrame, endFrame,
+			sourceRate, engineRate, ratio);
+	}
+
 	{
 		const auto locker = QMutexLocker{&m_impl->mutex};
 		// One pending job per receiver, always the newest: a request supersedes
-		// whatever the same receiver asked for but that has not started yet.
+		// whatever the same receiver asked for but has not started yet.
 		std::erase_if(m_impl->queue,
 			[&](const QueuedJob& queued) { return queued.receiver == receiver; });
 		m_impl->queue.push_back(std::move(job));

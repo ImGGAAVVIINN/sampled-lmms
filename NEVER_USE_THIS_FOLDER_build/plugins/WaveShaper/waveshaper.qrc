@@ -1,0 +1,14 @@
+<RCC>
+	<qresource prefix="artwork/waveshaper">
+		<file alias="add1_active.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/add1_active.png</file>
+		<file alias="add1_inactive.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/add1_inactive.png</file>
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/artwork.png</file>
+		<file alias="reset_active.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/reset_active.png</file>
+		<file alias="reset_inactive.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/reset_inactive.png</file>
+		<file alias="smooth_active.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/smooth_active.png</file>
+		<file alias="smooth_inactive.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/smooth_inactive.png</file>
+		<file alias="sub1_active.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/sub1_active.png</file>
+		<file alias="sub1_inactive.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/sub1_inactive.png</file>
+		<file alias="wavegraph.png">/home/ascend/git/sampled-lmms/plugins/WaveShaper/wavegraph.png</file>
+	</qresource>
+</RCC>

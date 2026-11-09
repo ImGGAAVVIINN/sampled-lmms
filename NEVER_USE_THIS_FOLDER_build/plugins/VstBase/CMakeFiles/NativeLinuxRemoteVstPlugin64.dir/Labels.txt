@@ -1,0 +1,13 @@
+# Target labels
+ NativeLinuxRemoteVstPlugin64
+# Source files and their labels
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/CMakeFiles/NativeLinuxRemoteVstPlugin64
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/CMakeFiles/NativeLinuxRemoteVstPlugin64.rule
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/CMakeFiles/NativeLinuxRemoteVstPlugin64-complete.rule
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-stamp/NativeLinuxRemoteVstPlugin64-build.rule
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-stamp/NativeLinuxRemoteVstPlugin64-configure.rule
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-stamp/NativeLinuxRemoteVstPlugin64-download.rule
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-stamp/NativeLinuxRemoteVstPlugin64-install.rule
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-stamp/NativeLinuxRemoteVstPlugin64-mkdir.rule
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-stamp/NativeLinuxRemoteVstPlugin64-patch.rule
+/home/ascend/git/sampled-lmms/build/plugins/VstBase/NativeLinuxRemoteVstPlugin64-prefix/src/NativeLinuxRemoteVstPlugin64-stamp/NativeLinuxRemoteVstPlugin64-update.rule

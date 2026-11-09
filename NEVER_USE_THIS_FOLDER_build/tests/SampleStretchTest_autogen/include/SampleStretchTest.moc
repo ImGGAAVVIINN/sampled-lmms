@@ -1,0 +1,351 @@
+/****************************************************************************
+** Meta object code from reading C++ file 'SampleStretchTest.cpp'
+**
+** Created by: The Qt Meta Object Compiler version 67 (Qt 5.15.12)
+**
+** WARNING! All changes made in this file will be lost!
+*****************************************************************************/
+
+#include <memory>
+#include <QtCore/qbytearray.h>
+#include <QtCore/qmetatype.h>
+#if !defined(Q_MOC_OUTPUT_REVISION)
+#error "The header file 'SampleStretchTest.cpp' doesn't include <QObject>."
+#elif Q_MOC_OUTPUT_REVISION != 67
+#error "This file was generated using the moc from 5.15.12. It"
+#error "cannot be used with the include files from this version of Qt."
+#error "(The moc has changed too much.)"
+#endif
+
+QT_BEGIN_MOC_NAMESPACE
+QT_WARNING_PUSH
+QT_WARNING_DISABLE_DEPRECATED
+struct qt_meta_stringdata_SampleStretchTest_t {
+    QByteArrayData data[50];
+    char stringdata0[1658];
+};
+#define QT_MOC_LITERAL(idx, ofs, len) \
+    Q_STATIC_BYTE_ARRAY_DATA_HEADER_INITIALIZER_WITH_OFFSET(len, \
+    qptrdiff(offsetof(qt_meta_stringdata_SampleStretchTest_t, stringdata0) + ofs \
+        - idx * sizeof(QByteArrayData)) \
+    )
+static const qt_meta_stringdata_SampleStretchTest_t qt_meta_stringdata_SampleStretchTest = {
+    {
+QT_MOC_LITERAL(0, 0, 17), // "SampleStretchTest"
+QT_MOC_LITERAL(1, 18, 12), // "initTestCase"
+QT_MOC_LITERAL(2, 31, 0), // ""
+QT_MOC_LITERAL(3, 32, 15), // "cleanupTestCase"
+QT_MOC_LITERAL(4, 48, 7), // "cleanup"
+QT_MOC_LITERAL(5, 56, 46), // "stretchModeAndTrimModeDifferI..."
+QT_MOC_LITERAL(6, 103, 49), // "resampleDoubleLengthDoublesDu..."
+QT_MOC_LITERAL(7, 153, 46), // "resampleHalfLengthHalvesDurat..."
+QT_MOC_LITERAL(8, 200, 27), // "stretchDoublePreservesPitch"
+QT_MOC_LITERAL(9, 228, 25), // "stretchHalfPreservesPitch"
+QT_MOC_LITERAL(10, 254, 30), // "trimDoesNotChangePlaybackSpeed"
+QT_MOC_LITERAL(11, 285, 35), // "frontEdgeStretchKeepsEndAndAl..."
+QT_MOC_LITERAL(12, 321, 29), // "frontEdgeTrimKeepsEndAndSpeed"
+QT_MOC_LITERAL(13, 351, 40), // "stretchedBufferMatchesClipOut..."
+QT_MOC_LITERAL(14, 392, 29), // "seekMatchesContinuousPlayback"
+QT_MOC_LITERAL(15, 422, 32), // "stretchRoundTripRestoresOriginal"
+QT_MOC_LITERAL(16, 455, 34), // "serializationPreservesStretch..."
+QT_MOC_LITERAL(17, 490, 21), // "defaultModeIsResample"
+QT_MOC_LITERAL(18, 512, 21), // "modeSwitchKeepsLength"
+QT_MOC_LITERAL(19, 534, 25), // "selectingActiveModeIsNoOp"
+QT_MOC_LITERAL(20, 560, 29), // "stretchModeAtRatioOneBypasses"
+QT_MOC_LITERAL(21, 590, 40), // "switchingToResampleClearsStre..."
+QT_MOC_LITERAL(22, 631, 27), // "stretchDurationFollowsRatio"
+QT_MOC_LITERAL(23, 659, 28), // "stretchLeavesSourceUntouched"
+QT_MOC_LITERAL(24, 688, 22), // "stretchHonoursSubrange"
+QT_MOC_LITERAL(25, 711, 30), // "stretchRejectsDegenerateInputs"
+QT_MOC_LITERAL(26, 742, 31), // "cacheKeyDistinguishesParameters"
+QT_MOC_LITERAL(27, 774, 28), // "oldProjectsDefaultToResample"
+QT_MOC_LITERAL(28, 803, 24), // "modeSwitchIsOneUndoEntry"
+QT_MOC_LITERAL(29, 828, 29), // "missingSourceFileDoesNotCrash"
+QT_MOC_LITERAL(30, 858, 36), // "sharedSourceClipsRenderIndepe..."
+QT_MOC_LITERAL(31, 895, 39), // "liveRenderMatchesOfflineStret..."
+QT_MOC_LITERAL(32, 935, 38), // "stretchUnavailableReportsDegr..."
+QT_MOC_LITERAL(33, 974, 41), // "stretchModeWithoutBufferYetPr..."
+QT_MOC_LITERAL(34, 1016, 45), // "waveformMappingStretchedBuffe..."
+QT_MOC_LITERAL(35, 1062, 48), // "waveformMappingOriginalBuffer..."
+QT_MOC_LITERAL(36, 1111, 40), // "waveformResampleModeDrawsAtNa..."
+QT_MOC_LITERAL(37, 1152, 39), // "waveformStretchModeDrawsStret..."
+QT_MOC_LITERAL(38, 1192, 38), // "waveformSwitchingModesUpdates..."
+QT_MOC_LITERAL(39, 1231, 35), // "trimThenStretchPreservesSourc..."
+QT_MOC_LITERAL(40, 1267, 44), // "trimThenStretchCannotResurrec..."
+QT_MOC_LITERAL(41, 1312, 47), // "twoToneControlShowsDiscardedA..."
+QT_MOC_LITERAL(42, 1360, 46), // "pendingStretchIsCommittedBefo..."
+QT_MOC_LITERAL(43, 1407, 46), // "pendingStretchWaitIsHarmlessW..."
+QT_MOC_LITERAL(44, 1454, 27), // "runtimeTrace_8sStretchTo16s"
+QT_MOC_LITERAL(45, 1482, 33), // "runtimeTrace_bugC_trimThenStr..."
+QT_MOC_LITERAL(46, 1516, 28), // "runtimeTrace_asyncTransition"
+QT_MOC_LITERAL(47, 1545, 32), // "toolbarStretchDoesNotChangePitch"
+QT_MOC_LITERAL(48, 1578, 43), // "diagnostic_toolbarWorkflow_st..."
+QT_MOC_LITERAL(49, 1622, 35) // "asyncTransitionDuringActivePl..."
+
+    },
+    "SampleStretchTest\0initTestCase\0\0"
+    "cleanupTestCase\0cleanup\0"
+    "stretchModeAndTrimModeDifferInEditingBehaviour\0"
+    "resampleDoubleLengthDoublesDurationAndLowersPitch\0"
+    "resampleHalfLengthHalvesDurationAndRaisesPitch\0"
+    "stretchDoublePreservesPitch\0"
+    "stretchHalfPreservesPitch\0"
+    "trimDoesNotChangePlaybackSpeed\0"
+    "frontEdgeStretchKeepsEndAndAllAudio\0"
+    "frontEdgeTrimKeepsEndAndSpeed\0"
+    "stretchedBufferMatchesClipOutputDuration\0"
+    "seekMatchesContinuousPlayback\0"
+    "stretchRoundTripRestoresOriginal\0"
+    "serializationPreservesStretchState\0"
+    "defaultModeIsResample\0modeSwitchKeepsLength\0"
+    "selectingActiveModeIsNoOp\0"
+    "stretchModeAtRatioOneBypasses\0"
+    "switchingToResampleClearsStretchedBuffer\0"
+    "stretchDurationFollowsRatio\0"
+    "stretchLeavesSourceUntouched\0"
+    "stretchHonoursSubrange\0"
+    "stretchRejectsDegenerateInputs\0"
+    "cacheKeyDistinguishesParameters\0"
+    "oldProjectsDefaultToResample\0"
+    "modeSwitchIsOneUndoEntry\0"
+    "missingSourceFileDoesNotCrash\0"
+    "sharedSourceClipsRenderIndependently\0"
+    "liveRenderMatchesOfflineStretchedBuffer\0"
+    "stretchUnavailableReportsDegradedBuild\0"
+    "stretchModeWithoutBufferYetPreservesPitch\0"
+    "waveformMappingStretchedBufferSpansFullBuffer\0"
+    "waveformMappingOriginalBufferUsesResampleMapping\0"
+    "waveformResampleModeDrawsAtNaturalLength\0"
+    "waveformStretchModeDrawsStretchedBuffer\0"
+    "waveformSwitchingModesUpdatesRendering\0"
+    "trimThenStretchPreservesSourceRange\0"
+    "trimThenStretchCannotResurrectDiscardedAudio\0"
+    "twoToneControlShowsDiscardedAudioWhenNotTrimmed\0"
+    "pendingStretchIsCommittedBeforeRenderingStarts\0"
+    "pendingStretchWaitIsHarmlessWithNothingPending\0"
+    "runtimeTrace_8sStretchTo16s\0"
+    "runtimeTrace_bugC_trimThenStretch\0"
+    "runtimeTrace_asyncTransition\0"
+    "toolbarStretchDoesNotChangePitch\0"
+    "diagnostic_toolbarWorkflow_stateAtEachStage\0"
+    "asyncTransitionDuringActivePlayback"
+};
+#undef QT_MOC_LITERAL
+
+static const uint qt_meta_data_SampleStretchTest[] = {
+
+ // content:
+       8,       // revision
+       0,       // classname
+       0,    0, // classinfo
+      48,   14, // methods
+       0,    0, // properties
+       0,    0, // enums/sets
+       0,    0, // constructors
+       0,       // flags
+       0,       // signalCount
+
+ // slots: name, argc, parameters, tag, flags
+       1,    0,  254,    2, 0x08 /* Private */,
+       3,    0,  255,    2, 0x08 /* Private */,
+       4,    0,  256,    2, 0x08 /* Private */,
+       5,    0,  257,    2, 0x08 /* Private */,
+       6,    0,  258,    2, 0x08 /* Private */,
+       7,    0,  259,    2, 0x08 /* Private */,
+       8,    0,  260,    2, 0x08 /* Private */,
+       9,    0,  261,    2, 0x08 /* Private */,
+      10,    0,  262,    2, 0x08 /* Private */,
+      11,    0,  263,    2, 0x08 /* Private */,
+      12,    0,  264,    2, 0x08 /* Private */,
+      13,    0,  265,    2, 0x08 /* Private */,
+      14,    0,  266,    2, 0x08 /* Private */,
+      15,    0,  267,    2, 0x08 /* Private */,
+      16,    0,  268,    2, 0x08 /* Private */,
+      17,    0,  269,    2, 0x08 /* Private */,
+      18,    0,  270,    2, 0x08 /* Private */,
+      19,    0,  271,    2, 0x08 /* Private */,
+      20,    0,  272,    2, 0x08 /* Private */,
+      21,    0,  273,    2, 0x08 /* Private */,
+      22,    0,  274,    2, 0x08 /* Private */,
+      23,    0,  275,    2, 0x08 /* Private */,
+      24,    0,  276,    2, 0x08 /* Private */,
+      25,    0,  277,    2, 0x08 /* Private */,
+      26,    0,  278,    2, 0x08 /* Private */,
+      27,    0,  279,    2, 0x08 /* Private */,
+      28,    0,  280,    2, 0x08 /* Private */,
+      29,    0,  281,    2, 0x08 /* Private */,
+      30,    0,  282,    2, 0x08 /* Private */,
+      31,    0,  283,    2, 0x08 /* Private */,
+      32,    0,  284,    2, 0x08 /* Private */,
+      33,    0,  285,    2, 0x08 /* Private */,
+      34,    0,  286,    2, 0x08 /* Private */,
+      35,    0,  287,    2, 0x08 /* Private */,
+      36,    0,  288,    2, 0x08 /* Private */,
+      37,    0,  289,    2, 0x08 /* Private */,
+      38,    0,  290,    2, 0x08 /* Private */,
+      39,    0,  291,    2, 0x08 /* Private */,
+      40,    0,  292,    2, 0x08 /* Private */,
+      41,    0,  293,    2, 0x08 /* Private */,
+      42,    0,  294,    2, 0x08 /* Private */,
+      43,    0,  295,    2, 0x08 /* Private */,
+      44,    0,  296,    2, 0x08 /* Private */,
+      45,    0,  297,    2, 0x08 /* Private */,
+      46,    0,  298,    2, 0x08 /* Private */,
+      47,    0,  299,    2, 0x08 /* Private */,
+      48,    0,  300,    2, 0x08 /* Private */,
+      49,    0,  301,    2, 0x08 /* Private */,
+
+ // slots: parameters
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+
+       0        // eod
+};
+
+void SampleStretchTest::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
+{
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        auto *_t = static_cast<SampleStretchTest *>(_o);
+        (void)_t;
+        switch (_id) {
+        case 0: _t->initTestCase(); break;
+        case 1: _t->cleanupTestCase(); break;
+        case 2: _t->cleanup(); break;
+        case 3: _t->stretchModeAndTrimModeDifferInEditingBehaviour(); break;
+        case 4: _t->resampleDoubleLengthDoublesDurationAndLowersPitch(); break;
+        case 5: _t->resampleHalfLengthHalvesDurationAndRaisesPitch(); break;
+        case 6: _t->stretchDoublePreservesPitch(); break;
+        case 7: _t->stretchHalfPreservesPitch(); break;
+        case 8: _t->trimDoesNotChangePlaybackSpeed(); break;
+        case 9: _t->frontEdgeStretchKeepsEndAndAllAudio(); break;
+        case 10: _t->frontEdgeTrimKeepsEndAndSpeed(); break;
+        case 11: _t->stretchedBufferMatchesClipOutputDuration(); break;
+        case 12: _t->seekMatchesContinuousPlayback(); break;
+        case 13: _t->stretchRoundTripRestoresOriginal(); break;
+        case 14: _t->serializationPreservesStretchState(); break;
+        case 15: _t->defaultModeIsResample(); break;
+        case 16: _t->modeSwitchKeepsLength(); break;
+        case 17: _t->selectingActiveModeIsNoOp(); break;
+        case 18: _t->stretchModeAtRatioOneBypasses(); break;
+        case 19: _t->switchingToResampleClearsStretchedBuffer(); break;
+        case 20: _t->stretchDurationFollowsRatio(); break;
+        case 21: _t->stretchLeavesSourceUntouched(); break;
+        case 22: _t->stretchHonoursSubrange(); break;
+        case 23: _t->stretchRejectsDegenerateInputs(); break;
+        case 24: _t->cacheKeyDistinguishesParameters(); break;
+        case 25: _t->oldProjectsDefaultToResample(); break;
+        case 26: _t->modeSwitchIsOneUndoEntry(); break;
+        case 27: _t->missingSourceFileDoesNotCrash(); break;
+        case 28: _t->sharedSourceClipsRenderIndependently(); break;
+        case 29: _t->liveRenderMatchesOfflineStretchedBuffer(); break;
+        case 30: _t->stretchUnavailableReportsDegradedBuild(); break;
+        case 31: _t->stretchModeWithoutBufferYetPreservesPitch(); break;
+        case 32: _t->waveformMappingStretchedBufferSpansFullBuffer(); break;
+        case 33: _t->waveformMappingOriginalBufferUsesResampleMapping(); break;
+        case 34: _t->waveformResampleModeDrawsAtNaturalLength(); break;
+        case 35: _t->waveformStretchModeDrawsStretchedBuffer(); break;
+        case 36: _t->waveformSwitchingModesUpdatesRendering(); break;
+        case 37: _t->trimThenStretchPreservesSourceRange(); break;
+        case 38: _t->trimThenStretchCannotResurrectDiscardedAudio(); break;
+        case 39: _t->twoToneControlShowsDiscardedAudioWhenNotTrimmed(); break;
+        case 40: _t->pendingStretchIsCommittedBeforeRenderingStarts(); break;
+        case 41: _t->pendingStretchWaitIsHarmlessWithNothingPending(); break;
+        case 42: _t->runtimeTrace_8sStretchTo16s(); break;
+        case 43: _t->runtimeTrace_bugC_trimThenStretch(); break;
+        case 44: _t->runtimeTrace_asyncTransition(); break;
+        case 45: _t->toolbarStretchDoesNotChangePitch(); break;
+        case 46: _t->diagnostic_toolbarWorkflow_stateAtEachStage(); break;
+        case 47: _t->asyncTransitionDuringActivePlayback(); break;
+        default: ;
+        }
+    }
+    (void)_a;
+}
+
+QT_INIT_METAOBJECT const QMetaObject SampleStretchTest::staticMetaObject = { {
+    QMetaObject::SuperData::link<QObject::staticMetaObject>(),
+    qt_meta_stringdata_SampleStretchTest.data,
+    qt_meta_data_SampleStretchTest,
+    qt_static_metacall,
+    nullptr,
+    nullptr
+} };
+
+
+const QMetaObject *SampleStretchTest::metaObject() const
+{
+    return QObject::d_ptr->metaObject ? QObject::d_ptr->dynamicMetaObject() : &staticMetaObject;
+}
+
+void *SampleStretchTest::qt_metacast(const char *_clname)
+{
+    if (!_clname) return nullptr;
+    if (!strcmp(_clname, qt_meta_stringdata_SampleStretchTest.stringdata0))
+        return static_cast<void*>(this);
+    return QObject::qt_metacast(_clname);
+}
+
+int SampleStretchTest::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
+{
+    _id = QObject::qt_metacall(_c, _id, _a);
+    if (_id < 0)
+        return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 48)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 48;
+    } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
+        if (_id < 48)
+            *reinterpret_cast<int*>(_a[0]) = -1;
+        _id -= 48;
+    }
+    return _id;
+}
+QT_WARNING_POP
+QT_END_MOC_NAMESPACE

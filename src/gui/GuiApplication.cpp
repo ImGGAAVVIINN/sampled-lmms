@@ -39,6 +39,7 @@
 #include "PianoRoll.h"
 #include "ProjectNotes.h"
 #include "SongEditor.h"
+#include "StretchDebug.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -151,6 +152,9 @@ GuiApplication::GuiApplication()
 	// Init central engine which handles all components of LMMS
 	Engine::init(false);
 
+	// Initialize stretch debug logging
+	StretchDebug::instance().initialize("/tmp/lmms-stretch-debug.log");
+
 	s_instance = this;
 
 	displayInitProgress(tr("Preparing UI"));
@@ -200,6 +204,7 @@ GuiApplication::GuiApplication()
 
 GuiApplication::~GuiApplication()
 {
+	StretchDebug::instance().shutdown();
 	s_instance = nullptr;
 }
 

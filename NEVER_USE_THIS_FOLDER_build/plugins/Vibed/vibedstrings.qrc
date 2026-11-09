@@ -1,0 +1,37 @@
+<RCC>
+	<qresource prefix="artwork/vibedstrings">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Vibed/artwork.png</file>
+		<file alias="button_-1_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_-1_off.png</file>
+		<file alias="button_-1_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_-1_on.png</file>
+		<file alias="button_-2_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_-2_off.png</file>
+		<file alias="button_-2_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_-2_on.png</file>
+		<file alias="button_1_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_1_off.png</file>
+		<file alias="button_1_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_1_on.png</file>
+		<file alias="button_2_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_2_off.png</file>
+		<file alias="button_2_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_2_on.png</file>
+		<file alias="button_3_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_3_off.png</file>
+		<file alias="button_3_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_3_on.png</file>
+		<file alias="button_4_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_4_off.png</file>
+		<file alias="button_4_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_4_on.png</file>
+		<file alias="button_5_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_5_off.png</file>
+		<file alias="button_5_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_5_on.png</file>
+		<file alias="button_6_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_6_off.png</file>
+		<file alias="button_6_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_6_on.png</file>
+		<file alias="button_7_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_7_off.png</file>
+		<file alias="button_7_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_7_on.png</file>
+		<file alias="button_8_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_8_off.png</file>
+		<file alias="button_8_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_8_on.png</file>
+		<file alias="button_9_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_9_off.png</file>
+		<file alias="button_9_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_9_on.png</file>
+		<file alias="button_down.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_down.png</file>
+		<file alias="button_f_off.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_f_off.png</file>
+		<file alias="button_f_on.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_f_on.png</file>
+		<file alias="button_up.png">/home/ascend/git/sampled-lmms/plugins/Vibed/button_up.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Vibed/logo.png</file>
+		<file alias="normalize_active.png">/home/ascend/git/sampled-lmms/plugins/Vibed/normalize_active.png</file>
+		<file alias="normalize_inactive.png">/home/ascend/git/sampled-lmms/plugins/Vibed/normalize_inactive.png</file>
+		<file alias="smooth_active.png">/home/ascend/git/sampled-lmms/plugins/Vibed/smooth_active.png</file>
+		<file alias="smooth_inactive.png">/home/ascend/git/sampled-lmms/plugins/Vibed/smooth_inactive.png</file>
+		<file alias="wavegraph4.png">/home/ascend/git/sampled-lmms/plugins/Vibed/wavegraph4.png</file>
+	</qresource>
+</RCC>

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libqx11embedcontainer.a CMakeFiles/qx11embedcontainer.dir/qx11embedcontainer_autogen/mocs_compilation.cpp.o CMakeFiles/qx11embedcontainer.dir/src/X11EmbedContainer.cpp.o
+/usr/bin/ranlib libqx11embedcontainer.a

@@ -1,0 +1,19 @@
+<RCC>
+	<qresource prefix="artwork/xpressive">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/artwork.png</file>
+		<file alias="help_active.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/help_active.png</file>
+		<file alias="help_inactive.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/help_inactive.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/logo.png</file>
+		<file alias="o1_active.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/o1_active.png</file>
+		<file alias="o1_inactive.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/o1_inactive.png</file>
+		<file alias="o2_active.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/o2_active.png</file>
+		<file alias="o2_inactive.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/o2_inactive.png</file>
+		<file alias="w1_active.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/w1_active.png</file>
+		<file alias="w1_inactive.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/w1_inactive.png</file>
+		<file alias="w2_active.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/w2_active.png</file>
+		<file alias="w2_inactive.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/w2_inactive.png</file>
+		<file alias="w3_active.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/w3_active.png</file>
+		<file alias="w3_inactive.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/w3_inactive.png</file>
+		<file alias="wavegraph.png">/home/ascend/git/sampled-lmms/plugins/Xpressive/wavegraph.png</file>
+	</qresource>
+</RCC>

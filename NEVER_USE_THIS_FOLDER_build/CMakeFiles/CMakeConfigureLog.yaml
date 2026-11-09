@@ -1,0 +1,1738 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineSystem.cmake:233 (message)"
+      - "CMakeLists.txt:23 (PROJECT)"
+    message: |
+      The system is: Linux - 6.8.0-60-generic - x86_64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:23 (PROJECT)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /usr/bin/cc 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "a.out"
+      
+      The C compiler identification is GNU, found in:
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/3.28.1/CompilerIdC/a.out
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:23 (PROJECT)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /usr/bin/c++ 
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "a.out"
+      
+      The CXX compiler identification is GNU, found in:
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/3.28.1/CompilerIdCXX/a.out
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:23 (PROJECT)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-BLSlC5"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-BLSlC5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-BLSlC5'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_09c22/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_09c22.dir/build.make CMakeFiles/cmTC_09c22.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-BLSlC5'
+        Building C object CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o
+        /usr/bin/cc   -v -o CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~22.04.3' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-nvptx/usr,amdgcn-amdhsa=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-gcn/usr --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_09c22.dir/'
+         /usr/lib/gcc/x86_64-linux-gnu/11/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_09c22.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccRdVefr.s
+        GNU C17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 11.4.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/11/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/11/../../../../x86_64-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/lib/gcc/x86_64-linux-gnu/11/include
+         /usr/local/include
+         /usr/include/x86_64-linux-gnu
+         /usr/include
+        End of search list.
+        GNU C17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 11.4.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        Compiler executable checksum: 46ebede1f5b795a957a1e85cb61af9d8
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_09c22.dir/'
+         as -v --64 -o CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o /tmp/ccRdVefr.s
+        GNU assembler version 2.38 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.38
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.'
+        Linking C executable cmTC_09c22
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_09c22.dir/link.txt --verbose=1
+        /usr/bin/cc  -v CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o -o cmTC_09c22 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/cc
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~22.04.3' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-nvptx/usr,amdgcn-amdhsa=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-gcn/usr --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_09c22' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_09c22.'
+         /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccj1aEIL.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_09c22 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_09c22' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_09c22.'
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-BLSlC5'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:23 (PROJECT)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/lib/gcc/x86_64-linux-gnu/11/include]
+          add: [/usr/local/include]
+          add: [/usr/include/x86_64-linux-gnu]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/11/include] ==> [/usr/lib/gcc/x86_64-linux-gnu/11/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/lib/gcc/x86_64-linux-gnu/11/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:159 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:23 (PROJECT)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-BLSlC5']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_09c22/fast]
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_09c22.dir/build.make CMakeFiles/cmTC_09c22.dir/build]
+        ignore line: [gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-BLSlC5']
+        ignore line: [Building C object CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/usr/bin/cc   -v -o CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o -c /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~22.04.3' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-nvptx/usr amdgcn-amdhsa=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-gcn/usr --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_09c22.dir/']
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/11/cc1 -quiet -v -imultiarch x86_64-linux-gnu /usr/share/cmake-3.28/Modules/CMakeCCompilerABI.c -quiet -dumpdir CMakeFiles/cmTC_09c22.dir/ -dumpbase CMakeCCompilerABI.c.c -dumpbase-ext .c -mtune=generic -march=x86-64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccRdVefr.s]
+        ignore line: [GNU C17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.1  MPFR version 4.1.0  MPC version 1.2.1  isl version isl-0.24-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/11/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/11/../../../../x86_64-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/11/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include/x86_64-linux-gnu]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [GNU C17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.1  MPFR version 4.1.0  MPC version 1.2.1  isl version isl-0.24-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [Compiler executable checksum: 46ebede1f5b795a957a1e85cb61af9d8]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_09c22.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o /tmp/ccRdVefr.s]
+        ignore line: [GNU assembler version 2.38 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.38]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o' '-c' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.']
+        ignore line: [Linking C executable cmTC_09c22]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_09c22.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/cc  -v CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o -o cmTC_09c22 ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/cc]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~22.04.3' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-nvptx/usr amdgcn-amdhsa=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-gcn/usr --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_09c22' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_09c22.']
+        link line: [ /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccj1aEIL.res -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lgcc_s --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_09c22 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o -lgcc --push-state --as-needed -lgcc_s --pop-state -lc -lgcc --push-state --as-needed -lgcc_s --pop-state /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccj1aEIL.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_09c22] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib]
+          arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../..]
+          arg [CMakeFiles/cmTC_09c22.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [--push-state] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--pop-state] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o] ==> [/usr/lib/x86_64-linux-gnu/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11] ==> [/usr/lib/gcc/x86_64-linux-gnu/11]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../..] ==> [/usr/lib]
+        implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+        implicit objs: [/usr/lib/x86_64-linux-gnu/Scrt1.o;/usr/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o;/usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o;/usr/lib/x86_64-linux-gnu/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/11;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:57 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:23 (PROJECT)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-aXhB6j"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-aXhB6j"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-aXhB6j'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_85013/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_85013.dir/build.make CMakeFiles/cmTC_85013.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-aXhB6j'
+        Building CXX object CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o
+        /usr/bin/c++   -v -o CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~22.04.3' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-nvptx/usr,amdgcn-amdhsa=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-gcn/usr --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) 
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_85013.dir/'
+         /usr/lib/gcc/x86_64-linux-gnu/11/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_85013.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccToDs3w.s
+        GNU C++17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 11.4.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        ignoring duplicate directory "/usr/include/x86_64-linux-gnu/c++/11"
+        ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/11/include-fixed"
+        ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/11/../../../../x86_64-linux-gnu/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /usr/include/c++/11
+         /usr/include/x86_64-linux-gnu/c++/11
+         /usr/include/c++/11/backward
+         /usr/lib/gcc/x86_64-linux-gnu/11/include
+         /usr/local/include
+         /usr/include/x86_64-linux-gnu
+         /usr/include
+        End of search list.
+        GNU C++17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)
+        	compiled by GNU C version 11.4.0, GMP version 6.2.1, MPFR version 4.1.0, MPC version 1.2.1, isl version isl-0.24-GMP
+        
+        GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072
+        Compiler executable checksum: ac7fa628ee459f217e6fdb88b3db0bde
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_85013.dir/'
+         as -v --64 -o CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccToDs3w.s
+        GNU assembler version 2.38 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.38
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.'
+        Linking CXX executable cmTC_85013
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_85013.dir/link.txt --verbose=1
+        /usr/bin/c++  -v CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_85013 
+        Using built-in specs.
+        COLLECT_GCC=/usr/bin/c++
+        COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper
+        OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa
+        OFFLOAD_TARGET_DEFAULT=1
+        Target: x86_64-linux-gnu
+        Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~22.04.3' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c,ada,c++,go,brig,d,fortran,objc,obj-c++,m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32,m64,mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-nvptx/usr,amdgcn-amdhsa=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-gcn/usr --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2
+        Thread model: posix
+        Supported LTO compression algorithms: zlib zstd
+        gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) 
+        COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/
+        LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_85013' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_85013.'
+         /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccrVEjvT.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_85013 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o
+        COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_85013' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_85013.'
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-aXhB6j'
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:127 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:23 (PROJECT)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/usr/include/c++/11]
+          add: [/usr/include/x86_64-linux-gnu/c++/11]
+          add: [/usr/include/c++/11/backward]
+          add: [/usr/lib/gcc/x86_64-linux-gnu/11/include]
+          add: [/usr/local/include]
+          add: [/usr/include/x86_64-linux-gnu]
+          add: [/usr/include]
+        end of search list found
+        collapse include dir [/usr/include/c++/11] ==> [/usr/include/c++/11]
+        collapse include dir [/usr/include/x86_64-linux-gnu/c++/11] ==> [/usr/include/x86_64-linux-gnu/c++/11]
+        collapse include dir [/usr/include/c++/11/backward] ==> [/usr/include/c++/11/backward]
+        collapse include dir [/usr/lib/gcc/x86_64-linux-gnu/11/include] ==> [/usr/lib/gcc/x86_64-linux-gnu/11/include]
+        collapse include dir [/usr/local/include] ==> [/usr/local/include]
+        collapse include dir [/usr/include/x86_64-linux-gnu] ==> [/usr/include/x86_64-linux-gnu]
+        collapse include dir [/usr/include] ==> [/usr/include]
+        implicit include dirs: [/usr/include/c++/11;/usr/include/x86_64-linux-gnu/c++/11;/usr/include/c++/11/backward;/usr/lib/gcc/x86_64-linux-gnu/11/include;/usr/local/include;/usr/include/x86_64-linux-gnu;/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CMakeDetermineCompilerABI.cmake:159 (message)"
+      - "/usr/share/cmake-3.28/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:23 (PROJECT)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        ignore line: [Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-aXhB6j']
+        ignore line: []
+        ignore line: [Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_85013/fast]
+        ignore line: [/usr/bin/gmake  -f CMakeFiles/cmTC_85013.dir/build.make CMakeFiles/cmTC_85013.dir/build]
+        ignore line: [gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-aXhB6j']
+        ignore line: [Building CXX object CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/usr/bin/c++   -v -o CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o -c /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~22.04.3' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-nvptx/usr amdgcn-amdhsa=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-gcn/usr --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) ]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_85013.dir/']
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/11/cc1plus -quiet -v -imultiarch x86_64-linux-gnu -D_GNU_SOURCE /usr/share/cmake-3.28/Modules/CMakeCXXCompilerABI.cpp -quiet -dumpdir CMakeFiles/cmTC_85013.dir/ -dumpbase CMakeCXXCompilerABI.cpp.cpp -dumpbase-ext .cpp -mtune=generic -march=x86-64 -version -fasynchronous-unwind-tables -fstack-protector-strong -Wformat -Wformat-security -fstack-clash-protection -fcf-protection -o /tmp/ccToDs3w.s]
+        ignore line: [GNU C++17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.1  MPFR version 4.1.0  MPC version 1.2.1  isl version isl-0.24-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [ignoring duplicate directory "/usr/include/x86_64-linux-gnu/c++/11"]
+        ignore line: [ignoring nonexistent directory "/usr/local/include/x86_64-linux-gnu"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/11/include-fixed"]
+        ignore line: [ignoring nonexistent directory "/usr/lib/gcc/x86_64-linux-gnu/11/../../../../x86_64-linux-gnu/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /usr/include/c++/11]
+        ignore line: [ /usr/include/x86_64-linux-gnu/c++/11]
+        ignore line: [ /usr/include/c++/11/backward]
+        ignore line: [ /usr/lib/gcc/x86_64-linux-gnu/11/include]
+        ignore line: [ /usr/local/include]
+        ignore line: [ /usr/include/x86_64-linux-gnu]
+        ignore line: [ /usr/include]
+        ignore line: [End of search list.]
+        ignore line: [GNU C++17 (Ubuntu 11.4.0-1ubuntu1~22.04.3) version 11.4.0 (x86_64-linux-gnu)]
+        ignore line: [	compiled by GNU C version 11.4.0  GMP version 6.2.1  MPFR version 4.1.0  MPC version 1.2.1  isl version isl-0.24-GMP]
+        ignore line: []
+        ignore line: [GGC heuristics: --param ggc-min-expand=100 --param ggc-min-heapsize=131072]
+        ignore line: [Compiler executable checksum: ac7fa628ee459f217e6fdb88b3db0bde]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_85013.dir/']
+        ignore line: [ as -v --64 -o CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o /tmp/ccToDs3w.s]
+        ignore line: [GNU assembler version 2.38 (x86_64-linux-gnu) using BFD version (GNU Binutils for Ubuntu) 2.38]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o' '-c' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.']
+        ignore line: [Linking CXX executable cmTC_85013]
+        ignore line: [/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_85013.dir/link.txt --verbose=1]
+        ignore line: [/usr/bin/c++  -v CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_85013 ]
+        ignore line: [Using built-in specs.]
+        ignore line: [COLLECT_GCC=/usr/bin/c++]
+        ignore line: [COLLECT_LTO_WRAPPER=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper]
+        ignore line: [OFFLOAD_TARGET_NAMES=nvptx-none:amdgcn-amdhsa]
+        ignore line: [OFFLOAD_TARGET_DEFAULT=1]
+        ignore line: [Target: x86_64-linux-gnu]
+        ignore line: [Configured with: ../src/configure -v --with-pkgversion='Ubuntu 11.4.0-1ubuntu1~22.04.3' --with-bugurl=file:///usr/share/doc/gcc-11/README.Bugs --enable-languages=c ada c++ go brig d fortran objc obj-c++ m2 --prefix=/usr --with-gcc-major-version-only --program-suffix=-11 --program-prefix=x86_64-linux-gnu- --enable-shared --enable-linker-build-id --libexecdir=/usr/lib --without-included-gettext --enable-threads=posix --libdir=/usr/lib --enable-nls --enable-bootstrap --enable-clocale=gnu --enable-libstdcxx-debug --enable-libstdcxx-time=yes --with-default-libstdcxx-abi=new --enable-gnu-unique-object --disable-vtable-verify --enable-plugin --enable-default-pie --with-system-zlib --enable-libphobos-checking=release --with-target-system-zlib=auto --enable-objc-gc=auto --enable-multiarch --disable-werror --enable-cet --with-arch-32=i686 --with-abi=m64 --with-multilib-list=m32 m64 mx32 --enable-multilib --with-tune=generic --enable-offload-targets=nvptx-none=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-nvptx/usr amdgcn-amdhsa=/build/gcc-11-0odw26/gcc-11-11.4.0/debian/tmp-gcn/usr --without-cuda-driver --enable-checking=release --build=x86_64-linux-gnu --host=x86_64-linux-gnu --target=x86_64-linux-gnu --with-build-config=bootstrap-lto-lean --enable-link-serialization=2]
+        ignore line: [Thread model: posix]
+        ignore line: [Supported LTO compression algorithms: zlib zstd]
+        ignore line: [gcc version 11.4.0 (Ubuntu 11.4.0-1ubuntu1~22.04.3) ]
+        ignore line: [COMPILER_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/]
+        ignore line: [LIBRARY_PATH=/usr/lib/gcc/x86_64-linux-gnu/11/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/11/../../../:/lib/:/usr/lib/]
+        ignore line: [COLLECT_GCC_OPTIONS='-v' '-o' 'cmTC_85013' '-shared-libgcc' '-mtune=generic' '-march=x86-64' '-dumpdir' 'cmTC_85013.']
+        link line: [ /usr/lib/gcc/x86_64-linux-gnu/11/collect2 -plugin /usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so -plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper -plugin-opt=-fresolution=/tmp/ccrVEjvT.res -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc -plugin-opt=-pass-through=-lc -plugin-opt=-pass-through=-lgcc_s -plugin-opt=-pass-through=-lgcc --build-id --eh-frame-hdr -m elf_x86_64 --hash-style=gnu --as-needed -dynamic-linker /lib64/ld-linux-x86-64.so.2 -pie -z now -z relro -o cmTC_85013 /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o /usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o -L/usr/lib/gcc/x86_64-linux-gnu/11 -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib -L/lib/x86_64-linux-gnu -L/lib/../lib -L/usr/lib/x86_64-linux-gnu -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/11/../../.. CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o /usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/collect2] ==> ignore
+          arg [-plugin] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/liblto_plugin.so] ==> ignore
+          arg [-plugin-opt=/usr/lib/gcc/x86_64-linux-gnu/11/lto-wrapper] ==> ignore
+          arg [-plugin-opt=-fresolution=/tmp/ccrVEjvT.res] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lc] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc_s] ==> ignore
+          arg [-plugin-opt=-pass-through=-lgcc] ==> ignore
+          arg [--build-id] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [elf_x86_64] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--as-needed] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib64/ld-linux-x86-64.so.2] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-znow] ==> ignore
+          arg [-zrelro] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_85013] ==> ignore
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib]
+          arg [-L/lib/x86_64-linux-gnu] ==> dir [/lib/x86_64-linux-gnu]
+          arg [-L/lib/../lib] ==> dir [/lib/../lib]
+          arg [-L/usr/lib/x86_64-linux-gnu] ==> dir [/usr/lib/x86_64-linux-gnu]
+          arg [-L/usr/lib/../lib] ==> dir [/usr/lib/../lib]
+          arg [-L/usr/lib/gcc/x86_64-linux-gnu/11/../../..] ==> dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../..]
+          arg [CMakeFiles/cmTC_85013.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o]
+          arg [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o] ==> obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/Scrt1.o] ==> [/usr/lib/x86_64-linux-gnu/Scrt1.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crti.o] ==> [/usr/lib/x86_64-linux-gnu/crti.o]
+        collapse obj [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu/crtn.o] ==> [/usr/lib/x86_64-linux-gnu/crtn.o]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11] ==> [/usr/lib/gcc/x86_64-linux-gnu/11]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../../x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../../../lib] ==> [/usr/lib]
+        collapse library dir [/lib/x86_64-linux-gnu] ==> [/lib/x86_64-linux-gnu]
+        collapse library dir [/lib/../lib] ==> [/lib]
+        collapse library dir [/usr/lib/x86_64-linux-gnu] ==> [/usr/lib/x86_64-linux-gnu]
+        collapse library dir [/usr/lib/../lib] ==> [/usr/lib]
+        collapse library dir [/usr/lib/gcc/x86_64-linux-gnu/11/../../..] ==> [/usr/lib]
+        implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+        implicit objs: [/usr/lib/x86_64-linux-gnu/Scrt1.o;/usr/lib/x86_64-linux-gnu/crti.o;/usr/lib/gcc/x86_64-linux-gnu/11/crtbeginS.o;/usr/lib/gcc/x86_64-linux-gnu/11/crtendS.o;/usr/lib/x86_64-linux-gnu/crtn.o]
+        implicit dirs: [/usr/lib/gcc/x86_64-linux-gnu/11;/usr/lib/x86_64-linux-gnu;/usr/lib;/lib/x86_64-linux-gnu;/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:247 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file pthread.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-fynfAp"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-fynfAp"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_PTHREAD_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-fynfAp'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_408ba/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_408ba.dir/build.make CMakeFiles/cmTC_408ba.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-fynfAp'
+        Building C object CMakeFiles/cmTC_408ba.dir/LMMS_HAVE_PTHREAD_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_408ba.dir/LMMS_HAVE_PTHREAD_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-fynfAp/LMMS_HAVE_PTHREAD_H.c
+        Linking C executable cmTC_408ba
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_408ba.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_408ba.dir/LMMS_HAVE_PTHREAD_H.c.o -o cmTC_408ba 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-fynfAp'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:248 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file semaphore.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-nMHBy8"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-nMHBy8"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SEMAPHORE_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-nMHBy8'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_11631/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_11631.dir/build.make CMakeFiles/cmTC_11631.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-nMHBy8'
+        Building C object CMakeFiles/cmTC_11631.dir/LMMS_HAVE_SEMAPHORE_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_11631.dir/LMMS_HAVE_SEMAPHORE_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-nMHBy8/LMMS_HAVE_SEMAPHORE_H.c
+        Linking C executable cmTC_11631
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_11631.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_11631.dir/LMMS_HAVE_SEMAPHORE_H.c.o -o cmTC_11631 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-nMHBy8'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:249 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file unistd.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Q2PIkW"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Q2PIkW"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_UNISTD_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Q2PIkW'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_5b6ff/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_5b6ff.dir/build.make CMakeFiles/cmTC_5b6ff.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Q2PIkW'
+        Building C object CMakeFiles/cmTC_5b6ff.dir/LMMS_HAVE_UNISTD_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_5b6ff.dir/LMMS_HAVE_UNISTD_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Q2PIkW/LMMS_HAVE_UNISTD_H.c
+        Linking C executable cmTC_5b6ff
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_5b6ff.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_5b6ff.dir/LMMS_HAVE_UNISTD_H.c.o -o cmTC_5b6ff 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Q2PIkW'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:250 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/ipc.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Sy6V5e"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Sy6V5e"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SYS_IPC_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Sy6V5e'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_a10c3/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_a10c3.dir/build.make CMakeFiles/cmTC_a10c3.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Sy6V5e'
+        Building C object CMakeFiles/cmTC_a10c3.dir/LMMS_HAVE_SYS_IPC_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_a10c3.dir/LMMS_HAVE_SYS_IPC_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Sy6V5e/LMMS_HAVE_SYS_IPC_H.c
+        Linking C executable cmTC_a10c3
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a10c3.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_a10c3.dir/LMMS_HAVE_SYS_IPC_H.c.o -o cmTC_a10c3 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-Sy6V5e'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:251 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/times.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-IXaD6U"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-IXaD6U"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SYS_TIMES_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-IXaD6U'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_4d69f/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_4d69f.dir/build.make CMakeFiles/cmTC_4d69f.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-IXaD6U'
+        Building C object CMakeFiles/cmTC_4d69f.dir/LMMS_HAVE_SYS_TIMES_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_4d69f.dir/LMMS_HAVE_SYS_TIMES_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-IXaD6U/LMMS_HAVE_SYS_TIMES_H.c
+        Linking C executable cmTC_4d69f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4d69f.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_4d69f.dir/LMMS_HAVE_SYS_TIMES_H.c.o -o cmTC_4d69f 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-IXaD6U'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:252 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/prctl.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NveDhN"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NveDhN"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SYS_PRCTL_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NveDhN'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_18a11/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_18a11.dir/build.make CMakeFiles/cmTC_18a11.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NveDhN'
+        Building C object CMakeFiles/cmTC_18a11.dir/LMMS_HAVE_SYS_PRCTL_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_18a11.dir/LMMS_HAVE_SYS_PRCTL_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NveDhN/LMMS_HAVE_SYS_PRCTL_H.c
+        Linking C executable cmTC_18a11
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_18a11.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_18a11.dir/LMMS_HAVE_SYS_PRCTL_H.c.o -o cmTC_18a11 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NveDhN'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:253 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sched.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-DvZDPT"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-DvZDPT"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SCHED_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-DvZDPT'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_3336a/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_3336a.dir/build.make CMakeFiles/cmTC_3336a.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-DvZDPT'
+        Building C object CMakeFiles/cmTC_3336a.dir/LMMS_HAVE_SCHED_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_3336a.dir/LMMS_HAVE_SCHED_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-DvZDPT/LMMS_HAVE_SCHED_H.c
+        Linking C executable cmTC_3336a
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3336a.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_3336a.dir/LMMS_HAVE_SCHED_H.c.o -o cmTC_3336a 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-DvZDPT'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:254 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/soundcard.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-H3n8Cv"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-H3n8Cv"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SYS_SOUNDCARD_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-H3n8Cv'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_3b1be/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_3b1be.dir/build.make CMakeFiles/cmTC_3b1be.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-H3n8Cv'
+        Building C object CMakeFiles/cmTC_3b1be.dir/LMMS_HAVE_SYS_SOUNDCARD_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_3b1be.dir/LMMS_HAVE_SYS_SOUNDCARD_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-H3n8Cv/LMMS_HAVE_SYS_SOUNDCARD_H.c
+        Linking C executable cmTC_3b1be
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3b1be.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_3b1be.dir/LMMS_HAVE_SYS_SOUNDCARD_H.c.o -o cmTC_3b1be 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-H3n8Cv'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:255 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file soundcard.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-RFDjzt"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-RFDjzt"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SOUNDCARD_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-RFDjzt'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_dbe76/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_dbe76.dir/build.make CMakeFiles/cmTC_dbe76.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-RFDjzt'
+        Building C object CMakeFiles/cmTC_dbe76.dir/LMMS_HAVE_SOUNDCARD_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_dbe76.dir/LMMS_HAVE_SOUNDCARD_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-RFDjzt/LMMS_HAVE_SOUNDCARD_H.c
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-RFDjzt/LMMS_HAVE_SOUNDCARD_H.c:2:10: fatal error: soundcard.h: No such file or directory
+            2 | #include <soundcard.h>
+              |          ^~~~~~~~~~~~~
+        compilation terminated.
+        gmake[1]: *** [CMakeFiles/cmTC_dbe76.dir/build.make:78: CMakeFiles/cmTC_dbe76.dir/LMMS_HAVE_SOUNDCARD_H.c.o] Error 1
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-RFDjzt'
+        gmake: *** [Makefile:127: cmTC_dbe76/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:256 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file fcntl.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-R7oRII"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-R7oRII"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_FCNTL_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-R7oRII'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_1f44b/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_1f44b.dir/build.make CMakeFiles/cmTC_1f44b.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-R7oRII'
+        Building C object CMakeFiles/cmTC_1f44b.dir/LMMS_HAVE_FCNTL_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_1f44b.dir/LMMS_HAVE_FCNTL_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-R7oRII/LMMS_HAVE_FCNTL_H.c
+        Linking C executable cmTC_1f44b
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1f44b.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_1f44b.dir/LMMS_HAVE_FCNTL_H.c.o -o cmTC_1f44b 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-R7oRII'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:257 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/ioctl.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-A4Uf9G"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-A4Uf9G"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SYS_IOCTL_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-A4Uf9G'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_333c2/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_333c2.dir/build.make CMakeFiles/cmTC_333c2.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-A4Uf9G'
+        Building C object CMakeFiles/cmTC_333c2.dir/LMMS_HAVE_SYS_IOCTL_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_333c2.dir/LMMS_HAVE_SYS_IOCTL_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-A4Uf9G/LMMS_HAVE_SYS_IOCTL_H.c
+        Linking C executable cmTC_333c2
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_333c2.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_333c2.dir/LMMS_HAVE_SYS_IOCTL_H.c.o -o cmTC_333c2 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-A4Uf9G'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "CMakeLists.txt:258 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file process.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-gDP4bD"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-gDP4bD"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_PROCESS_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-gDP4bD'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_4ed1a/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_4ed1a.dir/build.make CMakeFiles/cmTC_4ed1a.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-gDP4bD'
+        Building C object CMakeFiles/cmTC_4ed1a.dir/LMMS_HAVE_PROCESS_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_4ed1a.dir/LMMS_HAVE_PROCESS_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-gDP4bD/LMMS_HAVE_PROCESS_H.c
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-gDP4bD/LMMS_HAVE_PROCESS_H.c:2:10: fatal error: process.h: No such file or directory
+            2 | #include <process.h>
+              |          ^~~~~~~~~~~
+        compilation terminated.
+        gmake[1]: *** [CMakeFiles/cmTC_4ed1a.dir/build.make:78: CMakeFiles/cmTC_4ed1a.dir/LMMS_HAVE_PROCESS_H.c.o] Error 1
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-gDP4bD'
+        gmake: *** [Makefile:127: cmTC_4ed1a/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "CMakeLists.txt:261 (check_library_exists)"
+    checks:
+      - "Looking for shm_open in rt"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-b1orA3"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-b1orA3"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_LIBRT"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-b1orA3'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_75340/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_75340.dir/build.make CMakeFiles/cmTC_75340.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-b1orA3'
+        Building C object CMakeFiles/cmTC_75340.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=shm_open -o CMakeFiles/cmTC_75340.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-b1orA3/CheckFunctionExists.c
+        Linking C executable cmTC_75340
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_75340.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=shm_open CMakeFiles/cmTC_75340.dir/CheckFunctionExists.c.o -o cmTC_75340  -lrt 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-b1orA3'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/CheckCXXSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "CMakeLists.txt:335 (CHECK_CXX_SOURCE_COMPILES)"
+    checks:
+      - "Performing Test LMMS_HAVE_SF_COMPLEVEL"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ovqZ2z"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ovqZ2z"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SF_COMPLEVEL"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ovqZ2z'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_f101a/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_f101a.dir/build.make CMakeFiles/cmTC_f101a.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ovqZ2z'
+        Building CXX object CMakeFiles/cmTC_f101a.dir/src.cxx.o
+        /usr/bin/c++ -DLMMS_HAVE_SF_COMPLEVEL   -o CMakeFiles/cmTC_f101a.dir/src.cxx.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ovqZ2z/src.cxx
+        Linking CXX executable cmTC_f101a
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f101a.dir/link.txt --verbose=1
+        /usr/bin/c++ CMakeFiles/cmTC_f101a.dir/src.cxx.o -o cmTC_f101a 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ovqZ2z'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/CheckCSourceCompiles.cmake:52 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.28/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "/usr/share/cmake-3.28/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "cmake/modules/FindSDL2.cmake:89 (find_package)"
+      - "CMakeLists.txt:436 (FIND_PACKAGE)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-INFvYt"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-INFvYt"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-INFvYt'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_35eac/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_35eac.dir/build.make CMakeFiles/cmTC_35eac.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-INFvYt'
+        Building C object CMakeFiles/cmTC_35eac.dir/src.c.o
+        /usr/bin/cc -DCMAKE_HAVE_LIBC_PTHREAD   -o CMakeFiles/cmTC_35eac.dir/src.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-INFvYt/src.c
+        Linking C executable cmTC_35eac
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_35eac.dir/link.txt --verbose=1
+        /usr/bin/cc CMakeFiles/cmTC_35eac.dir/src.c.o -o cmTC_35eac 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-INFvYt'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "cmake/modules/FindAlsa.cmake:27 (check_library_exists)"
+      - "CMakeLists.txt:540 (FIND_PACKAGE)"
+    checks:
+      - "Looking for snd_seq_create_simple_port in asound"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-XJtmWg"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-XJtmWg"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "HAVE_LIBASOUND2"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-XJtmWg'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_a19a9/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_a19a9.dir/build.make CMakeFiles/cmTC_a19a9.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-XJtmWg'
+        Building C object CMakeFiles/cmTC_a19a9.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=snd_seq_create_simple_port -o CMakeFiles/cmTC_a19a9.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-XJtmWg/CheckFunctionExists.c
+        Linking C executable cmTC_a19a9
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_a19a9.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=snd_seq_create_simple_port CMakeFiles/cmTC_a19a9.dir/CheckFunctionExists.c.o -o cmTC_a19a9  -lasound 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-XJtmWg'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "cmake/modules/FindAlsa.cmake:49 (check_include_files)"
+      - "CMakeLists.txt:540 (FIND_PACKAGE)"
+    checks:
+      - "Looking for include file machine/soundcard.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-We7GsO"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-We7GsO"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_MACHINE_SOUNDCARD_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-We7GsO'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_c323f/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_c323f.dir/build.make CMakeFiles/cmTC_c323f.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-We7GsO'
+        Building C object CMakeFiles/cmTC_c323f.dir/LMMS_HAVE_MACHINE_SOUNDCARD_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_c323f.dir/LMMS_HAVE_MACHINE_SOUNDCARD_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-We7GsO/LMMS_HAVE_MACHINE_SOUNDCARD_H.c
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-We7GsO/LMMS_HAVE_MACHINE_SOUNDCARD_H.c:2:10: fatal error: machine/soundcard.h: No such file or directory
+            2 | #include <machine/soundcard.h>
+              |          ^~~~~~~~~~~~~~~~~~~~~
+        compilation terminated.
+        gmake[1]: *** [CMakeFiles/cmTC_c323f.dir/build.make:78: CMakeFiles/cmTC_c323f.dir/LMMS_HAVE_MACHINE_SOUNDCARD_H.c.o] Error 1
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-We7GsO'
+        gmake: *** [Makefile:127: cmTC_c323f/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "cmake/modules/FindAlsa.cmake:51 (check_include_files)"
+      - "CMakeLists.txt:540 (FIND_PACKAGE)"
+    checks:
+      - "Looking for include file linux/awe_voice.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-OvQUAr"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-OvQUAr"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_LINUX_AWE_VOICE_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-OvQUAr'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_08c7f/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_08c7f.dir/build.make CMakeFiles/cmTC_08c7f.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-OvQUAr'
+        Building C object CMakeFiles/cmTC_08c7f.dir/LMMS_HAVE_LINUX_AWE_VOICE_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_08c7f.dir/LMMS_HAVE_LINUX_AWE_VOICE_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-OvQUAr/LMMS_HAVE_LINUX_AWE_VOICE_H.c
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-OvQUAr/LMMS_HAVE_LINUX_AWE_VOICE_H.c:2:10: fatal error: linux/awe_voice.h: No such file or directory
+            2 | #include <linux/awe_voice.h>
+              |          ^~~~~~~~~~~~~~~~~~~
+        compilation terminated.
+        gmake[1]: *** [CMakeFiles/cmTC_08c7f.dir/build.make:78: CMakeFiles/cmTC_08c7f.dir/LMMS_HAVE_LINUX_AWE_VOICE_H.c.o] Error 1
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-OvQUAr'
+        gmake: *** [Makefile:127: cmTC_08c7f/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "cmake/modules/FindAlsa.cmake:52 (check_include_files)"
+      - "CMakeLists.txt:540 (FIND_PACKAGE)"
+    checks:
+      - "Looking for include file awe_voice.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ifaZs5"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ifaZs5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_AWE_VOICE_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ifaZs5'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_5b251/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_5b251.dir/build.make CMakeFiles/cmTC_5b251.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ifaZs5'
+        Building C object CMakeFiles/cmTC_5b251.dir/LMMS_HAVE_AWE_VOICE_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_5b251.dir/LMMS_HAVE_AWE_VOICE_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ifaZs5/LMMS_HAVE_AWE_VOICE_H.c
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ifaZs5/LMMS_HAVE_AWE_VOICE_H.c:2:10: fatal error: awe_voice.h: No such file or directory
+            2 | #include <awe_voice.h>
+              |          ^~~~~~~~~~~~~
+        compilation terminated.
+        gmake[1]: *** [CMakeFiles/cmTC_5b251.dir/build.make:78: CMakeFiles/cmTC_5b251.dir/LMMS_HAVE_AWE_VOICE_H.c.o] Error 1
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-ifaZs5'
+        gmake: *** [Makefile:127: cmTC_5b251/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "cmake/modules/FindAlsa.cmake:53 (check_include_files)"
+      - "CMakeLists.txt:540 (FIND_PACKAGE)"
+    checks:
+      - "Looking for include file /usr/src/sys/i386/isa/sound/awe_voice.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zwXgRo"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zwXgRo"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE__USR_SRC_SYS_I386_ISA_SOUND_AWE_VOICE_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zwXgRo'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_a1655/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_a1655.dir/build.make CMakeFiles/cmTC_a1655.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zwXgRo'
+        Building C object CMakeFiles/cmTC_a1655.dir/LMMS_HAVE__USR_SRC_SYS_I386_ISA_SOUND_AWE_VOICE_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_a1655.dir/LMMS_HAVE__USR_SRC_SYS_I386_ISA_SOUND_AWE_VOICE_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zwXgRo/LMMS_HAVE__USR_SRC_SYS_I386_ISA_SOUND_AWE_VOICE_H.c
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zwXgRo/LMMS_HAVE__USR_SRC_SYS_I386_ISA_SOUND_AWE_VOICE_H.c:2:10: fatal error: /usr/src/sys/i386/isa/sound/awe_voice.h: No such file or directory
+            2 | #include </usr/src/sys/i386/isa/sound/awe_voice.h>
+              |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        compilation terminated.
+        gmake[1]: *** [CMakeFiles/cmTC_a1655.dir/build.make:78: CMakeFiles/cmTC_a1655.dir/LMMS_HAVE__USR_SRC_SYS_I386_ISA_SOUND_AWE_VOICE_H.c.o] Error 1
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zwXgRo'
+        gmake: *** [Makefile:127: cmTC_a1655/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "cmake/modules/FindAlsa.cmake:54 (check_include_files)"
+      - "CMakeLists.txt:540 (FIND_PACKAGE)"
+    checks:
+      - "Looking for include file /usr/src/sys/gnu/i386/isa/sound/awe_voice.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-CvtKng"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-CvtKng"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE__USR_SRC_SYS_GNU_I386_ISA_SOUND_AWE_VOICE_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-CvtKng'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_243e6/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_243e6.dir/build.make CMakeFiles/cmTC_243e6.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-CvtKng'
+        Building C object CMakeFiles/cmTC_243e6.dir/LMMS_HAVE__USR_SRC_SYS_GNU_I386_ISA_SOUND_AWE_VOICE_H.c.o
+        /usr/bin/cc    -o CMakeFiles/cmTC_243e6.dir/LMMS_HAVE__USR_SRC_SYS_GNU_I386_ISA_SOUND_AWE_VOICE_H.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-CvtKng/LMMS_HAVE__USR_SRC_SYS_GNU_I386_ISA_SOUND_AWE_VOICE_H.c
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-CvtKng/LMMS_HAVE__USR_SRC_SYS_GNU_I386_ISA_SOUND_AWE_VOICE_H.c:2:10: fatal error: /usr/src/sys/gnu/i386/isa/sound/awe_voice.h: No such file or directory
+            2 | #include </usr/src/sys/gnu/i386/isa/sound/awe_voice.h>
+              |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        compilation terminated.
+        gmake[1]: *** [CMakeFiles/cmTC_243e6.dir/build.make:78: CMakeFiles/cmTC_243e6.dir/LMMS_HAVE__USR_SRC_SYS_GNU_I386_ISA_SOUND_AWE_VOICE_H.c.o] Error 1
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-CvtKng'
+        gmake: *** [Makefile:127: cmTC_243e6/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFileCXX.cmake:89 (try_compile)"
+      - "cmake/modules/FindAlsa.cmake:56 (check_include_file_cxx)"
+      - "CMakeLists.txt:540 (FIND_PACKAGE)"
+    checks:
+      - "Looking for C++ include sys/asoundlib.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-0cID6F"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-0cID6F"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_SYS_ASOUNDLIB_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-0cID6F'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_4cdae/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_4cdae.dir/build.make CMakeFiles/cmTC_4cdae.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-0cID6F'
+        Building CXX object CMakeFiles/cmTC_4cdae.dir/CheckIncludeFile.cxx.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_4cdae.dir/CheckIncludeFile.cxx.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-0cID6F/CheckIncludeFile.cxx
+        In file included from /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-0cID6F/CheckIncludeFile.cxx:1:
+        /usr/include/sys/asoundlib.h:1:2: warning: #warning This header is deprecated, use <alsa/asoundlib.h> instead. [-Wcpp]
+            1 | #warning This header is deprecated, use <alsa/asoundlib.h> instead.
+              |  ^~~~~~~
+        Linking CXX executable cmTC_4cdae
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_4cdae.dir/link.txt --verbose=1
+        /usr/bin/c++ CMakeFiles/cmTC_4cdae.dir/CheckIncludeFile.cxx.o -o cmTC_4cdae 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-0cID6F'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFileCXX.cmake:89 (try_compile)"
+      - "cmake/modules/FindAlsa.cmake:57 (check_include_file_cxx)"
+      - "CMakeLists.txt:540 (FIND_PACKAGE)"
+    checks:
+      - "Looking for C++ include alsa/asoundlib.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JxJctA"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JxJctA"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: ""
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "LMMS_HAVE_ALSA_ASOUNDLIB_H"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JxJctA'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_1361f/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_1361f.dir/build.make CMakeFiles/cmTC_1361f.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JxJctA'
+        Building CXX object CMakeFiles/cmTC_1361f.dir/CheckIncludeFile.cxx.o
+        /usr/bin/c++    -o CMakeFiles/cmTC_1361f.dir/CheckIncludeFile.cxx.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JxJctA/CheckIncludeFile.cxx
+        Linking CXX executable cmTC_1361f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_1361f.dir/link.txt --verbose=1
+        /usr/bin/c++ CMakeFiles/cmTC_1361f.dir/CheckIncludeFile.cxx.o -o cmTC_1361f 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JxJctA'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "cmake/modules/FindAlsa.cmake:59 (check_library_exists)"
+      - "CMakeLists.txt:540 (FIND_PACKAGE)"
+    checks:
+      - "Looking for snd_pcm_resume in asound"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zlL6rf"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zlL6rf"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "ASOUND_HAS_SND_PCM_RESUME"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zlL6rf'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_38d18/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_38d18.dir/build.make CMakeFiles/cmTC_38d18.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zlL6rf'
+        Building C object CMakeFiles/cmTC_38d18.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=snd_pcm_resume -o CMakeFiles/cmTC_38d18.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zlL6rf/CheckFunctionExists.c
+        Linking C executable cmTC_38d18
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_38d18.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=snd_pcm_resume CMakeFiles/cmTC_38d18.dir/CheckFunctionExists.c.o -o cmTC_38d18  -lasound 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zlL6rf'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/FindX11.cmake:682 (check_library_exists)"
+      - "/usr/share/cmake-3.28/Modules/FindFLTK.cmake:102 (include)"
+      - "CMakeLists.txt:594 (FIND_PACKAGE)"
+    checks:
+      - "Looking for XOpenDisplay in /usr/lib/x86_64-linux-gnu/libX11.so;/usr/lib/x86_64-linux-gnu/libXext.so"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-45HdKI"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-45HdKI"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "X11_LIB_X11_SOLO"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-45HdKI'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_f80fd/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_f80fd.dir/build.make CMakeFiles/cmTC_f80fd.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-45HdKI'
+        Building C object CMakeFiles/cmTC_f80fd.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=XOpenDisplay -o CMakeFiles/cmTC_f80fd.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-45HdKI/CheckFunctionExists.c
+        Linking C executable cmTC_f80fd
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f80fd.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=XOpenDisplay CMakeFiles/cmTC_f80fd.dir/CheckFunctionExists.c.o -o cmTC_f80fd  /usr/lib/x86_64-linux-gnu/libX11.so /usr/lib/x86_64-linux-gnu/libXext.so 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-45HdKI'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/FindX11.cmake:697 (check_function_exists)"
+      - "/usr/share/cmake-3.28/Modules/FindFLTK.cmake:102 (include)"
+      - "CMakeLists.txt:594 (FIND_PACKAGE)"
+    checks:
+      - "Looking for gethostbyname"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-pSgHBS"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-pSgHBS"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_GETHOSTBYNAME"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-pSgHBS'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_85d71/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_85d71.dir/build.make CMakeFiles/cmTC_85d71.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-pSgHBS'
+        Building C object CMakeFiles/cmTC_85d71.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=gethostbyname -o CMakeFiles/cmTC_85d71.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-pSgHBS/CheckFunctionExists.c
+        Linking C executable cmTC_85d71
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_85d71.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=gethostbyname CMakeFiles/cmTC_85d71.dir/CheckFunctionExists.c.o -o cmTC_85d71 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-pSgHBS'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/FindX11.cmake:711 (check_function_exists)"
+      - "/usr/share/cmake-3.28/Modules/FindFLTK.cmake:102 (include)"
+      - "CMakeLists.txt:594 (FIND_PACKAGE)"
+    checks:
+      - "Looking for connect"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JRFoVe"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JRFoVe"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_CONNECT"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JRFoVe'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_64b83/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_64b83.dir/build.make CMakeFiles/cmTC_64b83.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JRFoVe'
+        Building C object CMakeFiles/cmTC_64b83.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=connect -o CMakeFiles/cmTC_64b83.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JRFoVe/CheckFunctionExists.c
+        Linking C executable cmTC_64b83
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_64b83.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=connect CMakeFiles/cmTC_64b83.dir/CheckFunctionExists.c.o -o cmTC_64b83 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-JRFoVe'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/FindX11.cmake:720 (check_function_exists)"
+      - "/usr/share/cmake-3.28/Modules/FindFLTK.cmake:102 (include)"
+      - "CMakeLists.txt:594 (FIND_PACKAGE)"
+    checks:
+      - "Looking for remove"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-vSTJE5"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-vSTJE5"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_REMOVE"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-vSTJE5'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_99db5/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_99db5.dir/build.make CMakeFiles/cmTC_99db5.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-vSTJE5'
+        Building C object CMakeFiles/cmTC_99db5.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=remove -o CMakeFiles/cmTC_99db5.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-vSTJE5/CheckFunctionExists.c
+        Linking C executable cmTC_99db5
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_99db5.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=remove CMakeFiles/cmTC_99db5.dir/CheckFunctionExists.c.o -o cmTC_99db5 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-vSTJE5'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckFunctionExists.cmake:86 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/FindX11.cmake:729 (check_function_exists)"
+      - "/usr/share/cmake-3.28/Modules/FindFLTK.cmake:102 (include)"
+      - "CMakeLists.txt:594 (FIND_PACKAGE)"
+    checks:
+      - "Looking for shmat"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-hhw8JO"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-hhw8JO"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_SHMAT"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-hhw8JO'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_94a41/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_94a41.dir/build.make CMakeFiles/cmTC_94a41.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-hhw8JO'
+        Building C object CMakeFiles/cmTC_94a41.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=shmat -o CMakeFiles/cmTC_94a41.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-hhw8JO/CheckFunctionExists.c
+        Linking C executable cmTC_94a41
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_94a41.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=shmat CMakeFiles/cmTC_94a41.dir/CheckFunctionExists.c.o -o cmTC_94a41 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-hhw8JO'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/FindX11.cmake:739 (check_library_exists)"
+      - "/usr/share/cmake-3.28/Modules/FindFLTK.cmake:102 (include)"
+      - "CMakeLists.txt:594 (FIND_PACKAGE)"
+    checks:
+      - "Looking for IceConnectionNumber in ICE"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NK9aUO"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NK9aUO"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "CMAKE_LIB_ICE_HAS_ICECONNECTIONNUMBER"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NK9aUO'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_8f22e/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_8f22e.dir/build.make CMakeFiles/cmTC_8f22e.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NK9aUO'
+        Building C object CMakeFiles/cmTC_8f22e.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=IceConnectionNumber -o CMakeFiles/cmTC_8f22e.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NK9aUO/CheckFunctionExists.c
+        Linking C executable cmTC_8f22e
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8f22e.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=IceConnectionNumber CMakeFiles/cmTC_8f22e.dir/CheckFunctionExists.c.o -o cmTC_8f22e  -lICE 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-NK9aUO'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckLibraryExists.cmake:69 (try_compile)"
+      - "cmake/modules/FindSndio.cmake:22 (check_library_exists)"
+      - "CMakeLists.txt:631 (FIND_PACKAGE)"
+    checks:
+      - "Looking for sio_open in sndio"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-xnZEnb"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-xnZEnb"
+    cmakeVariables:
+      CMAKE_C_FLAGS: ""
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "HAVE_SIO_OPEN"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-xnZEnb'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_d5ce2/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_d5ce2.dir/build.make CMakeFiles/cmTC_d5ce2.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-xnZEnb'
+        Building C object CMakeFiles/cmTC_d5ce2.dir/CheckFunctionExists.c.o
+        /usr/bin/cc   -DCHECK_FUNCTION_EXISTS=sio_open -o CMakeFiles/cmTC_d5ce2.dir/CheckFunctionExists.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-xnZEnb/CheckFunctionExists.c
+        Linking C executable cmTC_d5ce2
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d5ce2.dir/link.txt --verbose=1
+        /usr/bin/cc  -DCHECK_FUNCTION_EXISTS=sio_open CMakeFiles/cmTC_d5ce2.dir/CheckFunctionExists.c.o -o cmTC_d5ce2  -lsndio 
+        /usr/bin/ld: cannot find -lsndio: No such file or directory
+        collect2: error: ld returned 1 exit status
+        gmake[1]: *** [CMakeFiles/cmTC_d5ce2.dir/build.make:99: cmTC_d5ce2] Error 1
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-xnZEnb'
+        gmake: *** [Makefile:127: cmTC_d5ce2/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/CheckIncludeFiles.cmake:132 (try_compile)"
+      - "src/3rdparty/CMakeLists.txt:32 (CHECK_INCLUDE_FILES)"
+    checks:
+      - "Looking for include file sys/mman.h"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zPkJVH"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zPkJVH"
+    cmakeVariables:
+      CMAKE_C_FLAGS: " -fPIC -DPIC"
+      CMAKE_C_FLAGS_DEBUG: "-g -DLMMS_DEBUG"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "HAVE_SYS_MMAN"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zPkJVH'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_980f6/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_980f6.dir/build.make CMakeFiles/cmTC_980f6.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zPkJVH'
+        Building C object CMakeFiles/cmTC_980f6.dir/HAVE_SYS_MMAN.c.o
+        /usr/bin/cc   -fPIC -DPIC  -o CMakeFiles/cmTC_980f6.dir/HAVE_SYS_MMAN.c.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zPkJVH/HAVE_SYS_MMAN.c
+        Linking C executable cmTC_980f6
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_980f6.dir/link.txt --verbose=1
+        /usr/bin/cc  -fPIC -DPIC  CMakeFiles/cmTC_980f6.dir/HAVE_SYS_MMAN.c.o -o cmTC_980f6 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-zPkJVH'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.28/Modules/CheckCompilerFlag.cmake:52 (cmake_check_compiler_flag)"
+      - "/usr/share/cmake-3.28/Modules/GenerateExportHeader.cmake:238 (check_compiler_flag)"
+      - "/usr/share/cmake-3.28/Modules/GenerateExportHeader.cmake:419 (_test_compiler_hidden_visibility)"
+      - "src/CMakeLists.txt:110 (GENERATE_EXPORT_HEADER)"
+    checks:
+      - "Performing Test COMPILER_HAS_HIDDEN_VISIBILITY"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-5CRBuv"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-5CRBuv"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -fPIC -DPIC"
+      CMAKE_CXX_FLAGS_DEBUG: "-g -DLMMS_DEBUG"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "COMPILER_HAS_HIDDEN_VISIBILITY"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-5CRBuv'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_9b56a/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_9b56a.dir/build.make CMakeFiles/cmTC_9b56a.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-5CRBuv'
+        Building CXX object CMakeFiles/cmTC_9b56a.dir/src.cxx.o
+        /usr/bin/c++ -DCOMPILER_HAS_HIDDEN_VISIBILITY  -fPIC -DPIC  -std=gnu++20   -fvisibility=hidden -o CMakeFiles/cmTC_9b56a.dir/src.cxx.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-5CRBuv/src.cxx
+        Linking CXX executable cmTC_9b56a
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_9b56a.dir/link.txt --verbose=1
+        /usr/bin/c++  -fPIC -DPIC  CMakeFiles/cmTC_9b56a.dir/src.cxx.o -o cmTC_9b56a 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-5CRBuv'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.28/Modules/CheckCompilerFlag.cmake:52 (cmake_check_compiler_flag)"
+      - "/usr/share/cmake-3.28/Modules/GenerateExportHeader.cmake:239 (check_compiler_flag)"
+      - "/usr/share/cmake-3.28/Modules/GenerateExportHeader.cmake:419 (_test_compiler_hidden_visibility)"
+      - "src/CMakeLists.txt:110 (GENERATE_EXPORT_HEADER)"
+    checks:
+      - "Performing Test COMPILER_HAS_HIDDEN_INLINE_VISIBILITY"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-m2W3zy"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-m2W3zy"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -fPIC -DPIC"
+      CMAKE_CXX_FLAGS_DEBUG: "-g -DLMMS_DEBUG"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "COMPILER_HAS_HIDDEN_INLINE_VISIBILITY"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-m2W3zy'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_d27bb/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_d27bb.dir/build.make CMakeFiles/cmTC_d27bb.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-m2W3zy'
+        Building CXX object CMakeFiles/cmTC_d27bb.dir/src.cxx.o
+        /usr/bin/c++ -DCOMPILER_HAS_HIDDEN_INLINE_VISIBILITY  -fPIC -DPIC  -std=gnu++20   -fvisibility-inlines-hidden -o CMakeFiles/cmTC_d27bb.dir/src.cxx.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-m2W3zy/src.cxx
+        Linking CXX executable cmTC_d27bb
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_d27bb.dir/link.txt --verbose=1
+        /usr/bin/c++  -fPIC -DPIC  CMakeFiles/cmTC_d27bb.dir/src.cxx.o -o cmTC_d27bb 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-m2W3zy'
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/usr/share/cmake-3.28/Modules/Internal/CheckSourceCompiles.cmake:101 (try_compile)"
+      - "/usr/share/cmake-3.28/Modules/CheckSourceCompiles.cmake:77 (cmake_check_source_compiles)"
+      - "/usr/share/cmake-3.28/Modules/GenerateExportHeader.cmake:206 (check_source_compiles)"
+      - "/usr/share/cmake-3.28/Modules/GenerateExportHeader.cmake:263 (_check_cxx_compiler_attribute)"
+      - "/usr/share/cmake-3.28/Modules/GenerateExportHeader.cmake:420 (_test_compiler_has_deprecated)"
+      - "src/CMakeLists.txt:110 (GENERATE_EXPORT_HEADER)"
+    checks:
+      - "Performing Test COMPILER_HAS_DEPRECATED_ATTR"
+    directories:
+      source: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-HtrKp5"
+      binary: "/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-HtrKp5"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: " -fPIC -DPIC"
+      CMAKE_CXX_FLAGS_DEBUG: "-g -DLMMS_DEBUG"
+      CMAKE_EXE_LINKER_FLAGS: ""
+      CMAKE_MODULE_PATH: "/home/ascend/git/sampled-lmms/cmake/modules"
+    buildResult:
+      variable: "COMPILER_HAS_DEPRECATED_ATTR"
+      cached: true
+      stdout: |
+        Change Dir: '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-HtrKp5'
+        
+        Run Build Command(s): /usr/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile cmTC_6b49f/fast
+        /usr/bin/gmake  -f CMakeFiles/cmTC_6b49f.dir/build.make CMakeFiles/cmTC_6b49f.dir/build
+        gmake[1]: Entering directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-HtrKp5'
+        Building CXX object CMakeFiles/cmTC_6b49f.dir/src.cxx.o
+        /usr/bin/c++ -DCOMPILER_HAS_DEPRECATED_ATTR  -fPIC -DPIC  -std=gnu++20 -o CMakeFiles/cmTC_6b49f.dir/src.cxx.o -c /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-HtrKp5/src.cxx
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-HtrKp5/src.cxx: In function ‘int main()’:
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-HtrKp5/src.cxx:2:33: warning: ‘int somefunc()’ is deprecated [-Wdeprecated-declarations]
+            2 |     int main() { return somefunc();}
+              |                         ~~~~~~~~^~
+        /home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-HtrKp5/src.cxx:1:37: note: declared here
+            1 | __attribute__((__deprecated__)) int somefunc() { return 0; }
+              |                                     ^~~~~~~~
+        Linking CXX executable cmTC_6b49f
+        /usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_6b49f.dir/link.txt --verbose=1
+        /usr/bin/c++  -fPIC -DPIC  CMakeFiles/cmTC_6b49f.dir/src.cxx.o -o cmTC_6b49f 
+        gmake[1]: Leaving directory '/home/ascend/git/sampled-lmms/build/CMakeFiles/CMakeScratch/TryCompile-HtrKp5'
+        
+      exitCode: 0
+...

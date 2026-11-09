@@ -1,0 +1,27 @@
+<RCC>
+	<qresource prefix="artwork/slewdistortion">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/artwork.png</file>
+		<file alias="dc_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/dc_off.png</file>
+		<file alias="dc_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/dc_on.png</file>
+		<file alias="handle.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/handle.png</file>
+		<file alias="handle_zero.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/handle_zero.png</file>
+		<file alias="help_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/help_off.png</file>
+		<file alias="help_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/help_on.png</file>
+		<file alias="link_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/link_off.png</file>
+		<file alias="link_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/link_on.png</file>
+		<file alias="mb_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/mb_off.png</file>
+		<file alias="mb_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/mb_on.png</file>
+		<file alias="oversample_16x_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_16x_off.png</file>
+		<file alias="oversample_16x_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_16x_on.png</file>
+		<file alias="oversample_1x_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_1x_off.png</file>
+		<file alias="oversample_1x_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_1x_on.png</file>
+		<file alias="oversample_2x_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_2x_off.png</file>
+		<file alias="oversample_2x_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_2x_on.png</file>
+		<file alias="oversample_32x_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_32x_off.png</file>
+		<file alias="oversample_32x_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_32x_on.png</file>
+		<file alias="oversample_4x_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_4x_off.png</file>
+		<file alias="oversample_4x_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_4x_on.png</file>
+		<file alias="oversample_8x_off.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_8x_off.png</file>
+		<file alias="oversample_8x_on.png">/home/ascend/git/sampled-lmms/plugins/SlewDistortion/oversample_8x_on.png</file>
+	</qresource>
+</RCC>

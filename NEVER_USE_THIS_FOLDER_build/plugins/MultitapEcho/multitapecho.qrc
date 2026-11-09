@@ -1,0 +1,6 @@
+<RCC>
+	<qresource prefix="artwork/multitapecho">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/MultitapEcho/artwork.png</file>
+		<file alias="graph_bg.png">/home/ascend/git/sampled-lmms/plugins/MultitapEcho/graph_bg.png</file>
+	</qresource>
+</RCC>

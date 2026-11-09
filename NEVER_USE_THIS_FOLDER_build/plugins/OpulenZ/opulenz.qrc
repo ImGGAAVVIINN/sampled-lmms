@@ -1,0 +1,16 @@
+<RCC>
+	<qresource prefix="artwork/opulenz">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/artwork.png</file>
+		<file alias="led_off.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/led_off.png</file>
+		<file alias="led_on.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/led_on.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/logo.png</file>
+		<file alias="wave1_off.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/wave1_off.png</file>
+		<file alias="wave1_on.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/wave1_on.png</file>
+		<file alias="wave2_off.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/wave2_off.png</file>
+		<file alias="wave2_on.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/wave2_on.png</file>
+		<file alias="wave3_off.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/wave3_off.png</file>
+		<file alias="wave3_on.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/wave3_on.png</file>
+		<file alias="wave4_off.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/wave4_off.png</file>
+		<file alias="wave4_on.png">/home/ascend/git/sampled-lmms/plugins/OpulenZ/wave4_on.png</file>
+	</qresource>
+</RCC>

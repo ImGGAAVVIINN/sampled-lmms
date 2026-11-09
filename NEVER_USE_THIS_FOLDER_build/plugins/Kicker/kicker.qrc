@@ -1,0 +1,6 @@
+<RCC>
+	<qresource prefix="artwork/kicker">
+		<file alias="artwork.png">/home/ascend/git/sampled-lmms/plugins/Kicker/artwork.png</file>
+		<file alias="logo.png">/home/ascend/git/sampled-lmms/plugins/Kicker/logo.png</file>
+	</qresource>
+</RCC>

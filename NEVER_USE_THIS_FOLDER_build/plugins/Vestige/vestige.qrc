@@ -1,0 +1,11 @@
+<RCC>
+	<qresource prefix="artwork/vestige">
+		<file alias="artwork.svg">/home/ascend/git/sampled-lmms/plugins/Vestige/artwork.svg</file>
+		<file alias="controls.svg">/home/ascend/git/sampled-lmms/plugins/Vestige/controls.svg</file>
+		<file alias="controls_active.svg">/home/ascend/git/sampled-lmms/plugins/Vestige/controls_active.svg</file>
+		<file alias="logo-symbolic.svg">/home/ascend/git/sampled-lmms/plugins/Vestige/logo-symbolic.svg</file>
+		<file alias="logo.svg">/home/ascend/git/sampled-lmms/plugins/Vestige/logo.svg</file>
+		<file alias="select_file.svg">/home/ascend/git/sampled-lmms/plugins/Vestige/select_file.svg</file>
+		<file alias="select_file_active.svg">/home/ascend/git/sampled-lmms/plugins/Vestige/select_file_active.svg</file>
+	</qresource>
+</RCC>
