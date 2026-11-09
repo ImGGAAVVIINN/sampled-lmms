@@ -39,7 +39,9 @@
 #include "PianoRoll.h"
 #include "ProjectNotes.h"
 #include "SongEditor.h"
+#include "SampleStretch.h"
 #include "StretchDebug.h"
+#include "StretchProgressDialog.h"
 
 #include <QApplication>
 #include <QDebug>
@@ -160,6 +162,18 @@ GuiApplication::GuiApplication()
 	displayInitProgress(tr("Preparing UI"));
 
 	m_mainWindow = new MainWindow;
+
+	// Initialize stretch progress dialog (after m_mainWindow is created)
+	m_stretchProgressDialog = new StretchProgressDialog(m_mainWindow);
+	auto& stretchManager = SampleStretchManager::instance();
+	connect(&stretchManager, &SampleStretchManager::stretchStarted,
+		this, &GuiApplication::onStretchStarted);
+	connect(&stretchManager, &SampleStretchManager::stretchProgress,
+		this, &GuiApplication::onStretchProgress);
+	connect(&stretchManager, &SampleStretchManager::stretchFinished,
+		this, &GuiApplication::onStretchFinished);
+	connect(m_stretchProgressDialog, &StretchProgressDialog::cancelled,
+		this, &GuiApplication::onStretchCancelled);
 	connect(m_mainWindow, SIGNAL(destroyed(QObject*)), this, SLOT(childDestroyed(QObject*)));
 	connect(m_mainWindow, SIGNAL(initProgress(const QString&)), 
 		this, SLOT(displayInitProgress(const QString&)));
@@ -259,6 +273,43 @@ void GuiApplication::childDestroyed(QObject *obj)
 	{
 		m_controllerRackView = nullptr;
 	}
+}
+
+void GuiApplication::onStretchStarted(uint64_t key, int totalFrames)
+{
+	qDebug() << "GuiApplication::onStretchStarted called, key=" << key << "totalFrames=" << totalFrames;
+	if (m_stretchProgressDialog)
+	{
+		m_stretchProgressDialog->startStretch(key, totalFrames);
+	}
+}
+
+void GuiApplication::onStretchProgress(uint64_t key, int processedFrames, int totalFrames)
+{
+	qDebug() << "GuiApplication::onStretchProgress called, key=" << key << "processed=" << processedFrames << "total=" << totalFrames;
+	if (m_stretchProgressDialog)
+	{
+		m_stretchProgressDialog->updateProgress(key, processedFrames, totalFrames);
+	}
+}
+
+void GuiApplication::onStretchFinished(uint64_t key, bool success)
+{
+	qDebug() << "GuiApplication::onStretchFinished called, key=" << key << "success=" << success;
+	if (m_stretchProgressDialog)
+	{
+		m_stretchProgressDialog->finishStretch(key, success);
+	}
+}
+
+void GuiApplication::onStretchCancelled(uint64_t key)
+{
+	// Cancel the stretch job by requesting a new one with the same key but cancelled
+	// The worker will see the receiver is null and skip delivery
+	auto& stretchManager = SampleStretchManager::instance();
+	stretchManager.cancelPending(nullptr); // This will cancel the active job
+	// Note: We can't easily cancel a specific job by key from here without more infrastructure
+	// For now, the dialog will just close when the job finishes
 }
 
 void GuiApplication::sigintHandler(int)

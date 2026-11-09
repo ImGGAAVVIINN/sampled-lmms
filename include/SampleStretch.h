@@ -77,6 +77,8 @@ public:
 	 * to engineRate, then time-stretched by `ratio` (the output is `ratio`
 	 * times as long as the input, with pitch preserved).
 	 *
+	 * @param progressCallback Optional callback invoked periodically with
+	 *        (processedFrames, totalFrames) during the stretch phase.
 	 * @return A sample at the engine output sample rate, or nullptr when
 	 *         SoundTouch is unavailable or the inputs are degenerate.
 	 */
@@ -85,7 +87,8 @@ public:
 		int startFrame, int endFrame,
 		sample_rate_t sourceRate,
 		sample_rate_t engineRate,
-		double ratio);
+		double ratio,
+		std::function<void(int, int)> progressCallback = nullptr);
 
 private:
 	SampleStretch() = default;
@@ -208,6 +211,29 @@ public:
 	static SampleStretchManager* ifExists();
 
 	~SampleStretchManager() override;
+
+signals:
+	/**
+	 * @brief Emitted when a stretch job starts processing.
+	 * @param key The cache key of the job.
+	 * @param totalFrames The total number of frames to process (for progress calculation).
+	 */
+	void stretchStarted(quint64 key, int totalFrames);
+
+	/**
+	 * @brief Emitted periodically during stretch processing with progress update.
+	 * @param key The cache key of the job.
+	 * @param processedFrames The number of frames processed so far.
+	 * @param totalFrames The total number of frames to process.
+	 */
+	void stretchProgress(quint64 key, int processedFrames, int totalFrames);
+
+	/**
+	 * @brief Emitted when a stretch job completes (successfully or cancelled).
+	 * @param key The cache key of the job.
+	 * @param success True if the job completed successfully, false if cancelled/failed.
+	 */
+	void stretchFinished(quint64 key, bool success);
 
 private:
 	SampleStretchManager();

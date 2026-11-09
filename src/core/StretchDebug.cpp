@@ -166,6 +166,7 @@ void StretchDebug::writeEvent(const Event& event)
         case EventType::StretchJobCompleted: typeStr = "StretchJobCompleted"; break;
         case EventType::StretchJobRejected: typeStr = "StretchJobRejected"; break;
         case EventType::StretchJobDiscarded: typeStr = "StretchJobDiscarded"; break;
+        case EventType::StretchProgress: typeStr = "StretchProgress"; break;
         case EventType::PlayHandleCreated: typeStr = "PlayHandleCreated"; break;
         case EventType::PlayHandlePlay: typeStr = "PlayHandlePlay"; break;
         case EventType::BufferStateChange: typeStr = "BufferStateChange"; break;
@@ -363,6 +364,20 @@ void StretchDebug::logStretchJobDiscarded(const std::string& clipId, uint64_t ge
     e.message = "Stretch job discarded: " + reason;
     e.generation = generation;
     e.key = key;
+    log(e);
+}
+
+void StretchDebug::logStretchProgress(uint64_t key, int processedFrames, int totalFrames)
+{
+    Event e;
+    e.type = EventType::StretchProgress;
+    e.timestamp = std::chrono::steady_clock::now();
+    e.threadId = std::this_thread::get_id();
+    e.clipId = "";
+    e.message = "Stretch progress";
+    e.key = key;
+    e.resultFrames = processedFrames;
+    e.sampleRate = totalFrames;
     log(e);
 }
 

@@ -88,7 +88,8 @@ std::shared_ptr<Sample> SampleStretch::stretch(
 	int startFrame, int endFrame,
 	sample_rate_t sourceRate,
 	sample_rate_t engineRate,
-	double ratio)
+	double ratio,
+	std::function<void(int, int)> progressCallback)
 {
 #ifndef LMMS_HAVE_SOUNDTOUCH
 	Q_UNUSED(buffer)
@@ -97,6 +98,7 @@ std::shared_ptr<Sample> SampleStretch::stretch(
 	Q_UNUSED(sourceRate)
 	Q_UNUSED(engineRate)
 	Q_UNUSED(ratio)
+	Q_UNUSED(progressCallback)
 	return nullptr;
 #else
 	if (!buffer || buffer->empty() || !(ratio > 0.0) || !std::isfinite(ratio)
@@ -147,8 +149,16 @@ std::shared_ptr<Sample> SampleStretch::stretch(
 	const float* input = &resampled[0][0];
 	auto inputFramesLeft = static_cast<uint>(resampled.size());
 	auto outputFilled = size_t{0};
-	const auto chunk = static_cast<uint>(std::max<size_t>(resampled.size(), 1));
+	// Use a reasonable chunk size for incremental progress reporting
+	const auto chunk = static_cast<uint>(4096);
 	auto scratch = std::vector<SampleFrame>(chunk);
+
+	// Total frames to process for progress reporting
+	const int totalFrames = static_cast<int>(resampled.size());
+	int processedFrames = 0;
+
+	// Compute cache key for logging
+	const uint64_t key = cacheKey(buffer.get(), startFrame, endFrame, sourceRate, engineRate, ratio);
 
 	while (inputFramesLeft > 0)
 	{
@@ -156,6 +166,18 @@ std::shared_ptr<Sample> SampleStretch::stretch(
 		st.putSamples(reinterpret_cast<const soundtouch::SAMPLETYPE*>(input), toPut);
 		input += toPut * 2;
 		inputFramesLeft -= toPut;
+		processedFrames += toPut;
+
+		// Report progress
+		if (progressCallback)
+		{
+			progressCallback(processedFrames, totalFrames);
+		}
+		// Debug: log progress
+		if (processedFrames % 100000 == 0 || inputFramesLeft == 0)
+		{
+			StretchDebug::instance().logStretchProgress(key, processedFrames, totalFrames);
+		}
 
 		uint received = 0;
 		do
@@ -292,10 +314,16 @@ void SampleStretchManager::Worker::run()
 			}
 		}
 
+		// Emit stretchStarted signal
+		emit m_manager->stretchStarted(job.key, job.endFrame - job.startFrame);
+
 		// The expensive part, with no lock held: neither the GUI thread nor
 		// the audio thread is involved here.
 		auto stretched = SampleStretch::stretch(job.buffer, job.startFrame,
-			job.endFrame, job.sourceRate, job.engineRate, job.ratio);
+			job.endFrame, job.sourceRate, job.engineRate, job.ratio,
+			[this, job](int processed, int total) {
+				emit m_manager->stretchProgress(job.key, processed, total);
+			});
 
 		const auto locker = QMutexLocker{&m_impl->mutex};
 		m_impl->computing = false;
@@ -343,6 +371,7 @@ void SampleStretchManager::Worker::run()
 				}
 			}
 		}
+		emit m_manager->stretchFinished(job.key, receiver != nullptr);
 		m_impl->waitCondition.wakeAll();
 	}
 }

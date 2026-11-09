@@ -60,6 +60,7 @@ public:
         StretchJobCompleted,
         StretchJobRejected,
         StretchJobDiscarded,
+        StretchProgress,
         PlayHandleCreated,
         PlayHandlePlay,
         BufferStateChange,
@@ -131,6 +132,7 @@ public:
     void logStretchJobCompleted(const std::string& clipId, uint64_t generation, uint64_t key, int outputFrames);
     void logStretchJobRejected(const std::string& clipId, uint64_t generation, uint64_t key, const std::string& reason);
     void logStretchJobDiscarded(const std::string& clipId, uint64_t generation, uint64_t key, const std::string& reason);
+    void logStretchProgress(uint64_t key, int processedFrames, int totalFrames);
     void logPlayHandleCreated(const std::string& clipId, const Event& plan);
     void logPlayHandlePlay(const std::string& clipId, int framesDone, int totalFrames, double playbackRatio, int consumedFrames);
     void logBufferStateChange(const std::string& clipId, const std::string& change);

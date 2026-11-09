@@ -84,6 +84,7 @@ SET(LMMS_SRCS
 	gui/modals/FileDialog.cpp
 	gui/modals/RenameDialog.cpp
 	gui/modals/SetupDialog.cpp
+	gui/modals/StretchProgressDialog.cpp
 	gui/modals/VersionedSaveDialog.cpp
 
 	gui/tracks/AutomationTrackView.cpp

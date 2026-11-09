@@ -45,6 +45,7 @@ class PatternEditorWindow;
 class PianoRollWindow;
 class ProjectNotes;
 class SongEditorWindow;
+class StretchProgressDialog;
 
 class LMMS_EXPORT GuiApplication : public QObject
 {
@@ -90,6 +91,10 @@ public slots:
 private slots:
 	void childDestroyed(QObject *obj);
 	void sigintOccurred();
+	void onStretchStarted(uint64_t key, int totalFrames);
+	void onStretchProgress(uint64_t key, int processedFrames, int totalFrames);
+	void onStretchFinished(uint64_t key, bool success);
+	void onStretchCancelled(uint64_t key);
 
 private:
 	static GuiApplication* s_instance;
@@ -103,6 +108,7 @@ private:
 	ProjectNotes* m_projectNotes;
 	MicrotunerConfig* m_microtunerConfig;
 	ControllerRackView* m_controllerRackView;
+	StretchProgressDialog* m_stretchProgressDialog;
 	QLabel* m_loadingProgressLabel;
 	QSocketNotifier* m_sigintNotifier;
 };
