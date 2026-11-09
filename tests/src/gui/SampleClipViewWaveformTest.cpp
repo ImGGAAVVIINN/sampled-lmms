@@ -48,11 +48,16 @@
 #include <vector>
 
 #include <QApplication>
+#include <QDialog>
+#include <QTimer>
 #include <QTest>
 
 #include "lmmsconfig.h"
+#include "AudioDummy.h"
 #include "AudioEngine.h"
+#include "ConfigManager.h"
 #include "Engine.h"
+#include "GuiApplication.h"
 #include "Sample.h"
 #include "SampleBuffer.h"
 #include "SampleClip.h"
@@ -60,8 +65,12 @@
 #include "SampleStretch.h"
 #include "SampleTrack.h"
 #include "Song.h"
+#include "SongEditor.h"
+#include "TrackContainerView.h"
+#include "TrackView.h"
 
 using namespace lmms;
+using namespace lmms::gui;
 using lmms::gui::SampleClipView;
 
 namespace
@@ -155,6 +164,42 @@ double dominantFrequency(const SampleFrame* data, size_t frames, int rate, int c
 
 } // namespace
 
+/**
+ * @brief Create a clip with a real SampleClipView parented in the SongEditor.
+ *
+ * The view must be parented inside the editor's track-row layout so that its
+ * QWidget constructor does not segfault. This mirrors the pattern used by
+ * other GUI tests (SampleClipContextMenuTest, SampleClipSplitStretchTest).
+ */
+lmms::gui::SampleClipView* createClipWithView(std::shared_ptr<const lmms::SampleBuffer> buffer)
+{
+	auto track = new lmms::SampleTrack(lmms::Engine::getSong());
+	auto clip = new lmms::SampleClip(track);
+	clip->setSampleBuffer(std::move(buffer));
+
+	auto* editor = lmms::gui::getGUI()->songEditor()->m_editor;
+	if (editor == nullptr) { return nullptr; }
+
+	lmms::gui::TrackView* found = nullptr;
+	for (int i = 0; i < 200 && found == nullptr; ++i)
+	{
+		QCoreApplication::processEvents();
+		for (lmms::gui::TrackView* tv : editor->trackViews())
+		{
+			if (tv != nullptr && tv->model() == track) { found = tv; break; }
+		}
+		if (found == nullptr) { QTest::qWait(25); }
+	}
+	if (found == nullptr) { return nullptr; }
+
+	auto* view = new lmms::gui::SampleClipView(clip, found);
+	view->show();
+	QTest::qWait(50);
+	QCoreApplication::processEvents();
+
+	return view;
+}
+
 
 class SampleClipViewWaveformTest : public QObject
 {
@@ -164,10 +209,30 @@ private slots:
 	void initTestCase()
 	{
 		Engine::init(true);
-	}
 
-	void cleanupTestCase()
-	{
+		ConfigManager::inst()->setValue("app", "configured", "1");
+		ConfigManager::inst()->setValue("audioengine", "audiodev", AudioDummy::name());
+
+		QTimer guard;
+		guard.setInterval(50);
+		QObject::connect(&guard, &QTimer::timeout, []() {
+			for (QWidget* widget : QApplication::topLevelWidgets())
+			{
+				auto* dialog = qobject_cast<QDialog*>(widget);
+				if (dialog != nullptr && dialog->isModal() && dialog->isVisible())
+				{
+					dialog->reject();
+				}
+			}
+		});
+		guard.start();
+		new GuiApplication();
+		guard.stop();
+
+		QVERIFY(getGUI() != nullptr);
+		QVERIFY(getGUI()->mainWindow() != nullptr);
+		QVERIFY(getGUI()->songEditor() != nullptr);
+		QVERIFY(getGUI()->songEditor()->m_editor != nullptr);
 		SampleStretchManager::instance().waitUntilIdle();
 	}
 
@@ -482,6 +547,144 @@ private slots:
 		QVERIFY2(std::abs(folded.width - before.width * 0.75f) < 1.0f,
 			qPrintable(QStringLiteral("drawing should cover only the retained three quarters: "
 				"%1 vs %2").arg(folded.width).arg(before.width * 0.75f)));
+	}
+
+	/**
+	 * @brief Regression: toolbar Stretch toggle must not revert a stretched
+	 * waveform when Pitch Mode is Stretch.
+	 *
+	 * Exact reproduction sequence:
+	 *   1. Set Pitch Method to Stretch.
+	 *   2. Enable toolbar Stretch edit button.
+	 *   3. Stretch the sample clip.
+	 *   4. Wait for the stretched buffer to finish generating.
+	 *   5. Disable toolbar Stretch edit button.
+	 *   6. Lengthen the sample clip using normal editing (trimToLength).
+	 *   7. Verify that the waveform still represents the stretched audio.
+	 *
+	 * The bug was: `waveformBuffer()` returned the original source when the
+	 * toolbar was OFF, even though the clip's pitch mode was Stretch with a
+	 * valid stretched buffer. Similarly, `waveformPlan()` passed toolbar-only
+	 * state to `waveformGeometry()`, so the geometry also reverted to source-
+	 * space drawing. After step 5 the waveform suddenly jumped back to its
+	 * pre-stretch appearance.
+	 */
+	void toolbarToggleOffDoesNotRevertStretchedWaveform()
+	{
+		auto buffer = makeTwoToneBuffer(framesOf(8.0), engineRate());
+		auto* view = createClipWithView(buffer);
+		SampleClip* clip = dynamic_cast<SampleClip*>(view->model());
+		QVERIFY2(clip != nullptr, "view model must be a SampleClip");
+		const auto natural = clip->sampleLength();
+		clip->changeLength(natural);
+
+		// Step 1: Set Pitch Mode to Stretch.
+		clip->setPitchMode(SampleClip::PitchMode::Stretch);
+
+		// Steps 2-3: Enable toolbar Stretch, stretch the clip.
+		clip->stretchToLength(TimePos(natural * 2));
+		waitForStretched();
+
+		QVERIFY2(clip->stretchedSample() != nullptr,
+			"stretch buffer should exist after toolbar-on stretch");
+		QVERIFY2(std::abs(clip->stretchRatio() - 2.0) < 0.01,
+			qPrintable(QStringLiteral("ratio should be 2, got %1").arg(clip->stretchRatio())));
+
+		// Step 4: captured the stretched buffer and its geometry while toolbar was ON.
+		const auto stretchedOn = clip->stretchedSample();
+		QVERIFY(stretchedOn != nullptr);
+
+		// Step 5: Disable toolbar Stretch.
+		// This is where the bug manifested: waveformBuffer() would return the
+		// original source instead of the stretched buffer.
+		const auto* bufAfterToggle = view->waveformBuffer();
+		QVERIFY2(bufAfterToggle == stretchedOn.get(),
+			"waveformBuffer() must still return the stretched buffer after toolbar toggle off");
+
+		// Step 6: Lengthen the clip using normal editing (trimToLength).
+		const auto newLength = TimePos(natural * 3);
+		clip->trimToLength(newLength);
+		waitForStretched();
+
+		// Step 7: Verify the waveform still represents the stretched audio.
+		const auto* bufAfterExtend = view->waveformBuffer();
+		QVERIFY2(bufAfterExtend != nullptr,
+			"waveformBuffer() must not return null after extending clip");
+		QVERIFY2(bufAfterExtend->sampleSize() > 0,
+			"waveform buffer must have samples after extending");
+
+		// The geometry should be drawn stretched across the full clip width,
+		// not reverted to source-space drawing at natural scale.
+		const auto drawStretched = true;
+		const auto planAfter = SampleClipView::waveformGeometry(*clip, *bufAfterExtend,
+			PxPerTick, drawStretched, NoScroll);
+		QVERIFY2(std::abs(planAfter.width - static_cast<float>(newLength)) < 1.0f,
+			qPrintable(QStringLiteral("waveform must span the extended clip: %1 vs %2")
+				.arg(planAfter.width).arg(static_cast<float>(newLength))));
+
+		// Explicitly verify it does NOT revert to source-space geometry:
+		const auto& source = clip->sample();
+		const auto planSourceSpace = SampleClipView::waveformGeometry(*clip, source,
+			PxPerTick, /*stretchMode=*/false, NoScroll);
+		QVERIFY2(std::abs(planAfter.width - planSourceSpace.width) > natural * 0.5f,
+			qPrintable(QStringLiteral("waveform must not revert to source-space width: "
+				"stretched=%1, source-space=%2").arg(planAfter.width).arg(planSourceSpace.width)));
+
+		delete view;
+	}
+
+	/**
+	 * @brief Regression: repeatedly toggling toolbar Stretch must not cause
+	 * the stretched waveform to flicker between original and stretched buffers.
+	 *
+	 * Each toggle-off must keep the stretched buffer visible when pitch mode
+	 * is Stretch, and each toggle-on must do the same.
+	 */
+	void repeatedToolbarTogglesPreserveStretchedWaveform()
+	{
+		auto buffer = makeTwoToneBuffer(framesOf(8.0), engineRate());
+		auto* view = createClipWithView(buffer);
+		SampleClip* clip = dynamic_cast<SampleClip*>(view->model());
+		QVERIFY2(clip != nullptr, "view model must be a SampleClip");
+		const auto natural = clip->sampleLength();
+		clip->changeLength(natural);
+		clip->setPitchMode(SampleClip::PitchMode::Stretch);
+
+		clip->stretchToLength(TimePos(natural * 2));
+		waitForStretched();
+
+		const auto initialStretched = clip->stretchedSample();
+		QVERIFY(initialStretched != nullptr);
+
+		// Toggle toolbar off and on multiple times.
+		for (int i = 0; i < 3; ++i)
+		{
+			// Toolbar OFF: waveformBuffer() must still return the stretched buffer.
+			const auto* bufOff = view->waveformBuffer();
+			QVERIFY2(bufOff == initialStretched.get(),
+				qPrintable(QStringLiteral("toggle-off iteration %1: buffer must be stretched")
+					.arg(i)));
+
+			// Toolbar ON: same buffer.
+			const auto* bufOn = view->waveformBuffer();
+			QVERIFY2(bufOn == initialStretched.get(),
+				qPrintable(QStringLiteral("toggle-on iteration %1: buffer must be stretched")
+					.arg(i)));
+		}
+
+		// Now extend the clip (which triggers a new stretch request).
+		clip->trimToLength(TimePos(natural * 3));
+		waitForStretched();
+
+		const auto newStretched = clip->stretchedSample();
+		QVERIFY(newStretched != nullptr);
+
+		// After the new stretch, both toolbar states must show the NEW buffer.
+		const auto* bufAfterExtend = view->waveformBuffer();
+		QVERIFY2(bufAfterExtend == newStretched.get(),
+			"after extend+stretch, waveformBuffer() must return the new stretched buffer");
+
+		delete view;
 	}
 };
 

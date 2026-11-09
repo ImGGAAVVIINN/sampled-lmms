@@ -103,11 +103,11 @@ protected:
 
 	bool recordingCapabilitiesAvailable() const;
 
-private:
+public:
 	//! @brief The buffer whose samples the waveform should be drawn from.
 	//!
 	//! Deliberately independent of widget geometry so it can be consulted
-	//! while the view is still being constructed.
+	//! while the view is still being constructed. Public for unit-test access.
 	const Sample* waveformBuffer() const;
 
 	WaveformPlan waveformPlan();

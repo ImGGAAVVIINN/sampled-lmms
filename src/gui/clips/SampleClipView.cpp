@@ -98,13 +98,18 @@ void SampleClipView::updateSample()
 
 const Sample* SampleClipView::waveformBuffer() const
 {
-	const TrackContainerView* tcv =
-		m_trackView ? m_trackView->trackContainerView() : nullptr;
-	if (tcv && tcv->stretchMode())
+	// The waveform must show the buffer that is actually played, which is
+	// the stretched buffer whenever the clip's Pitch mode is Stretch -- not
+	// only when the toolbar's Stretch edit button happens to be on. Toggling
+	// the toolbar off must not revert the visual to the pre-stretch source,
+	// because the clip's audio state (pitch mode + stretch ratio) has not
+	// changed. The toolbar controls editing operations only.
+	if (m_clip->pitchMode() == SampleClip::PitchMode::Stretch)
 	{
-		// The waveform is being shown stretched, so show the buffer that is
-		// actually played. `stretchedSample()` only returns a buffer while it
-		// still matches the clip's current parameters.
+		// `stretchedSample()` only returns a buffer while it still matches
+		// the clip's current parameters; nullptr means the async result has
+		// not landed yet, in which case fall back to the original source
+		// rather than showing a stale or wrong buffer.
 		if (const auto stretched = m_clip->stretchedSample())
 		{
 			return stretched.get();
@@ -198,14 +203,20 @@ SampleClipView::WaveformPlan SampleClipView::waveformPlan()
 	const float den = Engine::getSong()->getTimeSigModel().getDenominator();
 	const float ticksPerBar = DefaultTicksPerBar * nom / den;
 
-	// Bug B: the toolbar's Stretch edit-mode toggle -- not the context-menu
-	// pitch method -- decides whether the waveform is drawn stretched across
-	// the clip's full resized width.
+	// The waveform is drawn stretched across the clip's full width whenever
+	// the clip's Pitch mode is Stretch and a stretched buffer is available --
+	// not only when the toolbar's Stretch edit button happens to be on. The
+	// toolbar controls editing operations only; toggling it off must not
+	// revert the visual to the pre-stretch source (see waveformBuffer()).
 	const TrackContainerView* tcv =
 		m_trackView ? m_trackView->trackContainerView() : nullptr;
+	const auto toolbarStretch = tcv && tcv->stretchMode();
+	const auto drawStretched = toolbarStretch ||
+		(m_clip->pitchMode() == SampleClip::PitchMode::Stretch &&
+		 m_clip->stretchedSample() != nullptr);
 
 	return waveformGeometry(*m_clip, *waveformBuffer(), ppb / ticksPerBar,
-		tcv && tcv->stretchMode(), m_paintPixmapXPosition);
+		drawStretched, m_paintPixmapXPosition);
 }
 
 
