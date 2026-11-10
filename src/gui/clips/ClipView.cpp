@@ -492,26 +492,6 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 					m_clip->setJournalling(false);
 				}
 
-				// A resize or stretch drag edits the clip on every mouse-move. For a
-				// sample clip that means the parameters a stretched buffer depends on
-				// change continuously, and left alone each change would hand the
-				// stretch worker a new job -- so the audio would start being
-				// processed, and the progress dialog would appear, while the mouse
-				// button is still held down. Opening a request batch keeps the edit
-				// live (the clip still resizes under the pointer) and holds the
-				// processing back until `mouseReleaseEvent` closes it, which makes
-				// the release the commit point: exactly one operation, for the final
-				// dragged length. A press without a drag never reaches the move
-				// handler, so nothing is owed and releasing asks for no work.
-				if (m_action == Action::Resize || m_action == Action::ResizeLeft
-					|| m_action == Action::Stretch || m_action == Action::StretchLeft)
-				{
-					if (auto* sClip = dynamic_cast<SampleClip*>(m_clip))
-					{
-						sClip->beginStretchRequestBatch();
-					}
-				}
-
 				setInitialPos(pos);
 				setInitialOffsets();
 
@@ -561,6 +541,29 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 				{
 					m_action = Action::Move;
 					setCursor( Qt::SizeAllCursor );
+				}
+
+				// A resize or stretch drag edits the clip on every mouse-move. For a
+				// sample clip that means the parameters a stretched buffer depends on
+				// change continuously, and left alone each change would hand the
+				// stretch worker a new job -- so the audio would start being
+				// processed, and the progress dialog would appear, while the mouse
+				// button is still held down. Opening a request batch keeps the edit
+				// live (the clip still resizes under the pointer) and holds the
+				// processing back until `mouseReleaseEvent` closes it, which makes
+				// the release the commit point: exactly one operation, for the final
+				// dragged length. A press without a drag never reaches the move
+				// handler, so nothing is owed and releasing asks for no work.
+				// This runs *after* the action chain above has decided m_action;
+				// checking it earlier would always see Action::None and the
+				// batch would never open.
+				if (m_action == Action::Resize || m_action == Action::ResizeLeft
+					|| m_action == Action::Stretch || m_action == Action::StretchLeft)
+				{
+					if (auto* sClip = dynamic_cast<SampleClip*>(m_clip))
+					{
+						sClip->beginStretchRequestBatch();
+					}
 				}
 
 				if( m_action == Action::Move )
