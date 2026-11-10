@@ -787,20 +787,19 @@ void ClipView::mouseMoveEvent( QMouseEvent * me )
 			}
 
 			// The mode decides the *semantics* of the drag:
-			//   Sample clip, toolbar Stretch ON (Action::Stretch) OR
-			//     context-menu Pitch mode == Stretch  -> time-stretch the
-			//     audio to fill the new length (pitch preserved, stretch
-			//     ratio changes). The pitch method (Resample vs Stretch)
-			//     selected from the context menu decides how the
-			//     stretched ratio is rendered.
-			//   Sample clip, otherwise (Action::Resize with Resample
-			//     pitch mode)  -> ordinary trim/extend: the playback speed
-			//     never changes, the ratio is untouched.
+			//   Sample clip, toolbar Stretch ON (Action::Stretch) -> time-
+			//     stretch the audio to fill the new length (pitch preserved,
+			//     stretch ratio changes). The pitch method (Resample vs
+			//     Stretch) selected from the context menu only decides how
+			//     that stretched ratio is rendered.
+			//   Sample clip, otherwise -> ordinary trim/extend: the playback
+			//     speed never changes, the ratio is untouched. This is the
+			//     toolbar-OFF contract: the clip's Pitch mode must NOT turn
+			//     an ordinary resize into a stretch -- the toolbar button is
+			//     the only thing that selects stretch editing.
 			//   Otherwise     -> ordinary trim/extend: the playback speed
 			//     never changes.
-			if (sClip != nullptr &&
-				(m_action == Action::Stretch ||
-				 sClip->pitchMode() == SampleClip::PitchMode::Stretch))
+			if (sClip != nullptr && m_action == Action::Stretch)
 			{
 				sClip->stretchToLength(l);
 			}
