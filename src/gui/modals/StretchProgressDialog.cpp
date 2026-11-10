@@ -108,16 +108,18 @@ void StretchProgressDialog::finishStretch(uint64_t key, bool success)
 	if (success)
 	{
 		m_label->setText(tr("Stretching complete"));
+		// Auto-close on success - the processing operation has completed
+		// Use a brief timer to allow the user to see the 100% state
+		QTimer::singleShot(500, this, &QDialog::accept);
 	}
 	else
 	{
 		m_label->setText(tr("Stretching cancelled"));
+		m_cancelButton->setText(tr("Close"));
+		m_cancelButton->setEnabled(true);
+		disconnect(m_cancelButton, &QPushButton::clicked, this, &StretchProgressDialog::onCancelClicked);
+		connect(m_cancelButton, &QPushButton::clicked, this, &QDialog::accept);
 	}
-
-	m_cancelButton->setText(tr("Close"));
-	m_cancelButton->setEnabled(true);
-	disconnect(m_cancelButton, &QPushButton::clicked, this, &StretchProgressDialog::onCancelClicked);
-	connect(m_cancelButton, &QPushButton::clicked, this, &QDialog::accept);
 }
 
 void StretchProgressDialog::onCancelClicked()

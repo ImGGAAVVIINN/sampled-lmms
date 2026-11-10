@@ -312,6 +312,39 @@ public:
 	 */
 	void refreshStretchBuffer();
 
+	/**
+	 * @brief Hold off on asking the manager for stretched buffers.
+	 *
+	 * Dragging a clip edge changes everything a stretched buffer depends on --
+	 * the source range and the ratio -- on every single mouse-move. Left to
+	 * itself each of those changes would hand the worker thread a new job, so
+	 * the audio would start being processed, and the progress dialog would
+	 * appear, while the mouse button is still held down.
+	 *
+	 * A drag therefore calls @ref beginStretchRequestBatch on press and
+	 * @ref endStretchRequestBatch on release. The model edits still happen live
+	 * -- the clip resizes and its length label follows the pointer -- but the
+	 * expensive processing, and the popup that reports it, happens exactly once,
+	 * for the parameters the drag ended on. That makes the mouse release the
+	 * commit point for audio processing, which is also what makes the *final*
+	 * dragged length the processing target instead of some intermediate one.
+	 *
+	 * A press without a drag never reaches the move handler, so nothing is owed
+	 * and releasing asks for no work at all.
+	 */
+	void beginStretchRequestBatch();
+
+	/// @brief Leave batch mode, issuing the one request the batch left owed.
+	/// If the parameters ended up back on a stretched buffer that is already
+	/// cached, `refreshStretchBuffer` re-checks the cache and nothing is asked
+	/// for at all.
+	void endStretchRequestBatch();
+
+	/// @brief True between @ref beginStretchRequestBatch and
+	/// @ref endStretchRequestBatch. Lets a caller make sure a batch is never
+	/// left open.
+	auto isBatchingStretchRequests() const -> bool { return m_batchStretchRequests; }
+
 	auto stretchedSample() const -> std::shared_ptr<Sample>;
 	auto hasStretchedSample() const -> bool;
 
@@ -374,6 +407,11 @@ private:
 	// serialised against audio rendering via the audio engine's change lock.
 	SampleStretchResult* m_stretchResult = nullptr;
 	uint64_t m_stretchGeneration = 0;
+	// Batch mode entered by a clip-edge drag: refreshStretchBuffer() records
+	// that work is owed instead of queueing it, so the drag itself never starts
+	// a computation (see beginStretchRequestBatch).
+	bool m_batchStretchRequests = false;
+	bool m_stretchRequestOwed = false;
 	mutable QMutex m_stretchMutex;
 	std::shared_ptr<Sample> m_stretchedSample;
 	uint64_t m_stretchCacheKey = 0;

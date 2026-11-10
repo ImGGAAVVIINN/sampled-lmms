@@ -492,6 +492,26 @@ void ClipView::mousePressEvent( QMouseEvent * me )
 					m_clip->setJournalling(false);
 				}
 
+				// A resize or stretch drag edits the clip on every mouse-move. For a
+				// sample clip that means the parameters a stretched buffer depends on
+				// change continuously, and left alone each change would hand the
+				// stretch worker a new job -- so the audio would start being
+				// processed, and the progress dialog would appear, while the mouse
+				// button is still held down. Opening a request batch keeps the edit
+				// live (the clip still resizes under the pointer) and holds the
+				// processing back until `mouseReleaseEvent` closes it, which makes
+				// the release the commit point: exactly one operation, for the final
+				// dragged length. A press without a drag never reaches the move
+				// handler, so nothing is owed and releasing asks for no work.
+				if (m_action == Action::Resize || m_action == Action::ResizeLeft
+					|| m_action == Action::Stretch || m_action == Action::StretchLeft)
+				{
+					if (auto* sClip = dynamic_cast<SampleClip*>(m_clip))
+					{
+						sClip->beginStretchRequestBatch();
+					}
+				}
+
 				setInitialPos(pos);
 				setInitialOffsets();
 
@@ -898,6 +918,17 @@ void ClipView::mouseMoveEvent( QMouseEvent * me )
 
 void ClipView::mouseReleaseEvent( QMouseEvent * me )
 {
+	// The mouse release is the commit point for audio processing: whatever the
+	// drag did to the clip's stretch parameters is turned into exactly one
+	// stretch request here, never during the drag (see
+	// SampleClip::beginStretchRequestBatch). Closing the batch is unconditional
+	// so a batch can never be left open on a clip, whichever action the release
+	// ends up taking.
+	if (auto* sClip = dynamic_cast<SampleClip*>(m_clip))
+	{
+		sClip->endStretchRequestBatch();
+	}
+
 	// If the Action::CopySelection was chosen as the action due to mouse movement,
 	// it will have been cleared.  At this point Toggle is the desired action.
 	// An active StringPairDrag will prevent this method from being called,

@@ -142,18 +142,41 @@ SampleClipView::WaveformPlan SampleClipView::waveformGeometry(const SampleClip& 
 	// the waveform right and a left trim shifts it left.
 	const double frameZeroX = static_cast<double>(clip.startTimeOffset()) * pxPerTick - xOffset;
 
-	if (!stretchMode)
+	// Should the buffer be drawn from edge to edge of the clip, or at the
+	// source's natural scale inside it?
+	//
+	// Source-space drawing is only honest while one pixel of the clip is worth
+	// one pixel of source audio -- i.e. while the clip's audio still maps 1:1
+	// onto the source. That is the case for an ordinary trim or extend, which
+	// never touches the ratio, and it is what makes resizing a plain clip leave
+	// the waveform alone.
+	//
+	// A stretch ratio away from 1.0 breaks that assumption, and *which* control
+	// produced the ratio does not matter to the picture:
+	//   * Pitch mode Stretch: the pitch-preserving buffer is what plays, and it
+	//     is as long as the clip, so it spans it.
+	//   * Pitch mode Resample with a ratio: the source is consumed at ratio
+	//     speed and therefore fills the clip. Drawing it at natural scale here
+	//     is the regression the user reported -- disabling the toolbar's Stretch
+	//     button made the waveform jump back to its pre-stretch length even
+	//     though the audio still played stretched across the whole clip.
+	// The toolbar's Stretch edit mode and the context-menu Pitch mode stay
+	// independent controls: this reads the *clip's* state, not the toolbar, and
+	// `waveformBuffer()` still decides the buffer.
+	const auto spansClip = stretchMode
+		|| (clip.pitchMode() == SampleClip::PitchMode::Resample && clip.isStretched());
+
+	if (!spansClip)
 	{
-		// Toolbar off: pure source-space drawing. The buffer being played is
-		// the original source, drawn at its natural scale, so resizing the
-		// clip -- longer *or* shorter -- can never change how many pixels one
-		// cycle of the waveform occupies. Only the retained source range is
-		// drawn, so a trim visibly removes audio instead of compressing it.
-		// The clip's length and stretch ratio are deliberately not consulted:
-		// deriving the drawn range from them is what made a shortened clip
-		// draw a fraction of the source across the full natural width, i.e.
-		// a waveform that visibly slowed down as the clip was dragged
-		// shorter.
+		// Source-space drawing: the buffer being played is the original source,
+		// drawn at its natural scale, so resizing the clip -- longer *or* shorter
+		// -- can never change how many pixels one cycle of the waveform occupies.
+		// Only the retained source range is drawn, so a trim visibly removes audio
+		// instead of compressing it.
+		// The clip's length is deliberately not consulted: deriving the drawn
+		// range from it is what made a shortened clip draw a fraction of the
+		// source across the full natural width, i.e. a waveform that visibly
+		// slowed down as the clip was dragged shorter.
 		const double first = std::clamp(static_cast<double>(clip.sourceStartFrame()), 0.0, size);
 		const double last = std::clamp(static_cast<double>(clip.sourceEndFrame()), first, size);
 		const double range = last - first;

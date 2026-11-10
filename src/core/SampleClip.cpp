@@ -468,6 +468,22 @@ void SampleClip::refreshStretchBuffer()
 	// earlier request are stale by the time they arrive, or already superseded
 	// in the manager's queue.
 	++m_stretchGeneration;
+
+	// During a clip-edge drag the parameters change on every mouse-move. Queue
+	// one job per move and the worker starts computing -- and the progress
+	// dialog pops up -- before the user has let go of the button. Record that
+	// work is owed instead; `endStretchRequestBatch` issues the single request
+	// for the parameters the drag ended on. The generation was still bumped
+	// above, so any job queued before the batch began is already unable to
+	// commit its result.
+	if (m_batchStretchRequests)
+	{
+		m_stretchRequestOwed = true;
+		StretchDebug::instance().logEarlyReturn(clipId, "refreshStretchBuffer",
+			"drag batch open - request deferred to mouse release");
+		return;
+	}
+
 	StretchDebug::instance().logStretchRequestQueued(
 		clipId,
 		m_stretchGeneration,
@@ -487,6 +503,31 @@ void SampleClip::refreshStretchBuffer()
 		buffer->sampleRate(),
 		engineRate,
 		m_stretchRatio);
+}
+
+void SampleClip::beginStretchRequestBatch()
+{
+	// See the header: a drag edits the clip live but must not start a
+	// computation, or the progress dialog appears while the button is held.
+	m_batchStretchRequests = true;
+	m_stretchRequestOwed = false;
+	StretchDebug::instance().logEarlyReturn(makeClipId(this), "refreshStretchBuffer",
+		"drag batch opened");
+}
+
+void SampleClip::endStretchRequestBatch()
+{
+	if (!m_batchStretchRequests) { return; }
+	m_batchStretchRequests = false;
+	const auto owed = m_stretchRequestOwed;
+	m_stretchRequestOwed = false;
+	StretchDebug::instance().logEarlyReturn(makeClipId(this), "refreshStretchBuffer",
+		owed ? "drag batch closed - issuing the one owed request"
+			 : "drag batch closed - nothing owed");
+	// Re-derive from the parameters the drag ended on. `refreshStretchBuffer`
+	// still checks the cache first, so a drag that ended back on parameters
+	// whose stretched buffer is already cached asks for nothing.
+	if (owed) { refreshStretchBuffer(); }
 }
 
 void SampleClip::applyStretchResult(uint64_t generation, uint64_t key,
