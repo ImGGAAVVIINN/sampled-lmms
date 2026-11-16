@@ -822,10 +822,6 @@ void SampleClip::trimToLength(const TimePos& newLength)
 		sourceStartFrame(), bufferSize);
 
 	setAutoResize(false);
-	// In Stretch mode the cached buffer was computed from the range that just
-	// changed, so it no longer matches; ask for the one the narrowed range
-	// calls for. A cheap no-op in every other case.
-	refreshStretchBuffer();
 	// The retained source range is part of what the waveform draws, so the view
 	// has to redraw even in Resample mode, where nothing else changed.
 	emit sampleChanged();

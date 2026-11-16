@@ -66,7 +66,8 @@ public:
         BufferStateChange,
         Error,
         EarlyReturn,
-        CacheInvalidation
+        CacheInvalidation,
+        WaveformPlan
     };
 
     struct Event
@@ -139,6 +140,7 @@ public:
     void logError(const std::string& clipId, const std::string& error);
     void logEarlyReturn(const std::string& clipId, const std::string& location, const std::string& reason);
     void logCacheInvalidation(const std::string& clipId, const std::string& reason);
+    void logWaveformPlan(const std::string& clipId, bool toolbarStretch, bool drawStretched, bool spansClip, double ratio);
 
 private:
     StretchDebug();

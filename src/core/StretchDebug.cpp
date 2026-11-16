@@ -173,6 +173,7 @@ void StretchDebug::writeEvent(const Event& event)
         case EventType::Error: typeStr = "Error"; break;
         case EventType::EarlyReturn: typeStr = "EarlyReturn"; break;
         case EventType::CacheInvalidation: typeStr = "CacheInvalidation"; break;
+        case EventType::WaveformPlan: typeStr = "WaveformPlan"; break;
     }
 
     // Build structured data string
@@ -448,6 +449,21 @@ void StretchDebug::logCacheInvalidation(const std::string& clipId, const std::st
     e.threadId = std::this_thread::get_id();
     e.clipId = clipId;
     e.message = "Cache invalidated: " + reason;
+    log(e);
+}
+
+void StretchDebug::logWaveformPlan(const std::string& clipId, bool toolbarStretch, bool drawStretched, bool spansClip, double ratio)
+{
+    Event e;
+    e.type = EventType::WaveformPlan;
+    e.timestamp = std::chrono::steady_clock::now();
+    e.threadId = std::this_thread::get_id();
+    e.clipId = clipId;
+    e.message = "waveformPlan decision";
+    e.planHasStretchedSource = toolbarStretch;
+    e.originalFrames = drawStretched ? 1 : 0;
+    e.clipLength = spansClip ? 1 : 0;
+    e.stretchRatio = ratio;
     log(e);
 }
 

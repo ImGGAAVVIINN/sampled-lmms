@@ -39,6 +39,7 @@
 #include "PathUtil.h"
 #include "SampleClip.h"
 #include "SampleThumbnail.h"
+#include "StretchDebug.h"
 #include "Song.h"
 #include "SongEditor.h"
 #include "StringPairDrag.h"
@@ -226,17 +227,19 @@ SampleClipView::WaveformPlan SampleClipView::waveformPlan()
 	const float den = Engine::getSong()->getTimeSigModel().getDenominator();
 	const float ticksPerBar = DefaultTicksPerBar * nom / den;
 
-	// The waveform is drawn stretched across the clip's full width whenever
-	// the clip's Pitch mode is Stretch and a stretched buffer is available --
-	// not only when the toolbar's Stretch edit button happens to be on. The
-	// toolbar controls editing operations only; toggling it off must not
-	// revert the visual to the pre-stretch source (see waveformBuffer()).
+	// The waveform is drawn stretched across the clip's full width only when
+	// the toolbar's Stretch edit button is on. Toggling it off must revert the
+	// visual to the pre-stretch source -- the toolbar controls editing
+	// operations, and the clip's Pitch mode only decides how a stretch is
+	// rendered (see waveformBuffer()).
 	const TrackContainerView* tcv =
 		m_trackView ? m_trackView->trackContainerView() : nullptr;
 	const auto toolbarStretch = tcv && tcv->stretchMode();
-	const auto drawStretched = toolbarStretch ||
-		(m_clip->pitchMode() == SampleClip::PitchMode::Stretch &&
-		 m_clip->stretchedSample() != nullptr);
+	const auto drawStretched = toolbarStretch;
+
+	StretchDebug::instance().logWaveformPlan(
+		makeClipId(m_clip), static_cast<bool>(toolbarStretch), drawStretched,
+		m_clip->isStretched(), m_clip->stretchRatio());
 
 	return waveformGeometry(*m_clip, *waveformBuffer(), ppb / ticksPerBar,
 		drawStretched, m_paintPixmapXPosition);
