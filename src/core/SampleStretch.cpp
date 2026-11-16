@@ -264,6 +264,10 @@ struct SampleStretchManager::Impl
 	bool computing = false;
 	bool quit = false;
 	int jobsCompleted = 0;
+	/// Monotonic count of times the pitch-preserving algorithm has ACTUALLY
+	/// run on the worker thread. Requests queued, cache hits and discarded
+	/// results do not increment this -- only real executions do.
+	uint64_t executionsCompleted = 0;
 	std::unique_ptr<SampleStretchManager::Worker> worker;
 };
 
@@ -328,6 +332,22 @@ void SampleStretchManager::Worker::run()
 		const auto locker = QMutexLocker{&m_impl->mutex};
 		m_impl->computing = false;
 		++m_impl->jobsCompleted;
+		// The algorithm has now actually executed (whether or not it produced
+		// a usable buffer). This -- not the request, not the queueing, not a
+		// cache lookup -- is the execution event the instrumentation counts.
+		++m_impl->executionsCompleted;
+		if (job.receiver)
+		{
+			QObject* execParent = job.receiver->parent();
+			if (execParent)
+			{
+				StretchDebug::instance().logStretchExecuted(
+					makeClipId(execParent), job.generation, job.key,
+					job.endFrame - job.startFrame,
+					stretched ? static_cast<int>(stretched->sampleSize()) : 0,
+					m_impl->executionsCompleted);
+			}
+		}
 		// Null if ~SampleStretchResult() ran while this was being computed.
 		auto* receiver = m_impl->active.receiver;
 		m_impl->active = QueuedJob{};

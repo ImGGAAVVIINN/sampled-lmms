@@ -174,6 +174,8 @@ void StretchDebug::writeEvent(const Event& event)
         case EventType::EarlyReturn: typeStr = "EarlyReturn"; break;
         case EventType::CacheInvalidation: typeStr = "CacheInvalidation"; break;
         case EventType::WaveformPlan: typeStr = "WaveformPlan"; break;
+        case EventType::StretchExecuted: typeStr = "StretchExecuted"; break;
+        case EventType::WaveformRendered: typeStr = "WaveformRendered"; break;
     }
 
     // Build structured data string
@@ -206,6 +208,15 @@ void StretchDebug::writeEvent(const Event& event)
     if (event.handleTotalFrames >= 0) structured << " handleTotal=" << event.handleTotalFrames;
     if (event.handlePlaybackRatio != 0.0) structured << " handleRatio=" << event.handlePlaybackRatio;
     if (event.handleConsumedFrames >= 0) structured << " handleConsumed=" << event.handleConsumedFrames;
+    if (event.executionCount) structured << " execCount=" << event.executionCount;
+    if (event.execInputFrames) structured << " execIn=" << event.execInputFrames;
+    if (event.execOutputFrames) structured << " execOut=" << event.execOutputFrames;
+    if (event.bufferId) structured << " bufferId=" << event.bufferId;
+    if (event.bufferSampleCount) structured << " bufferFrames=" << event.bufferSampleCount;
+    structured << " x=" << event.renderedX
+               << " width=" << event.renderedWidth
+               << " sampleStart=" << event.renderedSampleStart
+               << " sampleEnd=" << event.renderedSampleEnd;
 
     std::fprintf(m_logFile, "%s | %s | %s | %s | %s | %s\n",
         ts.c_str(), threadId.c_str(), typeStr, event.clipId.c_str(),
@@ -452,7 +463,7 @@ void StretchDebug::logCacheInvalidation(const std::string& clipId, const std::st
     log(e);
 }
 
-void StretchDebug::logWaveformPlan(const std::string& clipId, bool toolbarStretch, bool drawStretched, bool spansClip, double ratio)
+void StretchDebug::logWaveformPlan(const std::string& clipId, bool toolbarStretch, bool pitchModeIsStretch, bool hasStretchedBuffer, bool pitchModeIsResample, bool clipIsStretched, bool spansClip, double ratio)
 {
     Event e;
     e.type = EventType::WaveformPlan;
@@ -460,10 +471,51 @@ void StretchDebug::logWaveformPlan(const std::string& clipId, bool toolbarStretc
     e.threadId = std::this_thread::get_id();
     e.clipId = clipId;
     e.message = "waveformPlan decision";
-    e.planHasStretchedSource = toolbarStretch;
-    e.originalFrames = drawStretched ? 1 : 0;
-    e.clipLength = spansClip ? 1 : 0;
+    // Three-state logging
+    e.planHasStretchedSource = toolbarStretch;  // toolbar editing state
+    e.originalFrames = pitchModeIsStretch ? 1 : 0;  // audio processing state (pitch mode)
+    e.clipLength = hasStretchedBuffer ? 1 : 0;  // display state (buffer ready)
     e.stretchRatio = ratio;
+    // Additional structured fields for the three states
+    e.pitchMode = pitchModeIsStretch ? 1 : (pitchModeIsResample ? 0 : -1);
+    e.planStartFrame = spansClip ? 1 : 0;  // display state (spans clip)
+    e.planEndFrame = clipIsStretched ? 1 : 0;  // audio processing state (clip has ratio)
+    log(e);
+}
+
+void StretchDebug::logStretchExecuted(const std::string& clipId, uint64_t generation,
+    uint64_t key, int inputFrames, int outputFrames, uint64_t executionCount)
+{
+    Event e;
+    e.type = EventType::StretchExecuted;
+    e.timestamp = std::chrono::steady_clock::now();
+    e.threadId = std::this_thread::get_id();
+    e.clipId = clipId;
+    e.message = "Stretch algorithm EXECUTED";
+    e.generation = generation;
+    e.key = key;
+    e.execInputFrames = inputFrames;
+    e.execOutputFrames = outputFrames;
+    e.executionCount = executionCount;
+    log(e);
+}
+
+void StretchDebug::logWaveformRendered(const std::string& clipId, uint64_t bufferId,
+    int bufferSampleCount, double x, double width, double sampleStart,
+    double sampleEnd, const std::string& reason)
+{
+    Event e;
+    e.type = EventType::WaveformRendered;
+    e.timestamp = std::chrono::steady_clock::now();
+    e.threadId = std::this_thread::get_id();
+    e.clipId = clipId;
+    e.message = "Waveform rendered: " + reason;
+    e.bufferId = bufferId;
+    e.bufferSampleCount = bufferSampleCount;
+    e.renderedX = x;
+    e.renderedWidth = width;
+    e.renderedSampleStart = sampleStart;
+    e.renderedSampleEnd = sampleEnd;
     log(e);
 }
 

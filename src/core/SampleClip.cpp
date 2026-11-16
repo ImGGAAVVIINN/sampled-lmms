@@ -604,9 +604,14 @@ void SampleClip::setPitchMode(PitchMode mode)
 	const auto clipId = makeClipId(this);
 	StretchDebug::instance().logPitchModeChanged(clipId, static_cast<int>(m_pitchMode), static_cast<int>(mode));
 	m_pitchMode = mode;
-	// The mode switch never changes the clip's length or the source range; it
-	// only changes how the selected audio is rendered for the current ratio.
-	refreshStretchBuffer();
+	// The mode switch never changes the clip's length or the source range, and
+	// it is never a stretch trigger: selecting a pitch method must not start
+	// audio processing. The pitch-preserving algorithm runs only for an
+	// explicit stretch operation (stretchToLength / stretchFromStart). Any
+	// cached buffer stays exactly as it is; whether it is still valid is
+	// decided by currentStretchKey() when playback or an explicit stretch asks.
+	StretchDebug::instance().logEarlyReturn(clipId, "setPitchMode",
+		"pitch mode selection never schedules stretch processing");
 	emit sampleChanged();
 	Engine::getSong()->setModified();
 }
@@ -826,6 +831,16 @@ void SampleClip::trimToLength(const TimePos& newLength)
 	// has to redraw even in Resample mode, where nothing else changed.
 	emit sampleChanged();
 	Engine::getSong()->setModified();
+
+	// Deliberately NO refreshStretchBuffer() here. A trim is an ordinary edit,
+	// never a stretch trigger: the pitch-preserving algorithm may only run for
+	// an explicit stretch operation (stretchToLength / stretchFromStart). The
+	// stale stretched buffer simply stops matching the new source range (its
+	// cache key no longer matches), so playback falls back to the pitch-correct
+	// source path and the display keeps the mapping it already had. The next
+	// explicit stretch recomputes everything from the current parameters.
+	StretchDebug::instance().logEarlyReturn(clipId, "trimToLength",
+		"trim never schedules stretch processing");
 }
 
 void SampleClip::trimFromStart(const TimePos& newPos)

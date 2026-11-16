@@ -45,12 +45,28 @@ class SampleClipView : public ClipView
 
 public:
 	SampleClipView( SampleClip * _clip, TrackView * _tv );
-	~SampleClipView() override = default;
+	// Defined out of line: m_displayMappingOwner holds a shared_ptr to an
+	// incomplete type here, and destroying it requires the complete type.
+	~SampleClipView() override;
 
 public slots:
 	void updateSample();
 	void reverseSample();
 	void setAutomationGhost();
+
+	//! @brief React to the toolbar's Stretch edit-mode toggle.
+	//!
+	//! This is the ONLY place the toolbar toggle is allowed to influence the
+	//! waveform, and all it does is switch the view between two display
+	//! mappings without ever re-deriving either of them:
+	//!
+	//! - ON -> OFF: the mapping that is on screen right now is frozen
+	//!   byte-for-byte (same buffer, same source window, same width in
+	//!   timeline ticks). No thumbnail rebuild, no re-derivation from the
+	//!   clip's live state, no audio processing.
+	//! - OFF -> ON: the frozen mapping is discarded and the waveform is
+	//!   recomputed to span the clip, which is what the toolbar promises.
+	void onEditModeChanged();
 
 public:
 	//! @brief Which sample data to draw and where to draw it.
@@ -90,6 +106,38 @@ public:
 	static WaveformPlan waveformGeometry(const SampleClip& clip, const Sample& buffer,
 		double pxPerTick, bool stretchMode, double xOffset);
 
+	//! @brief The display mapping the waveform is currently drawn with.
+	//!
+	//! This is the state that makes "toolbar OFF freezes the waveform" true:
+	//! it records which buffer is drawn, which fraction of it is drawn, and
+	//! how wide the drawing is *in timeline ticks* (so zooming rescales it
+	//! proportionally without re-deriving anything from the clip's live
+	//! model state).
+	//!
+	//! Ownership rules (see STRETCH_CALL_PATH_AUDIT.md):
+	//! - Written only by an explicit stretch commit (sampleChanged while the
+	//!   toolbar is ON), by source-space edits while the toolbar is OFF, and
+	//!   by the OFF -> ON toolbar transition.
+	//! - The ON -> OFF toolbar transition freezes it byte-for-byte.
+	//! - Rendering only reads it.
+	struct DisplayMapping
+	{
+		//! Buffer the waveform is drawn from. The view keeps the underlying
+		//! SampleBuffer alive via m_displayMappingOwner while this is set.
+		const Sample* buffer = nullptr;
+		//! Drawn source window as fractions of that buffer.
+		float sampleStart = 0.0f;
+		float sampleEnd = 1.0f;
+		//! Drawn width in timeline ticks (pixels / pxPerTick at capture time).
+		double widthInTicks = 0.0;
+		//! Drawn left edge in timeline ticks relative to the clip's left edge
+		//! (pixels / pxPerTick at capture time, scroll offset removed).
+		double xInTicks = 0.0;
+		//! True once a mapping has been captured; false means "no frozen
+		//! mapping, derive the waveform from the clip's live state".
+		bool valid = false;
+	};
+
 
 
 protected:
@@ -116,6 +164,43 @@ public:
 	SampleThumbnail m_sampleThumbnail;
 	QPixmap m_paintPixmap;
 	long m_paintPixmapXPosition;
+
+private:
+	//! Capture the mapping that is on screen right now into m_displayMapping.
+	//! Used by the ON -> OFF toolbar transition (freeze) and by updateSample
+	//! (keep the frozen mapping in step with legitimate edits). With
+	//! @a preToggleStretch the spans-clip mapping is captured from the
+	//! pre-toggle state, as if the toolbar were still ON.
+	void captureDisplayMapping(bool preToggleStretch = false);
+
+	//! The frozen-mapping plan: the captured mapping rescaled for the
+	//! current zoom and scroll, nothing else. Never consults the clip's
+	//! live model state.
+	WaveformPlan frozenPlan();
+
+	//! The derived plan: re-derives the waveform from the clip's live state
+	//! (spans-clip when the toolbar is ON, source space otherwise). This is
+	//! the pre-existing waveformGeometry path.
+	WaveformPlan derivePlan();
+
+	//! Toolbar OFF only: move the frozen source window to the clip's current
+	//! retained source range, at the frozen natural scale. Called for
+	//! source-space edits (trims) of the clip's own sample. Never rescales
+	//! the drawing and never touches a frozen stretched buffer's mapping.
+	void refreshSourceSpaceMapping();
+
+	//! Log the geometry paintEvent is actually drawing (buffer identity,
+	//! sample count, drawn rectangle, source window and the reason the
+	//! mapping is what it is).
+	void logRenderedWaveform(const WaveformPlan& plan, const char* reason);
+
+	//! The frozen display mapping. See the DisplayMapping docs for who may
+	//! write it. m_displayMappingOwner keeps a mapped stretched Sample alive
+	//! so the raw pointer can never dangle even if the clip later replaces
+	//! its stretched buffer. The clip's own m_sample needs no owner: the view
+	//! references it through m_clip, which outlives the mapping.
+	DisplayMapping m_displayMapping;
+	std::shared_ptr<const Sample> m_displayMappingOwner;
 } ;
 
 

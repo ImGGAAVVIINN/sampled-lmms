@@ -66,16 +66,20 @@ SampleClipView::SampleClipView( SampleClip * _clip, TrackView * _tv ) :
 
 	// The waveform geometry depends on the toolbar's Stretch edit mode, which
 	// is pure view state: toggling it changes no model, so no model signal
-	// would ever reach this view. Listen for the edit-mode change directly so
-	// the waveform is rebuilt and repainted the moment the button is toggled.
+	// would ever reach this view. Listen for the edit-mode change directly.
+	// The handler is the ONLY code the toolbar toggle may run, and it never
+	// re-derives the waveform from the clip's live state on an ON -> OFF
+	// transition -- it freezes what is on screen (see onEditModeChanged).
 	if (auto* songEditor = getGUI() ? getGUI()->songEditor() : nullptr)
 	{
 		connect(songEditor->m_editor, &SongEditor::editModeChanged,
-			this, &SampleClipView::updateSample);
+			this, &SampleClipView::onEditModeChanged);
 	}
 
 	setStyle( QApplication::style() );
 }
+
+SampleClipView::~SampleClipView() = default;
 
 void SampleClipView::updateSample()
 {
@@ -83,9 +87,36 @@ void SampleClipView::updateSample()
 
 	// The thumbnail caches peaks taken from one particular buffer, so it has
 	// to be rebuilt from exactly the buffer that `paintEvent` is about to
-	// draw -- the stretched buffer when the waveform is shown stretched, the
-	// original otherwise. Sharing `waveformBuffer()` keeps the two in step.
+	// draw -- the frozen buffer when the toolbar is OFF, the stretched buffer
+	// when the waveform is shown stretched, the original otherwise. Sharing
+	// `waveformBuffer()` keeps the two in step.
 	m_sampleThumbnail = SampleThumbnail{*waveformBuffer()};
+
+	// Keep the display mapping in step with legitimate edits only:
+	// - Toolbar ON: an explicit stretch commit (or any edit that changed the
+	//   clip's audible content) re-derives the spans-clip mapping, so the
+	//   next ON -> OFF freeze captures the freshly stretched waveform.
+	// - Toolbar OFF: only source-space edits (trims) may move the drawn
+	//   source window, and only at the frozen natural scale. The buffer and
+	//   the width in ticks are preserved; nothing is re-derived from the
+	//   clip's length or pitch mode.
+	// A toolbar toggle never reaches this path: onEditModeChanged handles it
+	// and deliberately does not call updateSample on ON -> OFF.
+	const TrackContainerView* tcv =
+		m_trackView ? m_trackView->trackContainerView() : nullptr;
+	const auto toolbarStretch = tcv && tcv->stretchMode();
+	if (toolbarStretch || !m_displayMapping.valid)
+	{
+		captureDisplayMapping();
+	}
+	else if (m_displayMapping.buffer == &m_clip->m_sample)
+	{
+		// Only source-space edits of the clip's own sample may move the
+		// frozen source window. Edits of a frozen stretched buffer's clip
+		// (e.g. a toolbar-off trim after a stretch) must leave the frozen
+		// mapping completely untouched.
+		refreshSourceSpaceMapping();
+	}
 
 	// set tooltip to filename so that user can see what sample this
 	// sample-clip contains
@@ -99,18 +130,28 @@ void SampleClipView::updateSample()
 
 const Sample* SampleClipView::waveformBuffer() const
 {
-	// The waveform must show the buffer that is actually played, which is
-	// the stretched buffer whenever the clip's Pitch mode is Stretch -- not
-	// only when the toolbar's Stretch edit button happens to be on. Toggling
-	// the toolbar off must not revert the visual to the pre-stretch source,
-	// because the clip's audio state (pitch mode + stretch ratio) has not
-	// changed. The toolbar controls editing operations only.
+	// With the toolbar OFF and a frozen mapping, the waveform is drawn from
+	// exactly the buffer it was drawn from when the mapping was captured.
+	// The clip's pitch mode and the existence of a stretched buffer are
+	// deliberately NOT consulted here: neither may change what is displayed
+	// merely because it changed (STRETCH_CALL_PATH_AUDIT.md, flaw 3). A
+	// previously generated stretched buffer may remain available for
+	// playback, but its existence must not force the waveform to change.
+	const TrackContainerView* tcv =
+		m_trackView ? m_trackView->trackContainerView() : nullptr;
+	const auto toolbarStretch = tcv && tcv->stretchMode();
+	if (!toolbarStretch && m_displayMapping.valid)
+	{
+		return m_displayMapping.buffer;
+	}
+
+	// Toolbar ON (or the mapping is not captured yet): the spans-clip display
+	// follows the buffer the clip actually plays -- the stretched buffer once
+	// an explicitly requested stretch has landed, otherwise the source. This
+	// branch is unreachable while the toolbar is OFF with a frozen mapping,
+	// so pitch mode alone can never select the stretched buffer for display.
 	if (m_clip->pitchMode() == SampleClip::PitchMode::Stretch)
 	{
-		// `stretchedSample()` only returns a buffer while it still matches
-		// the clip's current parameters; nullptr means the async result has
-		// not landed yet, in which case fall back to the original source
-		// rather than showing a stale or wrong buffer.
 		if (const auto stretched = m_clip->stretchedSample())
 		{
 			return stretched.get();
@@ -143,29 +184,12 @@ SampleClipView::WaveformPlan SampleClipView::waveformGeometry(const SampleClip& 
 	// the waveform right and a left trim shifts it left.
 	const double frameZeroX = static_cast<double>(clip.startTimeOffset()) * pxPerTick - xOffset;
 
-	// Should the buffer be drawn from edge to edge of the clip, or at the
-	// source's natural scale inside it?
-	//
-	// Source-space drawing is only honest while one pixel of the clip is worth
-	// one pixel of source audio -- i.e. while the clip's audio still maps 1:1
-	// onto the source. That is the case for an ordinary trim or extend, which
-	// never touches the ratio, and it is what makes resizing a plain clip leave
-	// the waveform alone.
-	//
-	// A stretch ratio away from 1.0 breaks that assumption, and *which* control
-	// produced the ratio does not matter to the picture:
-	//   * Pitch mode Stretch: the pitch-preserving buffer is what plays, and it
-	//     is as long as the clip, so it spans it.
-	//   * Pitch mode Resample with a ratio: the source is consumed at ratio
-	//     speed and therefore fills the clip. Drawing it at natural scale here
-	//     is the regression the user reported -- disabling the toolbar's Stretch
-	//     button made the waveform jump back to its pre-stretch length even
-	//     though the audio still played stretched across the whole clip.
-	// The toolbar's Stretch edit mode and the context-menu Pitch mode stay
-	// independent controls: this reads the *clip's* state, not the toolbar, and
-	// `waveformBuffer()` still decides the buffer.
-	const auto spansClip = stretchMode
-		|| (clip.pitchMode() == SampleClip::PitchMode::Resample && clip.isStretched());
+	// The stretchMode parameter comes from waveformPlan() and reflects ONLY
+	// the toolbar Stretch state. It must not be overridden by the clip's
+	// pitch mode or stretch ratio. Audio processing and waveform rendering
+	// are independent: the toolbar controls the drawing geometry, the pitch
+	// mode controls the audio processing.
+	const auto spansClip = stretchMode;
 
 	if (!spansClip)
 	{
@@ -212,6 +236,49 @@ SampleClipView::WaveformPlan SampleClipView::waveformGeometry(const SampleClip& 
 
 SampleClipView::WaveformPlan SampleClipView::waveformPlan()
 {
+	const TrackContainerView* tcv =
+		m_trackView ? m_trackView->trackContainerView() : nullptr;
+	const auto toolbarStretch = tcv && tcv->stretchMode();
+
+	// Toolbar OFF with a frozen mapping: draw exactly the frozen mapping,
+	// rescaled only for zoom and scroll. The clip's live length, pitch
+	// mode, stretch ratio and stretched buffer are deliberately not
+	// consulted -- resizing the clip changes its boundary, never the
+	// waveform's existing audio-to-display mapping.
+	if (!toolbarStretch && m_displayMapping.valid) { return frozenPlan(); }
+
+	return derivePlan();
+}
+
+
+
+SampleClipView::WaveformPlan SampleClipView::frozenPlan()
+{
+	WaveformPlan plan;
+	const float ppb = fixedClips()
+		? (parentWidget()->width() - 2 * BORDER_WIDTH) / (float) m_clip->length().getBar()
+		: pixelsPerBar();
+	const float nom = Engine::getSong()->getTimeSigModel().getNumerator();
+	const float den = Engine::getSong()->getTimeSigModel().getDenominator();
+	const float ticksPerBar = DefaultTicksPerBar * nom / den;
+
+	plan.buffer = m_displayMapping.buffer;
+	plan.sampleStart = m_displayMapping.sampleStart;
+	plan.sampleEnd = m_displayMapping.sampleEnd;
+	// The mapping is stored in ticks; waveformGeometry works in pixels per
+	// tick, so rescale with ppb / ticksPerBar -- the same conversion
+	// derivePlan() feeds waveformGeometry(). Zoom changes ppb and nothing
+	// else; the mapping itself is never recomputed here.
+	const float pxPerTick = ppb / ticksPerBar;
+	plan.width = static_cast<float>(m_displayMapping.widthInTicks * pxPerTick);
+	plan.x = static_cast<float>(m_displayMapping.xInTicks * pxPerTick - m_paintPixmapXPosition);
+	return plan;
+}
+
+
+
+SampleClipView::WaveformPlan SampleClipView::derivePlan()
+{
 	const auto& original = m_clip->m_sample;
 	if (original.sampleSize() <= 0)
 	{
@@ -227,22 +294,177 @@ SampleClipView::WaveformPlan SampleClipView::waveformPlan()
 	const float den = Engine::getSong()->getTimeSigModel().getDenominator();
 	const float ticksPerBar = DefaultTicksPerBar * nom / den;
 
-	// The waveform is drawn stretched across the clip's full width only when
-	// the toolbar's Stretch edit button is on. Toggling it off must revert the
-	// visual to the pre-stretch source -- the toolbar controls editing
-	// operations, and the clip's Pitch mode only decides how a stretch is
-	// rendered (see waveformBuffer()).
+	// Waveform rendering obeys the toolbar Stretch state ONLY.
+	// The toolbar Stretch button controls whether the waveform is drawn
+	// stretched across the clip (ON) or at natural source scale (OFF).
+	// Audio processing (pitch mode Stretch/Resample) is independent and
+	// must not affect the waveform geometry.
 	const TrackContainerView* tcv =
 		m_trackView ? m_trackView->trackContainerView() : nullptr;
 	const auto toolbarStretch = tcv && tcv->stretchMode();
-	const auto drawStretched = toolbarStretch;
+	const auto pitchModeIsStretch = m_clip->pitchMode() == SampleClip::PitchMode::Stretch;
+	const auto hasStretchedBuffer = pitchModeIsStretch && m_clip->stretchedSample() != nullptr;
+	const auto pitchModeIsResample = m_clip->pitchMode() == SampleClip::PitchMode::Resample;
+	const auto clipIsStretched = m_clip->isStretched();
 
+	// Display state: waveform spans clip ONLY when toolbar Stretch is ON
+	const auto spansClip = toolbarStretch;
+
+	// Enhanced diagnostic logging with all three states
 	StretchDebug::instance().logWaveformPlan(
-		makeClipId(m_clip), static_cast<bool>(toolbarStretch), drawStretched,
-		m_clip->isStretched(), m_clip->stretchRatio());
+		makeClipId(m_clip),
+		static_cast<bool>(toolbarStretch),
+		static_cast<bool>(pitchModeIsStretch),
+		static_cast<bool>(hasStretchedBuffer),
+		static_cast<bool>(pitchModeIsResample),
+		static_cast<bool>(clipIsStretched),
+		static_cast<bool>(spansClip),
+		m_clip->stretchRatio());
 
 	return waveformGeometry(*m_clip, *waveformBuffer(), ppb / ticksPerBar,
-		drawStretched, m_paintPixmapXPosition);
+		spansClip, m_paintPixmapXPosition);
+}
+
+
+
+void SampleClipView::onEditModeChanged()
+{
+	const TrackContainerView* tcv =
+		m_trackView ? m_trackView->trackContainerView() : nullptr;
+	const auto toolbarStretch = tcv && tcv->stretchMode();
+
+	if (toolbarStretch)
+	{
+		// OFF -> ON: the toolbar promises that resizing now stretches the
+		// waveform, so the frozen mapping is discarded and the waveform is
+		// recomputed to span the clip. This is the only toolbar transition
+		// that re-derives the mapping.
+		m_displayMapping = DisplayMapping{};
+		m_displayMappingOwner.reset();
+		updateSample();
+		return;
+	}
+
+	// ON -> OFF: the mode has already changed, so derivePlan() would now
+	// produce the source-space mapping. Freeze the mapping that was on
+	// screen immediately before the toggle instead: capture it from the
+	// pre-toggle state (as if the toolbar were still ON), byte-for-byte.
+	// No thumbnail rebuild, no re-derivation from the clip's live state,
+	// no audio processing, no reset to the pre-stretch source. The
+	// waveform must remain exactly as it was immediately before the
+	// toggle; only a repaint with the identical mapping happens.
+	captureDisplayMapping(true);
+	update();
+}
+
+
+
+void SampleClipView::captureDisplayMapping(bool preToggleStretch)
+{
+	// Capture the mapping that is on screen right now. Width and x are
+	// stored in timeline ticks so that zooming (which legitimately changes
+	// pixel geometry) rescales the frozen drawing proportionally without
+	// re-deriving anything from the clip's live model state.
+	//
+	// preToggleStretch: the ON -> OFF toolbar transition calls this AFTER
+	// the mode has already changed, so derivePlan() would produce the
+	// source-space mapping. Passing true captures the spans-clip mapping
+	// from the pre-toggle state instead -- exactly what was on screen
+	// immediately before the toggle.
+	WaveformPlan current;
+	if (preToggleStretch)
+	{
+		const float ppb = fixedClips()
+			? (parentWidget()->width() - 2 * BORDER_WIDTH) / (float) m_clip->length().getBar()
+			: pixelsPerBar();
+		const float nom = Engine::getSong()->getTimeSigModel().getNumerator();
+		const float den = Engine::getSong()->getTimeSigModel().getDenominator();
+		const float ticksPerBar = DefaultTicksPerBar * nom / den;
+		const double pxPerTick = ppb / ticksPerBar;
+
+		const auto stretched = m_clip->stretchedSample();
+		const Sample& drawn = stretched ? *stretched : m_clip->m_sample;
+		current.buffer = &drawn;
+		// Toolbar-on geometry (see waveformGeometry's spansClip branch): the
+		// buffer is drawn from edge to edge of the clip.
+		current.x = static_cast<float>(-m_paintPixmapXPosition);
+		current.width = static_cast<float>(static_cast<double>(m_clip->length()) * pxPerTick);
+		const auto mapping = m_clip->waveformMapping(drawn);
+		current.sampleStart = mapping.sampleStart;
+		current.sampleEnd = mapping.sampleEnd;
+	}
+	else
+	{
+		current = derivePlan();
+	}
+
+	const float ppb = fixedClips()
+		? (parentWidget()->width() - 2 * BORDER_WIDTH) / (float) m_clip->length().getBar()
+		: pixelsPerBar();
+	const float nom = Engine::getSong()->getTimeSigModel().getNumerator();
+	const float den = Engine::getSong()->getTimeSigModel().getDenominator();
+	const float ticksPerBar = DefaultTicksPerBar * nom / den;
+	const double pxPerTick = ppb / ticksPerBar;
+
+	m_displayMapping.buffer = current.buffer;
+	m_displayMapping.sampleStart = current.sampleStart;
+	m_displayMapping.sampleEnd = current.sampleEnd;
+	m_displayMapping.widthInTicks = pxPerTick > 0.0 ? current.width / pxPerTick : 0.0;
+	m_displayMapping.xInTicks = pxPerTick > 0.0 ? (current.x + m_paintPixmapXPosition) / pxPerTick : 0.0;
+	m_displayMapping.valid = true;
+
+	// Keep a mapped stretched buffer alive so the raw pointer can never
+	// dangle even if the clip later replaces its stretched buffer. The
+	// clip's own m_sample needs no owner: the view reaches it through
+	// m_clip, which outlives the mapping. derivePlan() above resolved the
+	// buffer through the very same stretchedSample() call, so when the drawn
+	// buffer is not the clip's own sample this returns the same object.
+	m_displayMappingOwner = current.buffer != &m_clip->m_sample
+		? m_clip->stretchedSample()
+		: nullptr;
+	if (current.buffer != &m_clip->m_sample && !m_displayMappingOwner)
+	{
+		// Defensive: the drawn buffer came from somewhere else and we could
+		// not take ownership of it. Invalidate rather than risk a dangling
+		// pointer; the next paint re-derives the mapping.
+		m_displayMapping = DisplayMapping{};
+	}
+}
+
+
+
+void SampleClipView::refreshSourceSpaceMapping()
+{
+	// Toolbar OFF: a source-space edit (a trim) moved the retained source
+	// range. Update the drawn source window at the frozen natural scale.
+	// The buffer and the width in ticks are preserved: a trim removes audio
+	// from the drawing, it never rescales it.
+	if (!m_displayMapping.valid || !m_displayMapping.buffer) { return; }
+	const auto& buffer = *m_displayMapping.buffer;
+	const double size = buffer.sampleSize();
+	if (size <= 0.0) { return; }
+
+	const double first = std::clamp(static_cast<double>(m_clip->sourceStartFrame()), 0.0, size);
+	const double last = std::clamp(static_cast<double>(m_clip->sourceEndFrame()), first, size);
+	if (last - first <= 0.0) { return; }
+
+	m_displayMapping.sampleStart = static_cast<float>(first / size);
+	m_displayMapping.sampleEnd = static_cast<float>(last / size);
+}
+
+
+
+void SampleClipView::logRenderedWaveform(const WaveformPlan& plan, const char* reason)
+{
+	const float ppb = fixedClips()
+		? (parentWidget()->width() - 2 * BORDER_WIDTH) / (float) m_clip->length().getBar()
+		: pixelsPerBar();
+	StretchDebug::instance().logWaveformRendered(
+		makeClipId(m_clip),
+		reinterpret_cast<uintptr_t>(plan.buffer),
+		plan.buffer ? static_cast<int>(plan.buffer->sampleSize()) : 0,
+		plan.x, plan.width, plan.sampleStart, plan.sampleEnd,
+		std::string(reason) + " ppb=" + std::to_string(ppb));
 }
 
 
@@ -479,6 +701,16 @@ void SampleClipView::paintEvent( QPaintEvent * pe )
 	const float spacing = BORDER_WIDTH + 1;
 
 	const WaveformPlan plan = waveformPlan();
+
+	// Observational instrumentation: record the geometry that is actually
+	// being drawn. This call must never mutate the plan or the view state.
+	const TrackContainerView* tcv =
+		m_trackView ? m_trackView->trackContainerView() : nullptr;
+	const auto toolbarStretch = tcv && tcv->stretchMode();
+	logRenderedWaveform(plan,
+		toolbarStretch ? "spans clip (toolbar on)"
+		: m_displayMapping.valid ? "frozen (toolbar off)"
+		: "source space");
 
 	if (plan.buffer->sampleSize() > 0)
 	{

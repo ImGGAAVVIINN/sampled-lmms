@@ -67,7 +67,15 @@ public:
         Error,
         EarlyReturn,
         CacheInvalidation,
-        WaveformPlan
+        WaveformPlan,
+        // Emitted only when the pitch-preserving algorithm actually runs on
+        // the worker thread -- not when a request is queued, not on a cache
+        // hit, not on a discarded result. This is the execution counter the
+        // instrumentation contract asks for.
+        StretchExecuted,
+        // Emitted from paintEvent with the geometry that was ACTUALLY drawn,
+        // so the log records rendered output rather than internal decisions.
+        WaveformRendered
     };
 
     struct Event
@@ -108,6 +116,18 @@ public:
         int handleTotalFrames = 0;
         double handlePlaybackRatio = 0.0;
         int handleConsumedFrames = 0;
+        // StretchExecuted: monotonic count of actual algorithm runs.
+        uint64_t executionCount = 0;
+        int execInputFrames = 0;
+        int execOutputFrames = 0;
+        // WaveformRendered: identity of the buffer drawn and the exact
+        // geometry painted, plus the reason the mapping is what it is.
+        uint64_t bufferId = 0;
+        int bufferSampleCount = 0;
+        double renderedX = 0.0;
+        double renderedWidth = 0.0;
+        double renderedSampleStart = 0.0;
+        double renderedSampleEnd = 0.0;
     };
 
     static StretchDebug& instance();
@@ -140,7 +160,20 @@ public:
     void logError(const std::string& clipId, const std::string& error);
     void logEarlyReturn(const std::string& clipId, const std::string& location, const std::string& reason);
     void logCacheInvalidation(const std::string& clipId, const std::string& reason);
-    void logWaveformPlan(const std::string& clipId, bool toolbarStretch, bool drawStretched, bool spansClip, double ratio);
+    void logWaveformPlan(const std::string& clipId, bool toolbarStretch, bool pitchModeIsStretch, bool hasStretchedBuffer, bool pitchModeIsResample, bool clipIsStretched, bool spansClip, double ratio);
+
+    //! @brief Log one actual execution of the stretch algorithm. Called only
+    //! from the worker thread around the real computation, never for queued
+    //! requests, cache hits or discarded results.
+    void logStretchExecuted(const std::string& clipId, uint64_t generation,
+        uint64_t key, int inputFrames, int outputFrames, uint64_t executionCount);
+
+    //! @brief Log the geometry that paintEvent actually drew: buffer identity,
+    //! sample count, drawn rectangle and source window, and the reason the
+    //! mapping is what it is.
+    void logWaveformRendered(const std::string& clipId, uint64_t bufferId,
+        int bufferSampleCount, double x, double width, double sampleStart,
+        double sampleEnd, const std::string& reason);
 
 private:
     StretchDebug();
