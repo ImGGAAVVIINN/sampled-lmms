@@ -85,6 +85,34 @@ void SampleClipView::updateSample()
 {
 	update();
 
+	// Detect a sample buffer replacement: the frozen mapping may point at a
+	// Sample that is no longer the clip's current one. When the clip's own
+	// source sample is replaced the old Sample object is destroyed and the
+	// raw pointer dangles; a frozen stretched buffer is kept alive by
+	// m_displayMappingOwner and is unaffected. A mapping that has neither an
+	// owner nor a match against the current sample is stale and must be
+	// invalidated before anything else reads it.
+	const auto& currentSample = m_clip->m_sample;
+	const auto currentSize = currentSample.sampleSize();
+	const auto bufferReplaced = m_displayMapping.valid
+		&& m_displayMapping.buffer != nullptr
+		&& m_displayMapping.buffer != &currentSample
+		&& !m_displayMappingOwner;
+	if (bufferReplaced)
+	{
+		StretchDebug::instance().logSampleLifecycle(
+			makeClipId(m_clip), "buffer replaced", currentSize, false,
+			"frozen mapping pointed at a previous sample; invalidating");
+		m_displayMapping = DisplayMapping{};
+		m_displayMappingOwner.reset();
+	}
+	else if (currentSize > 0 && m_displayMapping.valid)
+	{
+		StretchDebug::instance().logSampleLifecycle(
+			makeClipId(m_clip), "sampleChanged", currentSize, true,
+			"frozen mapping still valid");
+	}
+
 	// The thumbnail caches peaks taken from one particular buffer, so it has
 	// to be rebuilt from exactly the buffer that `paintEvent` is about to
 	// draw -- the frozen buffer when the toolbar is OFF, the stretched buffer
@@ -116,6 +144,21 @@ void SampleClipView::updateSample()
 		// (e.g. a toolbar-off trim after a stretch) must leave the frozen
 		// mapping completely untouched.
 		refreshSourceSpaceMapping();
+	}
+	else if (m_displayMapping.valid && m_displayMapping.buffer)
+	{
+		// Observational instrumentation: a toolbar-OFF sampleChanged arrived
+		// for a frozen stretched buffer's clip. Record the untouched frozen
+		// mapping (with its pixels-per-source-frame ratio) so the log can
+		// prove the drawing did not move.
+		const auto size = static_cast<double>(m_displayMapping.buffer->sampleSize());
+		const auto frames = (m_displayMapping.sampleEnd - m_displayMapping.sampleStart) * size;
+		StretchDebug::instance().logTrimFromStartView(makeClipId(m_clip),
+			"toolbar-off edit of frozen stretched buffer (mapping untouched)",
+			reinterpret_cast<uintptr_t>(m_displayMapping.buffer),
+			static_cast<int>(size), m_displayMapping.sampleStart,
+			m_displayMapping.sampleEnd, m_displayMapping.widthInTicks,
+			m_displayMapping.xInTicks, frames > 0.0 ? m_displayMapping.widthInTicks / frames : 0.0);
 	}
 
 	// set tooltip to filename so that user can see what sample this
@@ -211,10 +254,16 @@ SampleClipView::WaveformPlan SampleClipView::waveformGeometry(const SampleClip& 
 			return plan;
 		}
 
+		// The visible waveform is clipped at the clip's left edge, not pinned
+		// to source frame 0. A left trim discards the beginning of the audio;
+		// the retained portion must appear starting at the clip's left edge
+		// with the same horizontal scale and phase, not shifted rightward
+		// into the clip. The width tracks the retained range at the natural
+		// scale, so the drawing never stretches or compresses.
 		plan.sampleStart = static_cast<float>(first / size);
 		plan.sampleEnd = static_cast<float>(last / size);
 		plan.width = static_cast<float>(naturalWidth * (range / size));
-		plan.x = static_cast<float>(frameZeroX + naturalWidth * (first / size));
+		plan.x = static_cast<float>(frameZeroX);
 		return plan;
 	}
 
@@ -349,12 +398,33 @@ void SampleClipView::onEditModeChanged()
 	// produce the source-space mapping. Freeze the mapping that was on
 	// screen immediately before the toggle instead: capture it from the
 	// pre-toggle state (as if the toolbar were still ON), byte-for-byte.
-	// No thumbnail rebuild, no re-derivation from the clip's live state,
-	// no audio processing, no reset to the pre-stretch source. The
-	// waveform must remain exactly as it was immediately before the
-	// toggle; only a repaint with the identical mapping happens.
+	// No re-derivation from the clip's live state, no audio processing,
+	// no reset to the pre-stretch source. The waveform must remain
+	// exactly as it was immediately before the toggle.
+	//
+	// updateSample() is called after the mapping is frozen so the cached
+	// thumbnail is rebuilt from the frozen buffer. Without this the
+	// thumbnail keeps showing the pre-toggle buffer and the drawn
+	// waveform disagrees with the painted one -- the clip body renders
+	// the stretched audio while the waveform inside it shows the
+	// original, which is the regression the user reported.
 	captureDisplayMapping(true);
-	update();
+	updateSample();
+
+	// Observational instrumentation: record the frozen mapping the toggle
+	// captured (with its pixels-per-source-frame ratio) so the log can prove
+	// the ON -> OFF transition preserved the drawing byte-for-byte.
+	if (m_displayMapping.valid && m_displayMapping.buffer)
+	{
+		const auto size = static_cast<double>(m_displayMapping.buffer->sampleSize());
+		const auto frames = (m_displayMapping.sampleEnd - m_displayMapping.sampleStart) * size;
+		StretchDebug::instance().logTrimFromStartView(makeClipId(m_clip),
+			"toolbar toggled OFF, mapping frozen",
+			reinterpret_cast<uintptr_t>(m_displayMapping.buffer),
+			static_cast<int>(size), m_displayMapping.sampleStart,
+			m_displayMapping.sampleEnd, m_displayMapping.widthInTicks,
+			m_displayMapping.xInTicks, frames > 0.0 ? m_displayMapping.widthInTicks / frames : 0.0);
+	}
 }
 
 
@@ -411,7 +481,22 @@ void SampleClipView::captureDisplayMapping(bool preToggleStretch)
 	m_displayMapping.sampleEnd = current.sampleEnd;
 	m_displayMapping.widthInTicks = pxPerTick > 0.0 ? current.width / pxPerTick : 0.0;
 	m_displayMapping.xInTicks = pxPerTick > 0.0 ? (current.x + m_paintPixmapXPosition) / pxPerTick : 0.0;
-	m_displayMapping.valid = true;
+
+	// A mapping is only valid when its source buffer actually holds audio.
+	// Capturing while the sample is still being loaded (or has been replaced
+	// by an empty one) would freeze an empty waveform permanently: the next
+	// paint would draw nothing, and no subsequent edit would ever re-capture
+	// because the mapping would already be "valid". Leave it invalid instead;
+	// the next sampleChanged re-enters updateSample and captures from the
+	// buffer that is now ready.
+	const auto capturedSize = current.buffer ? current.buffer->sampleSize() : 0;
+	m_displayMapping.valid = (capturedSize > 0);
+	StretchDebug::instance().logMappingCapture(
+		makeClipId(m_clip),
+		reinterpret_cast<uintptr_t>(current.buffer),
+		static_cast<int>(capturedSize),
+		m_displayMapping.valid,
+		preToggleStretch ? "pre-toggle freeze" : "updateSample capture");
 
 	// Keep a mapped stretched buffer alive so the raw pointer can never
 	// dangle even if the clip later replaces its stretched buffer. The
@@ -435,21 +520,65 @@ void SampleClipView::captureDisplayMapping(bool preToggleStretch)
 
 void SampleClipView::refreshSourceSpaceMapping()
 {
-	// Toolbar OFF: a source-space edit (a trim) moved the retained source
-	// range. Update the drawn source window at the frozen natural scale.
-	// The buffer and the width in ticks are preserved: a trim removes audio
-	// from the drawing, it never rescales it.
+	// Toolbar OFF: a source-space edit (a trim or an extension) moved the
+	// clip's boundary. The frozen mapping must follow the edit while keeping
+	// the exact same audio-to-screen transformation: the same buffer, the
+	// same pixels-per-source-frame, and the same audio at the same song-time
+	// coordinates. Only the visible clipping interval may change.
+	//
+	// SampleThumbnail::visualize() maps the drawn source window linearly onto
+	// the drawing rectangle, so the pixels-per-source-frame ratio is
+	// width / (window size in frames). Keeping the old width while shrinking
+	// the window would therefore RESCALE the drawing -- the bug this function
+	// used to have. Instead the whole mapping is re-derived from the clip's
+	// live source-space geometry (waveformGeometry's source-space branch),
+	// which is exactly the transformation the toolbar-OFF drawing would use
+	// without a frozen mapping: width = retained range at the natural scale,
+	// x = the start-time offset's position of source frame 0. A right trim
+	// changes only the drawn range (the drawing's right edge moves in); a
+	// left trim changes only the offset (the drawing slides left with the
+	// clip's edge); both keep the ratio constant.
 	if (!m_displayMapping.valid || !m_displayMapping.buffer) { return; }
 	const auto& buffer = *m_displayMapping.buffer;
-	const double size = buffer.sampleSize();
-	if (size <= 0.0) { return; }
+	if (buffer.sampleSize() <= 0) { return; }
 
-	const double first = std::clamp(static_cast<double>(m_clip->sourceStartFrame()), 0.0, size);
-	const double last = std::clamp(static_cast<double>(m_clip->sourceEndFrame()), first, size);
-	if (last - first <= 0.0) { return; }
+	const auto before = m_displayMapping;
+	const auto beforeSize = static_cast<double>(buffer.sampleSize());
+	const auto beforeFrames = (before.sampleEnd - before.sampleStart) * beforeSize;
+	const auto beforeRatio = beforeFrames > 0.0 ? before.widthInTicks / beforeFrames : 0.0;
 
-	m_displayMapping.sampleStart = static_cast<float>(first / size);
-	m_displayMapping.sampleEnd = static_cast<float>(last / size);
+	const float ppb = fixedClips()
+		? (parentWidget()->width() - 2 * BORDER_WIDTH) / (float) m_clip->length().getBar()
+		: pixelsPerBar();
+	const float nom = Engine::getSong()->getTimeSigModel().getNumerator();
+	const float den = Engine::getSong()->getTimeSigModel().getDenominator();
+	const float ticksPerBar = DefaultTicksPerBar * nom / den;
+	const double pxPerTick = ppb / ticksPerBar;
+	if (pxPerTick <= 0.0) { return; }
+
+	// Re-derive the source-space drawing from the clip's live state, at the
+	// frozen buffer and the current zoom. The buffer is passed explicitly so
+	// the mapping can never silently switch buffers.
+	const auto plan = waveformGeometry(*m_clip, buffer, pxPerTick,
+		/*stretchMode=*/false, m_paintPixmapXPosition);
+
+	m_displayMapping.sampleStart = plan.sampleStart;
+	m_displayMapping.sampleEnd = plan.sampleEnd;
+	m_displayMapping.widthInTicks = plan.width / pxPerTick;
+	m_displayMapping.xInTicks = (plan.x + m_paintPixmapXPosition) / pxPerTick;
+
+	const auto afterSize = static_cast<double>(buffer.sampleSize());
+	const auto afterFrames = (m_displayMapping.sampleEnd - m_displayMapping.sampleStart) * afterSize;
+	const auto afterRatio = afterFrames > 0.0 ? m_displayMapping.widthInTicks / afterFrames : 0.0;
+	StretchDebug::instance().logTrimFromStartView(makeClipId(m_clip),
+		"source-space edit applied", reinterpret_cast<uintptr_t>(&buffer),
+		static_cast<int>(afterSize), m_displayMapping.sampleStart,
+		m_displayMapping.sampleEnd, m_displayMapping.widthInTicks,
+		m_displayMapping.xInTicks, afterRatio);
+	StretchDebug::instance().logTrimFromStartView(makeClipId(m_clip),
+		"previous frozen mapping", reinterpret_cast<uintptr_t>(&buffer),
+		static_cast<int>(beforeSize), before.sampleStart, before.sampleEnd,
+		before.widthInTicks, before.xInTicks, beforeRatio);
 }
 
 

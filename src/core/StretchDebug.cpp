@@ -267,6 +267,23 @@ void StretchDebug::logTrimToLength(const std::string& clipId, int newLength, int
     log(e);
 }
 
+void StretchDebug::logTrimFromStart(const std::string& clipId, int newLength, int newStart,
+    int newOffset, int sourceStart, int sourceEnd)
+{
+    Event e;
+    e.type = EventType::TrimToLength;
+    e.timestamp = std::chrono::steady_clock::now();
+    e.threadId = std::this_thread::get_id();
+    e.clipId = clipId;
+    e.message = "trimFromStart called";
+    e.clipLength = newLength;
+    e.sourceStartFrame = sourceStart;
+    e.sourceEndFrame = sourceEnd;
+    e.reqStartFrame = newStart; // reuse: new clip start position
+    e.reqEndFrame = newOffset;  // reuse: new start-time offset
+    log(e);
+}
+
 void StretchDebug::logRefreshStretchBuffer(const std::string& clipId, int pitchMode, double ratio, int sourceStart, int sourceEnd, bool hasSample)
 {
     Event e;
@@ -516,6 +533,62 @@ void StretchDebug::logWaveformRendered(const std::string& clipId, uint64_t buffe
     e.renderedWidth = width;
     e.renderedSampleStart = sampleStart;
     e.renderedSampleEnd = sampleEnd;
+    log(e);
+}
+
+void StretchDebug::logMappingCapture(const std::string& clipId, uint64_t bufferId,
+    int bufferSampleCount, bool valid, const std::string& reason)
+{
+    Event e;
+    e.type = EventType::CacheInvalidation;
+    e.timestamp = std::chrono::steady_clock::now();
+    e.threadId = std::this_thread::get_id();
+    e.clipId = clipId;
+    e.message = "Mapping capture: valid=" + std::string(valid ? "true" : "false")
+        + " bufferFrames=" + std::to_string(bufferSampleCount) + " reason=" + reason;
+    e.bufferId = bufferId;
+    e.bufferSampleCount = bufferSampleCount;
+    e.planHasStretchedSource = valid;
+    log(e);
+}
+
+void StretchDebug::logSampleLifecycle(const std::string& clipId, const std::string& event,
+    int sampleSize, bool mappingValid, const std::string& reason)
+{
+    Event e;
+    e.type = EventType::BufferStateChange;
+    e.timestamp = std::chrono::steady_clock::now();
+    e.threadId = std::this_thread::get_id();
+    e.clipId = clipId;
+    e.message = "Sample lifecycle: " + event + " frames=" + std::to_string(sampleSize)
+        + " mappingValid=" + std::string(mappingValid ? "true" : "false")
+        + " reason=" + reason;
+    e.originalFrames = sampleSize;
+    e.planHasStretchedSource = mappingValid;
+    log(e);
+}
+
+void StretchDebug::logTrimFromStartView(const std::string& clipId, const std::string& reason,
+    uint64_t bufferId, int bufferSampleCount, double sampleStart, double sampleEnd,
+    double widthInTicks, double xInTicks, double pxPerFrame)
+{
+    Event e;
+    e.type = EventType::WaveformRendered;
+    e.timestamp = std::chrono::steady_clock::now();
+    e.threadId = std::this_thread::get_id();
+    e.clipId = clipId;
+    e.message = "Frozen mapping (toolbar off): " + reason
+        + " sampleStart=" + std::to_string(sampleStart)
+        + " sampleEnd=" + std::to_string(sampleEnd)
+        + " widthTicks=" + std::to_string(widthInTicks)
+        + " xTicks=" + std::to_string(xInTicks)
+        + " pxPerFrame=" + std::to_string(pxPerFrame);
+    e.bufferId = bufferId;
+    e.bufferSampleCount = bufferSampleCount;
+    e.renderedSampleStart = sampleStart;
+    e.renderedSampleEnd = sampleEnd;
+    e.renderedWidth = widthInTicks;
+    e.renderedX = xInTicks;
     log(e);
 }
 

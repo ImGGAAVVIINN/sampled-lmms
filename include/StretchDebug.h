@@ -145,6 +145,11 @@ public:
     void logPitchModeChanged(const std::string& clipId, int oldMode, int newMode);
     void logStretchToLength(const std::string& clipId, int clipLength, int sourceStart, int sourceEnd, double ratio);
     void logTrimToLength(const std::string& clipId, int newLength, int sourceStart, int sourceEnd);
+    //! @brief Log a left-edge trim/extend (trimFromStart): the new clip length,
+    //! position and start-time offset plus the resulting source range, so a
+    //! left-edge drag can be traced end to end like a right-edge one.
+    void logTrimFromStart(const std::string& clipId, int newLength, int newStart,
+        int newOffset, int sourceStart, int sourceEnd);
     void logRefreshStretchBuffer(const std::string& clipId, int pitchMode, double ratio, int sourceStart, int sourceEnd, bool hasSample);
     void logComputePlaybackPlan(const std::string& clipId, const Event& plan);
     void logApplyStretchResult(const std::string& clipId, uint64_t generation, uint64_t key, int resultFrames, bool success);
@@ -174,6 +179,27 @@ public:
     void logWaveformRendered(const std::string& clipId, uint64_t bufferId,
         int bufferSampleCount, double x, double width, double sampleStart,
         double sampleEnd, const std::string& reason);
+
+    //! @brief Log a display-mapping capture/invalidation event. Records whether
+    //! the mapping became valid and why, so an empty waveform can be traced to
+    //! a capture that happened while the sample buffer was not ready.
+    void logMappingCapture(const std::string& clipId, uint64_t bufferId,
+        int bufferSampleCount, bool valid, const std::string& reason);
+
+    //! @brief Log the sample/view lifecycle: a sample buffer assignment or
+    //! replacement, and whether the display mapping was invalidated as a
+    //! result.
+    void logSampleLifecycle(const std::string& clipId, const std::string& event,
+        int sampleSize, bool mappingValid, const std::string& reason);
+
+    //! @brief Log the frozen-mapping state a toolbar-OFF view is about to
+    //! redraw from: buffer identity, drawn source window, width and left edge
+    //! in timeline ticks, and the pixels-per-source-frame ratio the drawing
+    //! uses. Recorded before and after every toolbar-OFF resize so the log
+    //! can prove the ratio and the audio alignment did not move.
+    void logTrimFromStartView(const std::string& clipId, const std::string& reason,
+        uint64_t bufferId, int bufferSampleCount, double sampleStart, double sampleEnd,
+        double widthInTicks, double xInTicks, double pxPerFrame);
 
 private:
     StretchDebug();

@@ -858,7 +858,16 @@ void SampleClip::trimFromStart(const TimePos& newPos)
 	Clip::changeLength(newLength);
 	setStartTimeOffset(startTimeOffset() - delta);
 	setAutoResize(false);
+	// The retained source range and the start-time offset are part of what the
+	// waveform draws, so the view has to redraw -- exactly as trimToLength
+	// already does. Without this the view keeps a stale frozen mapping on
+	// left-edge drags and the drawing no longer matches the clip's audio.
+	emit sampleChanged();
 	Engine::getSong()->setModified();
+
+	StretchDebug::instance().logTrimFromStart(makeClipId(this),
+		static_cast<int>(length()), static_cast<int>(startPosition()),
+		static_cast<int>(startTimeOffset()), sourceStartFrame(), sourceEndFrame());
 }
 
 void SampleClip::stretchToLength(const TimePos& newLength)
