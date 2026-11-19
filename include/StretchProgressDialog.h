@@ -29,7 +29,6 @@
 #include <QProgressBar>
 #include <QLabel>
 #include <QVBoxLayout>
-#include <QTimer>
 #include <QPushButton>
 
 namespace lmms::gui {
@@ -39,8 +38,8 @@ namespace lmms::gui {
  * @brief A modal dialog showing the progress of a sample stretch operation.
  *
  * Displays a progress bar with "Stretching audio..." text. The dialog is
- * modal to prevent user interaction with the main window during stretching,
- * but uses a timer to keep the UI responsive.
+ * modal to prevent user interaction with the main window during stretching. The
+ * dialog is shown non-blocking, so the main event loop keeps the UI responsive.
  */
 class StretchProgressDialog : public QDialog
 {
@@ -71,7 +70,6 @@ private:
 	QPushButton* m_cancelButton;
 	uint64_t m_currentKey = 0;
 	int m_totalFrames = 0;
-	QTimer* m_uiUpdateTimer;
 };
 
 } // namespace lmms::gui

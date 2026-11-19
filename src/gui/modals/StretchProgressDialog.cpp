@@ -25,8 +25,8 @@
 #include "StretchProgressDialog.h"
 
 #include <QPushButton>
+#include <QTimer>
 #include <QVBoxLayout>
-#include <QApplication>
 
 namespace lmms::gui {
 
@@ -35,7 +35,6 @@ StretchProgressDialog::StretchProgressDialog(QWidget* parent)
 	, m_label(new QLabel(tr("Stretching audio...")))
 	, m_progressBar(new QProgressBar())
 	, m_cancelButton(new QPushButton(tr("Cancel")))
-	, m_uiUpdateTimer(new QTimer(this))
 {
 	setWindowTitle(tr("Stretching Audio"));
 	setModal(true);
@@ -53,12 +52,6 @@ StretchProgressDialog::StretchProgressDialog(QWidget* parent)
 
 	m_cancelButton->setDefault(true);
 	connect(m_cancelButton, &QPushButton::clicked, this, &StretchProgressDialog::onCancelClicked);
-
-	// Timer to process events and keep UI responsive
-	m_uiUpdateTimer->setInterval(50);
-	connect(m_uiUpdateTimer, &QTimer::timeout, this, [this]() {
-		QApplication::processEvents(QEventLoop::AllEvents, 10);
-	});
 }
 
 void StretchProgressDialog::startStretch(uint64_t key, int totalFrames)
@@ -69,7 +62,6 @@ void StretchProgressDialog::startStretch(uint64_t key, int totalFrames)
 	m_progressBar->setFormat(tr("%p%"));
 	m_label->setText(tr("Stretching audio..."));
 	m_cancelButton->setEnabled(true);
-	m_uiUpdateTimer->start();
 	show();
 	raise();
 	activateWindow();
@@ -91,16 +83,12 @@ void StretchProgressDialog::updateProgress(uint64_t key, int processedFrames, in
 		m_progressBar->setRange(0, 0);
 		m_progressBar->setFormat(tr("Processing..."));
 	}
-
-	// Process events to keep UI responsive
-	QApplication::processEvents(QEventLoop::AllEvents, 10);
 }
 
 void StretchProgressDialog::finishStretch(uint64_t key, bool success)
 {
 	if (key != m_currentKey) { return; }
 
-	m_uiUpdateTimer->stop();
 	m_progressBar->setRange(0, 100);
 	m_progressBar->setValue(100);
 	m_progressBar->setFormat(tr("Complete"));

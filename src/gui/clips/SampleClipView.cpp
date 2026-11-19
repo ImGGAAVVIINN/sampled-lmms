@@ -626,8 +626,15 @@ void SampleClipView::constructContextMenu(QMenu* cm)
 	// (real time-stretch preserving pitch). Mutually exclusive; selecting
 	// the already-active mode is a no-op. The mode switch never changes
 	// the clip's length. Stretch is always offered when the build has a
-	// pitch-preserving algorithm -- the user switches into the mode and
-	// then drags an edge to actually stretch.
+	// pitch-preserving algorithm.
+	//
+	// Selecting Stretch here also arms the toolbar's Stretch edit mode:
+	// edge drags only stretch when that mode is active (ClipView classifies
+	// the drag as a stretch solely from the toolbar state), so without this
+	// the menu selection alone would leave the user trimming on the next
+	// drag. Selecting Resample leaves the toolbar as it is -- stretching
+	// the clip's length while rendering resampled audio is a valid
+	// combination.
 	const auto pitchMenu = cm->addMenu(tr("Pitch mode"));
 	const auto resampleAction = pitchMenu->addAction(tr("Resample"));
 	resampleAction->setCheckable(true);
@@ -643,6 +650,14 @@ void SampleClipView::constructContextMenu(QMenu* cm)
 		m_clip->setPitchMode(mode);
 		m_clip->setJournalling(true);
 		Engine::getSong()->setModified();
+		if (mode == SampleClip::PitchMode::Stretch)
+		{
+			if (auto* songEditor = getGUI() ? getGUI()->songEditor() : nullptr)
+			{
+				songEditor->m_editor->setEditMode(SongEditor::EditMode::Stretch);
+				songEditor->syncEditMode();
+			}
+		}
 	};
 
 	connect(resampleAction, &QAction::triggered, this, [this, setMode] { setMode(SampleClip::PitchMode::Resample); });

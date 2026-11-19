@@ -294,6 +294,7 @@ void SampleStretchManager::Worker::run()
 {
 	for (;;) {
 		auto job = QueuedJob{};
+		std::string clipId;
 		{
 			const auto locker = QMutexLocker{&m_impl->mutex};
 			while (!m_impl->quit && m_impl->queue.empty())
@@ -305,17 +306,23 @@ void SampleStretchManager::Worker::run()
 			m_impl->queue.erase(m_impl->queue.begin());
 			m_impl->active = job;
 			m_impl->computing = true;
+			// Capture the clip id while the receiver is guaranteed alive: it
+			// can only be destroyed through cancelPending(), which needs this
+			// same mutex and erases queued jobs, so a popped job's receiver
+			// still exists. job.receiver itself must never be dereferenced
+			// after this scope -- cancelPending() only nulls
+			// m_impl->active.receiver, never this local copy.
+			if (job.receiver)
+			{
+				QObject* parent = job.receiver->parent();
+				if (parent) { clipId = makeClipId(parent); }
+			}
 		}
 
 		// Log job start
-		if (job.receiver)
+		if (!clipId.empty())
 		{
-			QObject* parent = job.receiver->parent();
-			if (parent)
-			{
-				const auto clipId = makeClipId(parent);
-				StretchDebug::instance().logStretchJobStarted(clipId, job.generation, job.key);
-			}
+			StretchDebug::instance().logStretchJobStarted(clipId, job.generation, job.key);
 		}
 
 		// Emit stretchStarted signal
@@ -336,17 +343,13 @@ void SampleStretchManager::Worker::run()
 		// a usable buffer). This -- not the request, not the queueing, not a
 		// cache lookup -- is the execution event the instrumentation counts.
 		++m_impl->executionsCompleted;
-		if (job.receiver)
+		if (!clipId.empty())
 		{
-			QObject* execParent = job.receiver->parent();
-			if (execParent)
-			{
-				StretchDebug::instance().logStretchExecuted(
-					makeClipId(execParent), job.generation, job.key,
-					job.endFrame - job.startFrame,
-					stretched ? static_cast<int>(stretched->sampleSize()) : 0,
-					m_impl->executionsCompleted);
-			}
+			StretchDebug::instance().logStretchExecuted(
+				clipId, job.generation, job.key,
+				job.endFrame - job.startFrame,
+				stretched ? static_cast<int>(stretched->sampleSize()) : 0,
+				m_impl->executionsCompleted);
 		}
 		// Null if ~SampleStretchResult() ran while this was being computed.
 		auto* receiver = m_impl->active.receiver;
@@ -380,15 +383,12 @@ void SampleStretchManager::Worker::run()
 		}
 		else
 		{
-			// Job was discarded because receiver was destroyed
-			if (job.receiver)
+			// Job was discarded because receiver was destroyed. The captured
+			// clip id is all that is left to identify it -- job.receiver is
+			// dangling here by definition and must not be touched.
+			if (!clipId.empty())
 			{
-				QObject* parent = job.receiver->parent();
-				if (parent)
-				{
-					const auto clipId = makeClipId(parent);
-					StretchDebug::instance().logStretchJobDiscarded(clipId, job.generation, job.key, "receiver destroyed");
-				}
+				StretchDebug::instance().logStretchJobDiscarded(clipId, job.generation, job.key, "receiver destroyed");
 			}
 		}
 		emit m_manager->stretchFinished(job.key, receiver != nullptr);

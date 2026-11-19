@@ -1009,8 +1009,19 @@ private slots:
 		QVERIFY(std::abs(mappingResample.sampleStart - 0.0f) < 0.01f);
 		QVERIFY(std::abs(mappingResample.sampleEnd - 1.0f) < 0.01f);
 
-		// Switch to Stretch mode: waveform should use stretched buffer when ready
+		// Switch to Stretch mode: mode selection is never a stretch trigger
+		// (STRETCH_CALL_PATH_AUDIT.md, contract A), so no buffer exists yet and
+		// playback falls back to the source at natural speed. The mapping still
+		// spans the whole clip: the fallback fills the clip's duration.
 		setup.clip->setPitchMode(SampleClip::PitchMode::Stretch);
+		QVERIFY(!setup.clip->hasStretchedSample());
+		QVERIFY(setup.clip->stretchUnavailable());
+		const auto mappingFallback = setup.clip->waveformMapping(setup.clip->sample());
+		QVERIFY(std::abs(mappingFallback.sampleStart - 0.0f) < 0.01f);
+		QVERIFY(std::abs(mappingFallback.sampleEnd - 1.0f) < 0.01f);
+
+		// An explicit stretch produces the buffer; the waveform then uses it.
+		setup.clip->stretchToLength(lengthForRatio(setup.clip, 2.0));
 		waitForStretched();
 
 #ifdef LMMS_HAVE_SOUNDTOUCH

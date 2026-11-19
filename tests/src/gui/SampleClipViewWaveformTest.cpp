@@ -556,18 +556,19 @@ private slots:
 	 * Exact reproduction sequence:
 	 *   1. Set Pitch Method to Stretch.
 	 *   2. Enable toolbar Stretch edit button.
-	 *   3. Stretch the sample clip.
+	 *   3. Stretch the sample clip (the stretch must land while the toolbar
+	 *      is ON so the view captures the stretched buffer as drawn state).
 	 *   4. Wait for the stretched buffer to finish generating.
 	 *   5. Disable toolbar Stretch edit button.
 	 *   6. Lengthen the sample clip using normal editing (trimToLength).
 	 *   7. Verify that the waveform still represents the stretched audio.
 	 *
-	 * The bug was: `waveformBuffer()` returned the original source when the
-	 * toolbar was OFF, even though the clip's pitch mode was Stretch with a
-	 * valid stretched buffer. Similarly, `waveformPlan()` passed toolbar-only
-	 * state to `waveformGeometry()`, so the geometry also reverted to source-
-	 * space drawing. After step 5 the waveform suddenly jumped back to its
-	 * pre-stretch appearance.
+	 * The frozen-mapping contract: a toolbar ON->OFF toggle freezes what is
+	 * on screen (the stretched buffer, drawn across the clip), and later
+	 * edits -- including a trim, which never re-stretches -- must not change
+	 * that frozen drawing. The bug was: `waveformBuffer()` returned the
+	 * original source when the toolbar was OFF, so the waveform jumped back
+	 * to its pre-stretch appearance.
 	 */
 	void toolbarToggleOffDoesNotRevertStretchedWaveform()
 	{
@@ -581,7 +582,13 @@ private slots:
 		// Step 1: Set Pitch Mode to Stretch.
 		clip->setPitchMode(SampleClip::PitchMode::Stretch);
 
-		// Steps 2-3: Enable toolbar Stretch, stretch the clip.
+		// Step 2: Enable toolbar Stretch so the stretch lands while the view is
+		// in stretch mode and captures the stretched buffer as drawn state.
+		auto* editor = getGUI()->songEditor()->m_editor;
+		QVERIFY2(editor != nullptr, "SongEditor must exist in the test GUI");
+		editor->setEditMode(SongEditor::EditMode::Stretch);
+
+		// Step 3: Stretch the clip.
 		clip->stretchToLength(TimePos(natural * 2));
 		waitForStretched();
 
@@ -602,6 +609,8 @@ private slots:
 			"waveformBuffer() must still return the stretched buffer after toolbar toggle off");
 
 		// Step 6: Lengthen the clip using normal editing (trimToLength).
+		// A trim never re-stretches: it only changes the retained source range,
+		// so the frozen stretched waveform must survive untouched.
 		const auto newLength = TimePos(natural * 3);
 		clip->trimToLength(newLength);
 		waitForStretched();
@@ -612,6 +621,8 @@ private slots:
 			"waveformBuffer() must not return null after extending clip");
 		QVERIFY2(bufAfterExtend->sampleSize() > 0,
 			"waveform buffer must have samples after extending");
+		QVERIFY2(bufAfterExtend == stretchedOn.get(),
+			"a trim must not change the frozen stretched waveform");
 
 		// The geometry should be drawn stretched across the full clip width,
 		// not reverted to source-space drawing at natural scale.
@@ -630,6 +641,10 @@ private slots:
 			qPrintable(QStringLiteral("waveform must not revert to source-space width: "
 				"stretched=%1, source-space=%2").arg(planAfter.width).arg(planSourceSpace.width)));
 
+		// close() removes the view from the track content widget's clip-view
+		// list; deleting without it would leave a dangling entry that the next
+		// test's track-view creation dereferences.
+		view->close();
 		delete view;
 	}
 
@@ -638,7 +653,9 @@ private slots:
 	 * the stretched waveform to flicker between original and stretched buffers.
 	 *
 	 * Each toggle-off must keep the stretched buffer visible when pitch mode
-	 * is Stretch, and each toggle-on must do the same.
+	 * is Stretch, and each toggle-on must do the same. The stretch must land
+	 * while the toolbar is ON so the first capture freezes the stretched
+	 * buffer; every later toggle then re-freezes the same stretched state.
 	 */
 	void repeatedToolbarTogglesPreserveStretchedWaveform()
 	{
@@ -650,6 +667,12 @@ private slots:
 		clip->changeLength(natural);
 		clip->setPitchMode(SampleClip::PitchMode::Stretch);
 
+		// Enable toolbar Stretch so the stretch lands while the view is in
+		// stretch mode and captures the stretched buffer as drawn state.
+		auto* editor = getGUI()->songEditor()->m_editor;
+		QVERIFY2(editor != nullptr, "SongEditor must exist in the test GUI");
+		editor->setEditMode(SongEditor::EditMode::Stretch);
+
 		clip->stretchToLength(TimePos(natural * 2));
 		waitForStretched();
 
@@ -660,30 +683,46 @@ private slots:
 		for (int i = 0; i < 3; ++i)
 		{
 			// Toolbar OFF: waveformBuffer() must still return the stretched buffer.
+			editor->setEditMode(SongEditor::EditMode::Draw);
 			const auto* bufOff = view->waveformBuffer();
 			QVERIFY2(bufOff == initialStretched.get(),
 				qPrintable(QStringLiteral("toggle-off iteration %1: buffer must be stretched")
 					.arg(i)));
 
 			// Toolbar ON: same buffer.
+			editor->setEditMode(SongEditor::EditMode::Stretch);
 			const auto* bufOn = view->waveformBuffer();
 			QVERIFY2(bufOn == initialStretched.get(),
 				qPrintable(QStringLiteral("toggle-on iteration %1: buffer must be stretched")
 					.arg(i)));
 		}
 
-		// Now extend the clip (which triggers a new stretch request).
-		clip->trimToLength(TimePos(natural * 3));
+		// Now extend the clip with an explicit stretch, which recomputes the
+		// stretched buffer (a trim never re-stretches).
+		clip->stretchToLength(TimePos(natural * 3));
 		waitForStretched();
 
 		const auto newStretched = clip->stretchedSample();
 		QVERIFY(newStretched != nullptr);
+		QVERIFY2(newStretched.get() != initialStretched.get(),
+			"the new stretch must produce a new buffer");
 
 		// After the new stretch, both toolbar states must show the NEW buffer.
 		const auto* bufAfterExtend = view->waveformBuffer();
 		QVERIFY2(bufAfterExtend == newStretched.get(),
 			"after extend+stretch, waveformBuffer() must return the new stretched buffer");
 
+		// Toggling off must freeze the new stretched waveform, not revert to
+		// the original source.
+		editor->setEditMode(SongEditor::EditMode::Draw);
+		const auto* bufOffAfter = view->waveformBuffer();
+		QVERIFY2(bufOffAfter == newStretched.get(),
+			"toggle-off after the new stretch must keep the new stretched buffer");
+
+		// close() removes the view from the track content widget's clip-view
+		// list; deleting without it would leave a dangling entry that the next
+		// test's track-view creation dereferences.
+		view->close();
 		delete view;
 	}
 };
