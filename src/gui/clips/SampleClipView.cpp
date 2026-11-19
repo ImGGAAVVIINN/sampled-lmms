@@ -137,24 +137,30 @@ void SampleClipView::updateSample()
 	{
 		captureDisplayMapping();
 	}
-	else if (m_displayMapping.buffer == &m_clip->m_sample)
+	else if (m_displayMapping.buffer == &m_clip->m_sample
+		&& !m_displayMapping.spansClipCapture)
 	{
 		// Only source-space edits of the clip's own sample may move the
 		// frozen source window. Edits of a frozen stretched buffer's clip
 		// (e.g. a toolbar-off trim after a stretch) must leave the frozen
-		// mapping completely untouched.
+		// mapping completely untouched. A spans-clip capture whose buffer
+		// pointer equals the clip's own sample (a non-Stretch pitch mode
+		// never builds a stretched buffer) is likewise frozen: re-deriving
+		// it from source-space geometry would collapse the stretched scale.
 		refreshSourceSpaceMapping();
 	}
 	else if (m_displayMapping.valid && m_displayMapping.buffer)
 	{
 		// Observational instrumentation: a toolbar-OFF sampleChanged arrived
-		// for a frozen stretched buffer's clip. Record the untouched frozen
-		// mapping (with its pixels-per-source-frame ratio) so the log can
-		// prove the drawing did not move.
+		// for a frozen mapping that must not be re-derived (a frozen
+		// stretched buffer, or a spans-clip capture of the source at the
+		// stretched scale). Record the untouched frozen mapping (with its
+		// pixels-per-source-frame ratio) so the log can prove the drawing
+		// did not move.
 		const auto size = static_cast<double>(m_displayMapping.buffer->sampleSize());
 		const auto frames = (m_displayMapping.sampleEnd - m_displayMapping.sampleStart) * size;
 		StretchDebug::instance().logTrimFromStartView(makeClipId(m_clip),
-			"toolbar-off edit of frozen stretched buffer (mapping untouched)",
+			"toolbar-off edit of frozen mapping (mapping untouched)",
 			reinterpret_cast<uintptr_t>(m_displayMapping.buffer),
 			static_cast<int>(size), m_displayMapping.sampleStart,
 			m_displayMapping.sampleEnd, m_displayMapping.widthInTicks,
@@ -320,7 +326,18 @@ SampleClipView::WaveformPlan SampleClipView::frozenPlan()
 	// else; the mapping itself is never recomputed here.
 	const float pxPerTick = ppb / ticksPerBar;
 	plan.width = static_cast<float>(m_displayMapping.widthInTicks * pxPerTick);
-	plan.x = static_cast<float>(m_displayMapping.xInTicks * pxPerTick - m_paintPixmapXPosition);
+	// xInTicks is relative to the clip's left edge at capture time. A
+	// toolbar-off left trim keeps the audio's absolute timeline anchor
+	// (startPosition + startTimeOffset) fixed by changing the start-time
+	// offset, so the drawn left edge must move by the offset change since
+	// capture: the waveform stays at its absolute timeline position while
+	// the clip's edge (and the widget) moves. When the offset is unchanged
+	// (right trims, whole-clip moves) this term is zero and the waveform
+	// moves with the clip exactly as before.
+	const auto offsetDelta = static_cast<double>(m_clip->startTimeOffset())
+		- m_displayMapping.startTimeOffsetAtCapture;
+	plan.x = static_cast<float>((m_displayMapping.xInTicks + offsetDelta)
+		* pxPerTick - m_paintPixmapXPosition);
 	return plan;
 }
 
@@ -481,6 +498,8 @@ void SampleClipView::captureDisplayMapping(bool preToggleStretch)
 	m_displayMapping.sampleEnd = current.sampleEnd;
 	m_displayMapping.widthInTicks = pxPerTick > 0.0 ? current.width / pxPerTick : 0.0;
 	m_displayMapping.xInTicks = pxPerTick > 0.0 ? (current.x + m_paintPixmapXPosition) / pxPerTick : 0.0;
+	m_displayMapping.startTimeOffsetAtCapture = m_clip->startTimeOffset();
+	m_displayMapping.spansClipCapture = preToggleStretch;
 
 	// A mapping is only valid when its source buffer actually holds audio.
 	// Capturing while the sample is still being loaded (or has been replaced
@@ -566,6 +585,12 @@ void SampleClipView::refreshSourceSpaceMapping()
 	m_displayMapping.sampleEnd = plan.sampleEnd;
 	m_displayMapping.widthInTicks = plan.width / pxPerTick;
 	m_displayMapping.xInTicks = (plan.x + m_paintPixmapXPosition) / pxPerTick;
+	// The re-derived xInTicks already encodes the current start-time offset
+	// (waveformGeometry's source-space branch anchors the drawing at
+	// offset * pxPerTick). Record the offset the mapping now corresponds
+	// to, so frozenPlan()'s offset-delta compensation contributes exactly
+	// zero for this mapping and the drawing stays byte-for-byte identical.
+	m_displayMapping.startTimeOffsetAtCapture = m_clip->startTimeOffset();
 
 	const auto afterSize = static_cast<double>(buffer.sampleSize());
 	const auto afterFrames = (m_displayMapping.sampleEnd - m_displayMapping.sampleStart) * afterSize;

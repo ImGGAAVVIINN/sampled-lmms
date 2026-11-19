@@ -133,6 +133,20 @@ public:
 		//! Drawn left edge in timeline ticks relative to the clip's left edge
 		//! (pixels / pxPerTick at capture time, scroll offset removed).
 		double xInTicks = 0.0;
+		//! The clip's start-time offset at capture time. A toolbar-off left
+		//! trim keeps the audio's absolute timeline anchor (startPosition +
+		//! startTimeOffset) fixed by changing the offset; frozenPlan()
+		//! applies the offset change since capture to the drawn left edge so
+		//! the waveform stays at its absolute timeline position instead of
+		//! sliding with the clip's edge.
+		double startTimeOffsetAtCapture = 0.0;
+		//! True when this mapping was captured from the pre-toggle spans-clip
+		//! state (the ON -> OFF toolbar freeze). Such a mapping must never be
+		//! re-derived from the clip's source-space geometry, even when its
+		//! buffer pointer compares equal to the clip's own sample (a
+		//! non-Stretch pitch mode never builds a stretched buffer, so the
+		//! spans-clip capture draws the source at the stretched scale).
+		bool spansClipCapture = false;
 		//! True once a mapping has been captured; false means "no frozen
 		//! mapping, derive the waveform from the clip's live state".
 		bool valid = false;
@@ -174,8 +188,10 @@ private:
 	void captureDisplayMapping(bool preToggleStretch = false);
 
 	//! The frozen-mapping plan: the captured mapping rescaled for the
-	//! current zoom and scroll, nothing else. Never consults the clip's
-	//! live model state.
+	//! current zoom and scroll, plus the clip's start-time offset change
+	//! since capture (so a toolbar-off left trim keeps the waveform at its
+	//! absolute timeline position). Nothing else is consulted from the
+	//! clip's live model state.
 	WaveformPlan frozenPlan();
 
 	//! The derived plan: re-derives the waveform from the clip's live state

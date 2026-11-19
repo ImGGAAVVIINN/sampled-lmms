@@ -725,6 +725,201 @@ private slots:
 		view->close();
 		delete view;
 	}
+
+	/**
+	 * @brief Regression: with toolbar Stretch OFF, resizing either clip edge
+	 * after a stretch must not move, scale or resample the frozen waveform
+	 * (Pitch mode Stretch: the freeze captured the stretched buffer).
+	 *
+	 * The four edge operations may only change the clip's visible boundaries:
+	 * a left trim into the waveform must clip it at the new boundary without
+	 * shifting the rest backwards, a left extension must create blank space
+	 * before the waveform, and right-edge trims must neither move nor
+	 * rescale the drawing. The waveform's left edge must always sit at the
+	 * audio's absolute timeline anchor (startPosition + startTimeOffset),
+	 * i.e. at startTimeOffset * pxPerTick in widget-local coordinates.
+	 */
+	void toolbarOffEdgeTrimsKeepStretchedWaveformFrozen()
+	{
+		auto buffer = makeTwoToneBuffer(framesOf(8.0), engineRate());
+		auto* view = createClipWithView(buffer);
+		SampleClip* clip = dynamic_cast<SampleClip*>(view->model());
+		QVERIFY2(clip != nullptr, "view model must be a SampleClip");
+		const auto natural = clip->sampleLength();
+		clip->changeLength(natural);
+		// Room to extend the left edge outward without negative positions.
+		clip->movePosition(natural);
+		clip->setPitchMode(SampleClip::PitchMode::Stretch);
+
+		auto* editor = getGUI()->songEditor()->m_editor;
+		QVERIFY2(editor != nullptr, "SongEditor must exist in the test GUI");
+		editor->setEditMode(SongEditor::EditMode::Stretch);
+
+		clip->stretchToLength(TimePos(natural * 2));
+		waitForStretched();
+
+		const auto stretched = clip->stretchedSample();
+		QVERIFY(stretched != nullptr);
+
+		// Toggle the toolbar OFF: the stretched waveform freezes.
+		editor->setEditMode(SongEditor::EditMode::Draw);
+
+		const auto plan0 = view->waveformPlan();
+		QVERIFY2(plan0.buffer == stretched.get(),
+			"the frozen mapping must draw the stretched buffer");
+		// The frozen drawing spans the stretched clip edge to edge, so the
+		// pixels-per-tick scale can be derived from it.
+		const double pxPerTick = plan0.width / static_cast<double>(clip->length());
+		QVERIFY2(pxPerTick > 0.0, "frozen width must be positive");
+		QVERIFY2(std::abs(plan0.x + view->m_paintPixmapXPosition) < 1.0f,
+			"the frozen waveform must start at the clip's left edge");
+
+		const auto checkUnchanged = [&](const SampleClipView::WaveformPlan& plan,
+			const char* label)
+		{
+			QVERIFY2(plan.buffer == stretched.get(),
+				qPrintable(QStringLiteral("%1: buffer must stay the stretched buffer").arg(label)));
+			QVERIFY2(std::abs(plan.width - plan0.width) < 1.0f,
+				qPrintable(QStringLiteral("%1: frozen width must not change (%2 -> %3)")
+					.arg(label).arg(plan0.width).arg(plan.width)));
+			QCOMPARE(plan.sampleStart, plan0.sampleStart);
+			QCOMPARE(plan.sampleEnd, plan0.sampleEnd);
+		};
+		const auto checkAnchor = [&](const SampleClipView::WaveformPlan& plan,
+			const char* label)
+		{
+			const double expected = static_cast<double>(clip->startTimeOffset()) * pxPerTick;
+			const double actual = static_cast<double>(plan.x) + view->m_paintPixmapXPosition;
+			QVERIFY2(std::abs(actual - expected) < 1.0,
+				qPrintable(QStringLiteral("%1: waveform left edge moved with the clip edge "
+					"instead of staying at its absolute timeline position "
+					"(expected %2 px, got %3 px)").arg(label).arg(expected).arg(actual)));
+		};
+
+		const auto inward = TimePos(natural / 4);
+		const auto outward = TimePos(natural / 2);
+
+		// 1. Left edge inward: clip into the waveform; the remaining waveform
+		// must not shift backwards with the clip's start.
+		clip->trimFromStart(clip->startPosition() + inward);
+		auto plan = view->waveformPlan();
+		checkUnchanged(plan, "left edge inward");
+		checkAnchor(plan, "left edge inward");
+
+		// 2. Left edge outward: extend before the waveform; blank space must
+		// appear before the drawing instead of the waveform moving or scaling.
+		clip->trimFromStart(clip->startPosition() - outward);
+		plan = view->waveformPlan();
+		checkUnchanged(plan, "left edge outward");
+		checkAnchor(plan, "left edge outward");
+
+		// 3. Right edge inward: cut off the tail; nothing else may move.
+		clip->trimToLength(clip->length() - inward);
+		plan = view->waveformPlan();
+		checkUnchanged(plan, "right edge inward");
+		checkAnchor(plan, "right edge inward");
+
+		// 4. Right edge outward: extend past the waveform; the drawing must
+		// neither stretch nor move.
+		clip->trimToLength(clip->length() + inward);
+		plan = view->waveformPlan();
+		checkUnchanged(plan, "right edge outward");
+		checkAnchor(plan, "right edge outward");
+
+		view->close();
+		delete view;
+	}
+
+	/**
+	 * @brief Regression: same edge-trim sequence with Pitch mode Resample.
+	 *
+	 * A non-Stretch pitch mode never builds a stretched buffer, so the
+	 * ON -> OFF freeze captures the clip's own sample drawn at the stretched
+	 * scale (spans-clip). That frozen mapping must never be re-derived from
+	 * the clip's source-space geometry: doing so collapses the width from
+	 * the stretched clip length back to the sample's natural length and
+	 * rewrites the drawn source window -- exactly the reported bug.
+	 */
+	void toolbarOffEdgeTrimsKeepResampledWaveformFrozen()
+	{
+		auto buffer = makeTwoToneBuffer(framesOf(8.0), engineRate());
+		auto* view = createClipWithView(buffer);
+		SampleClip* clip = dynamic_cast<SampleClip*>(view->model());
+		QVERIFY2(clip != nullptr, "view model must be a SampleClip");
+		const auto natural = clip->sampleLength();
+		clip->changeLength(natural);
+		clip->movePosition(natural);
+		clip->setPitchMode(SampleClip::PitchMode::Resample);
+
+		auto* editor = getGUI()->songEditor()->m_editor;
+		QVERIFY2(editor != nullptr, "SongEditor must exist in the test GUI");
+		editor->setEditMode(SongEditor::EditMode::Stretch);
+
+		clip->stretchToLength(TimePos(natural * 2));
+		waitForStretched();
+
+		// Toggle the toolbar OFF: the source, drawn at the stretched scale,
+		// freezes.
+		editor->setEditMode(SongEditor::EditMode::Draw);
+
+		const auto plan0 = view->waveformPlan();
+		QVERIFY2(plan0.buffer == &clip->sample(),
+			"with Pitch mode Resample the frozen mapping must draw the clip's own sample");
+		const double pxPerTick = plan0.width / static_cast<double>(clip->length());
+		QVERIFY2(pxPerTick > 0.0, "frozen width must be positive");
+		QVERIFY2(std::abs(plan0.x + view->m_paintPixmapXPosition) < 1.0f,
+			"the frozen waveform must start at the clip's left edge");
+
+		const auto checkUnchanged = [&](const SampleClipView::WaveformPlan& plan,
+			const char* label)
+		{
+			QVERIFY2(plan.buffer == &clip->sample(),
+				qPrintable(QStringLiteral("%1: buffer must stay the clip's own sample").arg(label)));
+			// The key assertion: the frozen stretched scale must survive the
+			// trim instead of collapsing to the sample's natural width.
+			QVERIFY2(std::abs(plan.width - plan0.width) < 1.0f,
+				qPrintable(QStringLiteral("%1: frozen width must not change (%2 -> %3)")
+					.arg(label).arg(plan0.width).arg(plan.width)));
+			QCOMPARE(plan.sampleStart, plan0.sampleStart);
+			QCOMPARE(plan.sampleEnd, plan0.sampleEnd);
+		};
+		const auto checkAnchor = [&](const SampleClipView::WaveformPlan& plan,
+			const char* label)
+		{
+			const double expected = static_cast<double>(clip->startTimeOffset()) * pxPerTick;
+			const double actual = static_cast<double>(plan.x) + view->m_paintPixmapXPosition;
+			QVERIFY2(std::abs(actual - expected) < 1.0,
+				qPrintable(QStringLiteral("%1: waveform left edge moved with the clip edge "
+					"instead of staying at its absolute timeline position "
+					"(expected %2 px, got %3 px)").arg(label).arg(expected).arg(actual)));
+		};
+
+		const auto inward = TimePos(natural / 4);
+		const auto outward = TimePos(natural / 2);
+
+		clip->trimFromStart(clip->startPosition() + inward);
+		auto plan = view->waveformPlan();
+		checkUnchanged(plan, "left edge inward");
+		checkAnchor(plan, "left edge inward");
+
+		clip->trimFromStart(clip->startPosition() - outward);
+		plan = view->waveformPlan();
+		checkUnchanged(plan, "left edge outward");
+		checkAnchor(plan, "left edge outward");
+
+		clip->trimToLength(clip->length() - inward);
+		plan = view->waveformPlan();
+		checkUnchanged(plan, "right edge inward");
+		checkAnchor(plan, "right edge inward");
+
+		clip->trimToLength(clip->length() + inward);
+		plan = view->waveformPlan();
+		checkUnchanged(plan, "right edge outward");
+		checkAnchor(plan, "right edge outward");
+
+		view->close();
+		delete view;
+	}
 };
 
 
