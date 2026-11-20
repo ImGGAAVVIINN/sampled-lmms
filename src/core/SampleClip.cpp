@@ -603,15 +603,24 @@ void SampleClip::setPitchMode(PitchMode mode)
 	if (m_pitchMode == mode) { return; } // selecting the active mode does nothing
 	const auto clipId = makeClipId(this);
 	StretchDebug::instance().logPitchModeChanged(clipId, static_cast<int>(m_pitchMode), static_cast<int>(mode));
+	const auto oldMode = m_pitchMode;
 	m_pitchMode = mode;
-	// The mode switch never changes the clip's length or the source range, and
-	// it is never a stretch trigger: selecting a pitch method must not start
-	// audio processing. The pitch-preserving algorithm runs only for an
-	// explicit stretch operation (stretchToLength / stretchFromStart). Any
-	// cached buffer stays exactly as it is; whether it is still valid is
-	// decided by currentStretchKey() when playback or an explicit stretch asks.
-	StretchDebug::instance().logEarlyReturn(clipId, "setPitchMode",
-		"pitch mode selection never schedules stretch processing");
+	// The mode switch never changes the clip's length or the source range.
+	// Switching Resample -> Stretch is a qualifying stretch trigger: the user
+	// asked for pitch-preserving processing of the clip as it stands, without
+	// resizing it first. The reverse switch and every other transition must
+	// not schedule anything. refreshStretchBuffer() still self-checks ratio,
+	// reversed state, empty buffers, the cache and open drag batches, so a
+	// non-stretchable clip or an already cached result starts no job.
+	if (oldMode == PitchMode::Resample && mode == PitchMode::Stretch)
+	{
+		refreshStretchBuffer();
+	}
+	else
+	{
+		StretchDebug::instance().logEarlyReturn(clipId, "setPitchMode",
+			"pitch mode selection does not schedule stretch processing");
+	}
 	emit sampleChanged();
 	Engine::getSong()->setModified();
 }
@@ -1054,9 +1063,23 @@ void SampleClip::loadSettings( const QDomElement & _this )
 	if (!(m_stretchRatio > 0.0)) { m_stretchRatio = 1.0; }
 
 	// The clip length was restored above, possibly before the pitch mode was
-	// known, so compute the stretched buffer now if the project asked for
-	// Stretch mode. No-op for Resample mode and whenever the ratio is 1.0.
-	refreshStretchBuffer();
+	// known. Only a project load must not schedule stretch processing here:
+	// reopening a project must never start audio processing on its own; its
+	// clips stretch only when a qualifying operation later touches them.
+	// Undo/redo, direct XML deserialization (e.g. clipboard paste, unit tests),
+	// and any other restore path may schedule work -- refreshStretchBuffer()
+	// still self-checks ratio, reversed state, empty buffers and the cache, so
+	// a non-stretchable restored state starts no job.
+	const auto song = Engine::getSong();
+	if (!song->isLoadingProject())
+	{
+		refreshStretchBuffer();
+	}
+	else
+	{
+		StretchDebug::instance().logEarlyReturn(makeClipId(this), "loadSettings",
+			"project load never schedules stretch processing");
+	}
 }
 
 

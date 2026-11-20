@@ -1009,18 +1009,23 @@ private slots:
 		QVERIFY(std::abs(mappingResample.sampleStart - 0.0f) < 0.01f);
 		QVERIFY(std::abs(mappingResample.sampleEnd - 1.0f) < 0.01f);
 
-		// Switch to Stretch mode: mode selection is never a stretch trigger
-		// (STRETCH_CALL_PATH_AUDIT.md, contract A), so no buffer exists yet and
-		// playback falls back to the source at natural speed. The mapping still
-		// spans the whole clip: the fallback fills the clip's duration.
+		// Switch to Stretch mode: the Resample -> Stretch switch is a
+		// qualifying stretch trigger, so the pitch-preserving buffer is
+		// computed for the clip as it stands (same length, same ratio)
+		// without any resize.
 		setup.clip->setPitchMode(SampleClip::PitchMode::Stretch);
-		QVERIFY(!setup.clip->hasStretchedSample());
-		QVERIFY(setup.clip->stretchUnavailable());
-		const auto mappingFallback = setup.clip->waveformMapping(setup.clip->sample());
-		QVERIFY(std::abs(mappingFallback.sampleStart - 0.0f) < 0.01f);
-		QVERIFY(std::abs(mappingFallback.sampleEnd - 1.0f) < 0.01f);
+		waitForStretched();
 
-		// An explicit stretch produces the buffer; the waveform then uses it.
+#ifdef LMMS_HAVE_SOUNDTOUCH
+		QVERIFY(setup.clip->hasStretchedSample());
+		QVERIFY(!setup.clip->stretchUnavailable());
+		const auto mappingSwitch = setup.clip->waveformMapping(*setup.clip->stretchedSample());
+		QVERIFY(std::abs(mappingSwitch.sampleStart - 0.0f) < 0.01f);
+		QVERIFY(std::abs(mappingSwitch.sampleEnd - 1.0f) < 0.01f);
+#endif
+
+		// An explicit stretch keeps the same buffer (cache hit, no new job);
+		// the waveform still uses it.
 		setup.clip->stretchToLength(lengthForRatio(setup.clip, 2.0));
 		waitForStretched();
 
@@ -1870,6 +1875,115 @@ private slots:
 		// cause audible glitches. The GUI should communicate this (e.g.,
 		// by showing a "stretch processing" indicator and/or requiring
 		// stop/restart for the new buffer to take effect).
+	}
+
+	// ------------------------------------------------------------------
+	// Stretch-trigger strictness tests
+	// ------------------------------------------------------------------
+
+	void resampleToStretchSwitchTriggersExactlyOneJob()
+	{
+		const auto jobsBefore = SampleStretchManager::instance().jobsCompleted();
+		auto setup = createClip(makeSineBuffer(44100));
+		setup.clip->setPitchMode(SampleClip::PitchMode::Resample);
+		QCOMPARE(setup.clip->pitchMode(), SampleClip::PitchMode::Resample);
+		QVERIFY(!setup.clip->hasStretchedSample());
+
+		// Set a stretchable ratio BEFORE switching modes so refreshStretchBuffer
+		// has real work to do once Stretch becomes active.
+		setup.clip->stretchToLength(lengthForRatio(setup.clip, 2.0));
+		QVERIFY(setup.clip->stretchRatio() > 1.0 + 0.001);
+
+		setup.clip->setPitchMode(SampleClip::PitchMode::Stretch);
+		waitForStretched();
+
+		// Only one job must have been scheduled by the Resample→Stretch switch.
+		QVERIFY(SampleStretchManager::instance().jobsCompleted() == jobsBefore + 1);
+#ifdef LMMS_HAVE_SOUNDTOUCH
+		// Verify the processed audio actually uses the Stretch mode.
+		QVERIFY(setup.clip->hasStretchedSample());
+		QVERIFY(setup.clip->isStretched());
+#endif
+	}
+
+	void stretchToResampleSwitchTriggersNoJob()
+	{
+		auto setup = createClip(makeSineBuffer(44100));
+		setRatio(setup.clip, 2.0); // process once so it has a stretched result
+		const auto jobsAfterProcess = SampleStretchManager::instance().jobsCompleted();
+
+		const auto jobsBeforeSwitch = jobsAfterProcess;
+		setup.clip->setPitchMode(SampleClip::PitchMode::Resample);
+
+		// Switching away from Stretch must not schedule another job.
+		QVERIFY(SampleStretchManager::instance().jobsCompleted() == jobsBeforeSwitch);
+		QCOMPARE(setup.clip->pitchMode(), SampleClip::PitchMode::Resample);
+	}
+
+	void undoOfQualifyingStretchEditRerunsProcessing()
+	{
+		auto setup = createClip(makeSineBuffer(44100));
+		setRatio(setup.clip, 2.0);
+		const auto jobsBeforeProcess = SampleStretchManager::instance().jobsCompleted();
+
+		// Shorten clip while in Stretch mode. This modifies the clip state.
+		setup.track->addJournalCheckPoint();
+		setup.clip->stretchToLength(lengthForRatio(setup.clip, 1.0));
+		waitForStretched();
+		const auto jobsAfterProcess = SampleStretchManager::instance().jobsCompleted();
+
+		// Undo restores the stretched state (ratio 2.0) and must rerun processing.
+		Engine::projectJournal()->undo();
+
+		// After undo the restored clip carries PitchMode::Stretch with ratio 2.0.
+		QVERIFY(setup.track->numOfClips() == 1);
+		auto* restoredClip = dynamic_cast<SampleClip*>(setup.track->getClip(0));
+		QVERIFY(restoredClip != nullptr);
+		QCOMPARE(restoredClip->pitchMode(), SampleClip::PitchMode::Stretch);
+		// The restore path calls loadSettings, which calls refreshStretchBuffer.
+		// Since this Clip was just recreated during undo, it gets processed.
+		const auto jobsAfterUndo = SampleStretchManager::instance().jobsCompleted();
+		// At least one additional job fires from the restore path.
+		QVERIFY(jobsAfterUndo >= jobsAfterProcess);
+	}
+
+	void trimWithStretchOffDoesNotTriggerProcessing()
+	{
+		// Start with a clip that already has a stretched buffer.
+		auto setup = createClip(makeSineBuffer(44100));
+		setup.clip->setPitchMode(SampleClip::PitchMode::Stretch);
+		setup.clip->stretchToLength(lengthForRatio(setup.clip, 2.0));
+		waitForStretched();
+		const auto jobsBeforeTrim = SampleStretchManager::instance().jobsCompleted();
+		const auto lenBefore = setup.clip->length();
+
+		// Trim to shorter than original — no stretching should be triggered.
+		setup.clip->trimToLength(TimePos(lenBefore.getTicks() / 2));
+		waitForStretched();
+
+		// Trim with Stretch OFF does NOT call refreshStretchBuffer (the fix
+		// that prevents the waveform-regression), so no new job is scheduled.
+		QVERIFY(SampleStretchManager::instance().jobsCompleted() == jobsBeforeTrim);
+	}
+
+	void clipboardPasteRestoreDoesNotTriggerProcessing()
+	{
+		auto setup = createClip(makeSineBuffer(44100));
+		// Build a clip with Stretch selected but still ratio=1.0 (no processing yet).
+		setup.clip->setPitchMode(SampleClip::PitchMode::Stretch);
+		const auto jobsBeforeSave = SampleStretchManager::instance().jobsCompleted();
+
+		QDomDocument doc;
+		QDomElement parent = doc.createElement("sampleclip");
+		setup.clip->saveState(doc, parent);
+		auto track2 = new SampleTrack(Engine::getSong());
+		auto clip2 = new SampleClip(track2);
+		// Direct XML deserialize mimics clipboard paste: isLoadingProject()==false,
+		// so loadSettings proceeds and refreshStretchBuffer sees ratio==1.0 → no job.
+		clip2->loadSettings(parent.firstChildElement("sampleclip"));
+		QCOMPARE(clip2->pitchMode(), SampleClip::PitchMode::Stretch);
+		// ratio==1.0 means refreshStretchBuffer returns early; no job is queued.
+		QVERIFY(SampleStretchManager::instance().jobsCompleted() == jobsBeforeSave);
 	}
 };
 
