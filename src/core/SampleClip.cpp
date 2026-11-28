@@ -884,17 +884,32 @@ void SampleClip::stretchToLength(const TimePos& newLength)
 	const auto clipId = makeClipId(this);
 	const auto clamped = std::max(static_cast<int>(newLength), 1);
 
-	// Materialise the audible range: a left trim (negative start-time offset)
-	// skipped part of the source; that audio is inaudible, so the range that
-	// the stretch must fit into the clip starts after it.
-	materialiseAudibleRange();
-
+	// Non-destructive stretch: a left trim (negative start-time offset) has
+	// hidden part of the source, but that audio must stay recoverable. The
+	// new ratio maps the still-audible source range onto the audible clip
+	// duration, and the offset is rescaled with the ratio so the clip's left
+	// edge keeps playing exactly the source frame it played before: the same
+	// audio stays hidden, merely expressed in more (stretched) ticks. Nothing
+	// is folded out of the source range, so a later left-edge reveal brings
+	// the skipped audio back. Rescaling also makes repeated calls idempotent:
+	// skipped / ratio is invariant, so dragging to the same length twice
+	// computes the same ratio instead of drifting.
 	const auto natural = sourceRangeTicks(); // timeline ticks at ratio 1
+	const auto offset = static_cast<double>(startTimeOffset());
+	const auto skipped = std::max(0.0, -offset);
+	const auto ratioOld = m_stretchRatio > 0.0 ? m_stretchRatio : 1.0;
+	const auto naturalAudible = std::max(1.0, natural - skipped / ratioOld);
 	const auto leading = std::max(0, static_cast<int>(startTimeOffset()));
 	const auto audible = std::max(1.0, static_cast<double>(clamped - leading));
 	if (natural > 0.0)
 	{
-		m_stretchRatio = std::clamp(audible / natural, 0.01, 100.0);
+		m_stretchRatio = std::clamp(audible / naturalAudible, 0.01, 100.0);
+		if (skipped > 0.0)
+		{
+			// Keep the left edge anchored at the same source frame.
+			setStartTimeOffset(
+				TimePos(std::lround(offset * m_stretchRatio / ratioOld)));
+		}
 	}
 
 	StretchDebug::instance().logStretchToLength(clipId, clamped, sourceStartFrame(), sourceEndFrame(), m_stretchRatio);
@@ -926,14 +941,24 @@ void SampleClip::stretchFromStart(const TimePos& newPos)
 		static_cast<int>(end) - 1));
 	const auto newLength = end - clampedPos;
 
-	materialiseAudibleRange();
-
+	// Non-destructive stretch (see stretchToLength): the skipped audio of a
+	// left trim stays in the source range and the offset is rescaled with the
+	// ratio so the left edge keeps playing the same source frame.
 	const auto natural = sourceRangeTicks();
+	const auto offset = static_cast<double>(startTimeOffset());
+	const auto skipped = std::max(0.0, -offset);
+	const auto ratioOld = m_stretchRatio > 0.0 ? m_stretchRatio : 1.0;
+	const auto naturalAudible = std::max(1.0, natural - skipped / ratioOld);
 	const auto leading = std::max(0, static_cast<int>(startTimeOffset()));
 	const auto audible = std::max(1.0, static_cast<double>(newLength - leading));
 	if (natural > 0.0)
 	{
-		m_stretchRatio = std::clamp(audible / natural, 0.01, 100.0);
+		m_stretchRatio = std::clamp(audible / naturalAudible, 0.01, 100.0);
+		if (skipped > 0.0)
+		{
+			setStartTimeOffset(
+				TimePos(std::lround(offset * m_stretchRatio / ratioOld)));
+		}
 	}
 	movePosition(clampedPos);
 	Clip::changeLength(newLength);
@@ -942,29 +967,6 @@ void SampleClip::stretchFromStart(const TimePos& newPos)
 	emit sampleChanged();
 	Engine::getSong()->setModified();
 }
-
-void SampleClip::materialiseAudibleRange()
-{
-	// Fold a left trim (negative start-time offset) into the source range: the
-	// skipped audio becomes permanently out of the playable range, the offset
-	// returns to >= 0, and the ratio is rescaled so the audible audio keeps
-	// playing at exactly the speed it had before. Called before a stretch so
-	// the ratio is always derived from the audio the user can actually hear.
-	if (startTimeOffset() >= 0) { return; }
-	const auto skipped = static_cast<double>(-startTimeOffset()); // ticks before the left edge
-	// The skipped audio occupies `skipped` ticks of *output* time; converting
-	// to source frames divides by the stretch scale (output frames per source
-	// frame), so a stretched clip folds in proportionally fewer source frames.
-	const auto scale = outputFramesPerSourceFrame();
-	const auto skippedSource = scale > 0.0 ? skipped * outputFramesPerTick() / scale : 0.0;
-	m_sourceStartFrame = std::min(
-		static_cast<int>(std::lround(sourceStartFrame() + skippedSource)),
-		sourceEndFrame());
-	setStartTimeOffset(0);
-}
-
-
-
 
 void SampleClip::saveSettings( QDomDocument & _doc, QDomElement & _this )
 {
@@ -1062,9 +1064,14 @@ void SampleClip::loadSettings( const QDomElement & _this )
 	m_stretchRatio = _this.attribute("stretchratio", "1").toDouble();
 	if (!(m_stretchRatio > 0.0)) { m_stretchRatio = 1.0; }
 
-	// The clip length was restored above, possibly before the pitch mode was
-	// known. Only a project load must not schedule stretch processing here:
-	// reopening a project must never start audio processing on its own; its
+        // Diagnostic: record exactly what was deserialized so a GUI session
+        // can be proven to have loaded the intended pitch mode and range.
+        StretchDebug::instance().logEarlyReturn(makeClipId(this), "loadSettings",
+            QString("parsed stretchmode=%1 srcstart=%2 srcend=%3 stretchratio=%4 len=%5 off=%6")
+                .arg(static_cast<int>(m_pitchMode))
+                .arg(m_sourceStartFrame).arg(m_sourceEndFrame)
+                .arg(m_stretchRatio).arg(length()).arg(startTimeOffset())
+                .toStdString());
 	// clips stretch only when a qualifying operation later touches them.
 	// Undo/redo, direct XML deserialization (e.g. clipboard paste, unit tests),
 	// and any other restore path may schedule work -- refreshStretchBuffer()

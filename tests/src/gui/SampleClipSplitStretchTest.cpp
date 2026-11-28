@@ -169,7 +169,7 @@ void waitForStretched()
 auto renderClip(SampleClip* clip) -> std::vector<SampleFrame>
 {
 	const auto plan = clip->computePlaybackPlan(
-		clip->outputFramesFor(clip->startPosition() + clip->startTimeOffset()));
+		clip->outputFramesFor(clip->startPosition()));
 	SamplePlayHandle handle(clip, plan);
 
 	const auto fpp = Engine::audioEngine()->framesPerPeriod();
@@ -463,11 +463,10 @@ void SampleClipSplitStretchTest::splitAssignsRetainedSourceRangeToEachHalf()
 
 	// The right half retained the second section. Its retained range may be
 	// expressed either as an explicit source start frame or as a negative
-	// start-time offset that materialiseAudibleRange() folds into the source
-	// start when a stretch is computed; either way the EFFECTIVE retained
-	// window must be the second half. Check the effective window, which is
-	// the public, semantics-preserving way to read what the clip will
-	// actually play.
+	// start-time offset that hides the skipped audio while keeping it
+	// recoverable; either way the EFFECTIVE retained window must be the
+	// second half. Check the effective window, which is the public,
+	// semantics-preserving way to read what the clip will actually play.
 	const auto effectiveStart = right->sourceFrameAtOutputFrame(
 		right->outputFramesFor(right->startPosition()));
 	const auto effectiveEnd = right->sourceFrameAtOutputFrame(

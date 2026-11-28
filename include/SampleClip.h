@@ -369,10 +369,6 @@ private:
 	/// sample, or no sample at all).
 	uint64_t currentStretchKey() const;
 
-	/// Fold a negative start-time offset (left trim) into the source range so
-	/// a following stretch derives its ratio from the audible audio only.
-	void materialiseAudibleRange();
-
 	/// Commit a stretched sample computed off-thread, provided it is still the
 	/// one the clip's current parameters call for. Results from a superseded
 	/// request -- typically an earlier position of an in-progress drag -- are

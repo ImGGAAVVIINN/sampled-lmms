@@ -529,24 +529,45 @@ private slots:
 			qPrintable(QStringLiteral("left trim should slide the drawing left by a quarter: x=%1")
 				.arg(shifted.x)));
 
-		// A stretch folds the inaudible quarter away, so it leaves the drawing.
-		clip->setPitchMode(SampleClip::PitchMode::Stretch);
-		clip->stretchToLength(clip->length());
-		waitForStretched();
+// A stretch must not fold the inaudible quarter away: the source
+                // range and the negative offset are kept so the skipped audio
+                // stays recoverable, and the drawing does not move.
+                clip->setPitchMode(SampleClip::PitchMode::Stretch);
+                clip->stretchToLength(clip->length());
+                waitForStretched();
 
-		QVERIFY2(std::abs(clip->sourceStartFrame() - static_cast<int>(framesOf(2.0))) < 2,
-			qPrintable(QStringLiteral("stretch should fold the skipped quarter into the source "
-				"start, got %1").arg(clip->sourceStartFrame())));
+                QCOMPARE(clip->sourceStartFrame(), 0);
+                QVERIFY2(std::abs(static_cast<int>(clip->startTimeOffset())
+                                        + static_cast<int>(natural / 4)) < 2,
+                        qPrintable(QStringLiteral("stretch must keep the skipped quarter "
+                                        "recoverable, startTimeOffset=%1")
+                                        .arg(static_cast<int>(clip->startTimeOffset()))));
 
-		const auto folded = SampleClipView::waveformGeometry(*clip, source,
-			PxPerTick, false, NoScroll);
-		QVERIFY2(std::abs(folded.sampleStart - 0.25f) < 0.02f,
-			qPrintable(QStringLiteral("discarded quarter must not be drawn, sampleStart=%1")
-				.arg(folded.sampleStart)));
-		QCOMPARE(folded.sampleEnd, 1.0f);
-		QVERIFY2(std::abs(folded.width - before.width * 0.75f) < 1.0f,
-			qPrintable(QStringLiteral("drawing should cover only the retained three quarters: "
-				"%1 vs %2").arg(folded.width).arg(before.width * 0.75f)));
+                const auto kept = SampleClipView::waveformGeometry(*clip, source,
+                        PxPerTick, false, NoScroll);
+                QVERIFY2(std::abs(kept.width - before.width) < 1.0f,
+                        qPrintable(QStringLiteral("stretch must not rescale the waveform: %1 vs %2")
+                                        .arg(kept.width).arg(before.width)));
+                QVERIFY2(std::abs(kept.x - shifted.x) < 1.0f,
+                        qPrintable(QStringLiteral("stretch must not move the drawing: x=%1 vs %2")
+                                        .arg(kept.x).arg(shifted.x)));
+
+                // Revealing the skipped quarter (left edge back to the clip's
+                // original start) brings the hidden audio back: the drawing covers
+                // the full source again at the same scale.
+                clip->trimFromStart(TimePos(0));
+                const auto revealed = SampleClipView::waveformGeometry(*clip,
+                        source, PxPerTick, false, NoScroll);
+                QVERIFY2(std::abs(revealed.sampleStart) < 0.02f,
+                        qPrintable(QStringLiteral("revealed quarter must be drawn again, sampleStart=%1")
+                                        .arg(revealed.sampleStart)));
+                QCOMPARE(revealed.sampleEnd, 1.0f);
+                QVERIFY2(std::abs(revealed.width - before.width) < 1.0f,
+                        qPrintable(QStringLiteral("reveal must restore the full width: %1 vs %2")
+                                        .arg(revealed.width).arg(before.width)));
+                QVERIFY2(std::abs(revealed.x - before.x) < 1.0f,
+                        qPrintable(QStringLiteral("reveal must restore the original position: x=%1 vs %2")
+                                        .arg(revealed.x).arg(before.x)));
 	}
 
 	/**
