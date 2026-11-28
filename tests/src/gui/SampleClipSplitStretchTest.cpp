@@ -496,6 +496,9 @@ void SampleClipSplitStretchTest::stretchingLeftHalfKeepsFirstSection()
 	QVERIFY(left != nullptr);
 	report("LEFT before stretch", left);
 
+	// The toolbar Stretch edit mode is what turns a right-edge drag into a
+	// stretch; the clip's Pitch mode only selects how the ratio is rendered.
+	getGUI()->songEditor()->m_editor->setEditModeStretch();
 	dragRightEdgeTo(m_view, ticksForSeconds(8.0));
 	waitForStretched();
 	report("LEFT after stretch ", left);
@@ -562,6 +565,9 @@ void SampleClipSplitStretchTest::stretchingRightHalfKeepsSecondSection()
 
 	report("RIGHT before stretch", right);
 
+	// The toolbar Stretch edit mode is what turns a right-edge drag into a
+	// stretch; the clip's Pitch mode only selects how the ratio is rendered.
+	getGUI()->songEditor()->m_editor->setEditModeStretch();
 	dragRightEdgeTo(rightView, ticksForSeconds(8.0));
 	waitForStretched();
 	report("RIGHT after stretch", right);
@@ -597,10 +603,12 @@ void SampleClipSplitStretchTest::stretchingRightHalfKeepsSecondSection()
 }
 
 // ---------------------------------------------------------------------------
-// 5. Stretching a cut clip *shorter* must also stay inside the retained
-// section. A right-edge drag on a sample clip always goes through
-// SampleClip::stretchToLength(), so this is the same operation with a ratio
-// below 1 rather than a trim.
+// 5. Shortening a cut clip must also stay inside the retained section.
+// With the toolbar Stretch edit mode OFF (the default), a right-edge drag
+// goes through SampleClip::trimToLength(): the clip is shortened to 2 s and
+// keeps playing its own first 2 s at natural speed, so the first section is
+// preserved. (With the toolbar ON the same drag would compress the whole
+// 4 s section into 2 s at the same pitch -- see the stretching tests above.)
 // ---------------------------------------------------------------------------
 void SampleClipSplitStretchTest::shorteningLeftHalfKeepsFirstSection()
 {
@@ -647,6 +655,9 @@ void SampleClipSplitStretchTest::shorteningLeftHalfKeepsFirstSection()
 // ---------------------------------------------------------------------------
 void SampleClipSplitStretchTest::freshUnsplitClipStillStretchesWholeSample()
 {
+	// The toolbar Stretch edit mode is what turns a right-edge drag into a
+	// stretch; the clip's Pitch mode only selects how the ratio is rendered.
+	getGUI()->songEditor()->m_editor->setEditModeStretch();
 	dragRightEdgeTo(m_view, ticksForSeconds(16.0));
 	waitForStretched();
 	report("FRESH after stretch", m_clip);

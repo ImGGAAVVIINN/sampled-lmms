@@ -599,6 +599,10 @@ private slots:
 	void stretchTo16sKeepsPitch()
 	{
 		triggerPitchModeAction(tr("Stretch"));
+		// The toolbar Stretch edit mode is what turns a right-edge drag into a
+		// stretch; the menu's Pitch mode only selects how the resulting ratio
+		// is rendered. Enable it exactly as the user would.
+		getGUI()->songEditor()->m_editor->setEditModeStretch();
 		dragRightEdgeTo(ticksForSeconds(16.0));
 
 		QVERIFY2(std::abs(m_clip->length() - ticksForSeconds(16.0)) <= ticksForSeconds(0.1),
@@ -658,6 +662,8 @@ private slots:
 	void stretchTo4sKeepsPitch()
 	{
 		triggerPitchModeAction(tr("Stretch"));
+		// Explicit rather than inherited from the previous test's edit mode.
+		getGUI()->songEditor()->m_editor->setEditModeStretch();
 		dragRightEdgeTo(ticksForSeconds(4.0));
 
 		QVERIFY2(std::abs(m_clip->length() - ticksForSeconds(4.0)) <= ticksForSeconds(0.1),
